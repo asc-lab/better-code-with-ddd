@@ -1,0 +1,23 @@
+# Better code with DDD building blocks
+
+This repository contains code that accompanies presentation ASC LAB team gave at meetup about “Creating better code with Domain Driven Design”.
+
+## Business case
+
+Domain Driven Design tactical patterns are presented here using mortgage loan application processing use case.  Business wants to increase efficiency of mortgage loan application processing for individual customers by: automating application score calculation, combining information from online available sources, auto rejecting applications with RED score, having ability to relatively easy add new rules for scoring.
+
+The process: 
+* operator submits loan application with property information, customer data, loan information and attached documents provided by customer
+* system performs basic validation, required fields, correct formats
+* operator commands the system to calculates score based on rules
+* if score is RED application is rejected and explanation is provided
+* if score is GREEN then operator validates attached documents and accepts application or rejects it due to discrepancies between provided data and documents. System validates operator’s competence level
+
+The rules:
+* property value must not exceed requested loan amount
+* customer age at the day of last loan installment must not exceed 65 years
+* customer must not be registered debtor in national debtors registry system
+* loan monthly installment must not exceed 15% of customer monthly income
+
+
+## Solutions
