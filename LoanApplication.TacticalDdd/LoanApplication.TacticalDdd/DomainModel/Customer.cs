@@ -36,6 +36,11 @@ namespace LoanApplication.TacticalDdd.DomainModel
             Address = address;
         }
 
+        //To satisfy EF Core
+        protected Customer()
+        {
+        }
+
         public AgeInYears AgeInYearsAt(DateTime date)
         {
             return AgeInYears.Between(Birthdate, date);

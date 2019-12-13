@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading;
 using LoanApplication.TacticalDdd.Application;
-using LoanApplication.TacticalDdd.Application.Installer;
 using LoanApplication.TacticalDdd.DomainModel;
 using LoanApplication.TacticalDdd.DomainModel.DomainEvents;
 using LoanApplication.TacticalDdd.Tests.Asserts;
@@ -13,10 +11,10 @@ using Xunit;
 
 namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
 {
-    public class AcceptApplicationTests
+    public class LoanApplicationDecisionServiceTests
     {
         [Fact]
-        public async void AcceptApplication_GreenApplication_CanBeAccepted()
+        public void LoanApplicationDecisionService_GreenApplication_CanBeAccepted()
         {
             var operators = new InMemoryOperatorRepository(new List<Operator>
             {
@@ -36,7 +34,7 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
             
             var eventBus = new InMemoryBus();
             
-            var handler = new AcceptLoanApplication.Handler
+            var decisionService = new LoanApplicationDecisionService
             (
                 new UnitOfWorkMock(),
                 existingApplications,
@@ -45,15 +43,7 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
             );
             
             
-            await handler.Handle
-            (
-                new AcceptLoanApplication.Command
-                {
-                    ApplicationNumber = "123",
-                    CurrentUser = OperatorIdentity("admin")
-                },
-                CancellationToken.None
-            );
+            decisionService.AcceptApplication("123", OperatorIdentity("admin"));
             
             LoanApplicationAssert
                 .That(existingApplications.WithNumber("123"))
@@ -62,11 +52,11 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
             DomainEventsAssert
                 .That(eventBus.Events)
                 .HasExpectedNumberOfEvents(1)
-                .ContainsEvent<LoanApplicationAccepted>(e => e.LoanApplicationId==existingApplications.WithNumber("123").Id);
+                .ContainsEvent<LoanApplicationAccepted>(e => e.LoanApplicationId==existingApplications.WithNumber("123").Id.Value);
         }
         
         [Fact]
-        public async void RejectApplication_GreenApplication_CanBeRejected()
+        public void LoanApplicationDecisionService_GreenApplication_CanBeRejected()
         {
             var operators = new InMemoryOperatorRepository(new List<Operator>
             {
@@ -86,24 +76,16 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
 
             var eventBus = new InMemoryBus();
             
-            var handler = new RejectLoanApplication.Handler
+            var decisionService = new LoanApplicationDecisionService
             (
                 new UnitOfWorkMock(),
                 existingApplications,
                 operators,
                 eventBus
             );
-
-
-            await handler.Handle
-            (
-                new RejectLoanApplication.Command
-                {
-                    ApplicationNumber = "123",
-                    CurrentUser = OperatorIdentity("admin")
-                },
-                CancellationToken.None
-            );
+            
+            
+            decisionService.RejectApplication("123", OperatorIdentity("admin"), null);
             
             LoanApplicationAssert
                 .That(existingApplications.WithNumber("123"))
@@ -112,7 +94,7 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
             DomainEventsAssert
                 .That(eventBus.Events)
                 .HasExpectedNumberOfEvents(1)
-                .ContainsEvent<LoanApplicationRejected>(e => e.LoanApplicationId==existingApplications.WithNumber("123").Id);
+                .ContainsEvent<LoanApplicationRejected>(e => e.LoanApplicationId==existingApplications.WithNumber("123").Id.Value);
         }
         
         private ClaimsPrincipal OperatorIdentity(string login)

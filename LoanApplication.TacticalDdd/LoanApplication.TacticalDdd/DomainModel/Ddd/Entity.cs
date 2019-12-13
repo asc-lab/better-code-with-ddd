@@ -2,8 +2,8 @@ using System;
 
 namespace LoanApplication.TacticalDdd.DomainModel.Ddd
 {
-    public abstract class Entity
+    public abstract class Entity<T>
     {
-        public Guid Id { get; protected set; }
+        public T Id { get; protected set; }
     }
 }

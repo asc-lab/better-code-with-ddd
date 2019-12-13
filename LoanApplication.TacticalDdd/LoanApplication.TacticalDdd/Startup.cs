@@ -1,15 +1,23 @@
-using LoanApplication.TacticalDdd.Application.Installer;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using LoanApplication.TacticalDdd.Application;
+using LoanApplication.TacticalDdd.DomainModel;
 using LoanApplication.TacticalDdd.PortsAdapters.DataAccess;
 using LoanApplication.TacticalDdd.PortsAdapters.ExternalServices;
 using LoanApplication.TacticalDdd.PortsAdapters.MessageQueue;
 using LoanApplication.TacticalDdd.PortsAdapters.Security;
-using LoanApplication.TacticalDdd.ReadModel.Installer;
+using LoanApplication.TacticalDdd.ReadModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace LoanApplication.TacticalDdd
 {
@@ -30,8 +38,9 @@ namespace LoanApplication.TacticalDdd
             services.AddAuthentication("BasicAuthentication")
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
             
-            services.AddMartenDbAdapters(Configuration.GetConnectionString("LoanDb"));
-
+            //services.AddMartenDbAdapters(Configuration.GetConnectionString("LoanDb"));
+            services.AddEfDbAdapters(Configuration.GetConnectionString("LoanDb"));
+            
             services.AddRabbitMqClient("host=localhost");
             
             services.AddExternalServicesClients();

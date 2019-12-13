@@ -8,7 +8,7 @@ namespace LoanApplication.TacticalDdd.DomainModel
     public class Decision : ValueObject<Decision>
     {
         public DateTime DecisionDate { get;  }
-        public Guid DecisionBy { get;  }
+        public OperatorId DecisionBy { get;  }
 
         public Decision(DateTime decisionDate, Operator decisionBy)
             : this(decisionDate,decisionBy.Id)
@@ -16,10 +16,15 @@ namespace LoanApplication.TacticalDdd.DomainModel
         }
         
         [JsonConstructor]
-        public Decision(DateTime decisionDate, Guid decisionBy)
+        public Decision(DateTime decisionDate, OperatorId decisionBy)
         {
             DecisionDate = decisionDate;
             DecisionBy = decisionBy;
+        }
+
+        // To Satisfy EF Core
+        protected Decision()
+        {
         }
 
         protected override IEnumerable<object> GetAttributesToIncludeInEqualityCheck()

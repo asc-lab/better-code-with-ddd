@@ -21,6 +21,11 @@ namespace LoanApplication.TacticalDdd.DomainModel
             Value = value;
             Address = address;
         }
+        
+        //To satisfy EF Core
+        protected Property()
+        {
+        }
 
         protected override IEnumerable<object> GetAttributesToIncludeInEqualityCheck()
         {

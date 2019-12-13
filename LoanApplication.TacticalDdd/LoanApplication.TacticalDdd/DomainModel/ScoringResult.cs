@@ -16,6 +16,11 @@ namespace LoanApplication.TacticalDdd.DomainModel
             Score = score;
             Explanation = explanation;
         }
+        
+        //To satisfy EF Core
+        protected ScoringResult()
+        {
+        }
 
         protected override IEnumerable<object> GetAttributesToIncludeInEqualityCheck()
         {

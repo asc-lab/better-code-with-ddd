@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using System.Threading;
-using System.Threading.Tasks;
 using LoanApplication.TacticalDdd.Application;
 using LoanApplication.TacticalDdd.Application.Api;
 using LoanApplication.TacticalDdd.DomainModel;
@@ -12,10 +10,10 @@ using Xunit;
 
 namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
 {
-    public class SubmitLoanApplicationTests
+    public class LoanApplicationSubmissionServiceTests
     {
         [Fact]
-        public async Task SubmitLoanApplication_ValidApplication_GetsSubmitted()
+        public void LoanApplicationSubmissionService_ValidApplication_GetsSubmitted()
         {
             var operators = new InMemoryOperatorRepository(new List<Operator>
             {
@@ -24,7 +22,7 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
             
             var existingApplications = new InMemoryLoanApplicationRepository(new List<DomainModel.LoanApplication>());
             
-            var handler = new SubmitLoanApplication.Handler
+            var loanApplicationSubmissionService = new LoanApplicationSubmissionService
             (
                 new UnitOfWorkMock(), 
                 existingApplications,
@@ -58,24 +56,16 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
                 InterestRate = 1.1M
             };
 
-            var newApplicationNumber = await handler.Handle
-            (
-                new SubmitLoanApplication.Command
-                {
-                    LoanApplication = validApplication,
-                    CurrentUser = OperatorIdentity("admin")
-                },
-                CancellationToken.None
-            );
-
+            var newApplicationNumber = loanApplicationSubmissionService
+                .SubmitLoanApplication(validApplication, OperatorIdentity("admin"));
+            
             Assert.False(string.IsNullOrWhiteSpace(newApplicationNumber));
             var createdLoanApplication = existingApplications.WithNumber(newApplicationNumber);
             Assert.NotNull(createdLoanApplication);
         }
         
-        
         [Fact]
-        public async Task SubmitLoanApplication_InvalidApplication_IsNotSaved()
+        public void LoanApplicationSubmissionService_InvalidApplication_IsNotSaved()
         {
             var operators = new InMemoryOperatorRepository(new List<Operator>
             {
@@ -84,7 +74,7 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
             
             var existingApplications = new InMemoryLoanApplicationRepository(new List<DomainModel.LoanApplication>());
             
-            var handler = new SubmitLoanApplication.Handler
+            var loanApplicationSubmissionService = new LoanApplicationSubmissionService
             (
                 new UnitOfWorkMock(), 
                 existingApplications,
@@ -118,19 +108,11 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
                 InterestRate = 1.1M
             };
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => handler.Handle
-            (
-                new SubmitLoanApplication.Command
-                {
-                    LoanApplication = validApplication,
-                    CurrentUser =  OperatorIdentity("admin")
-                },
-                CancellationToken.None
-            ));
+            var ex = Assert.Throws<ArgumentException>(() => loanApplicationSubmissionService
+                .SubmitLoanApplication(validApplication, OperatorIdentity("admin")));
             
             Assert.Equal("National Identifier must be 11 chars long", ex.Message);
         }
-        
 
         private ClaimsPrincipal OperatorIdentity(string login)
         {

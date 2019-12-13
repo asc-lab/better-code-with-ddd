@@ -1,9 +1,7 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using LoanApplication.TacticalDdd.Application;
 using LoanApplication.TacticalDdd.Application.Api;
 using LoanApplication.TacticalDdd.ReadModel;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,69 +12,61 @@ namespace LoanApplication.TacticalDdd.PortsAdapters.WebApi
     [Route("[controller]")]
     public class LoanApplicationController : ControllerBase
     {
-        private readonly IMediator bus;
-        
+        private readonly LoanApplicationSubmissionService loanApplicationSubmissionService;
+        private readonly LoanApplicationEvaluationService loanApplicationEvaluationService;
+        private readonly LoanApplicationDecisionService loanApplicationDecisionService;
+        private readonly LoanApplicationFinder loanApplicationFinder;
+
         public LoanApplicationController(
-            IMediator bus)
+            LoanApplicationSubmissionService loanApplicationSubmissionService,
+            LoanApplicationEvaluationService loanApplicationEvaluationService,
+            LoanApplicationFinder loanApplicationFinder, 
+            LoanApplicationDecisionService loanApplicationDecisionService)
         {
-            this.bus = bus;
+            this.loanApplicationSubmissionService = loanApplicationSubmissionService;
+            this.loanApplicationEvaluationService = loanApplicationEvaluationService;
+            this.loanApplicationFinder = loanApplicationFinder;
+            this.loanApplicationDecisionService = loanApplicationDecisionService;
         }
         
         [HttpPost]
-        public async Task<string> Create([FromBody] LoanApplicationDto loanApplicationDto)
+        public string Create([FromBody] LoanApplicationDto loanApplicationDto)
         {
-            var newApplicationNumber = await bus.Send(new SubmitLoanApplication.Command
-            {
-                LoanApplication = loanApplicationDto,
-                CurrentUser = User
-            });
-                
-                
+            var newApplicationNumber = loanApplicationSubmissionService.SubmitLoanApplication(loanApplicationDto, User);
             return newApplicationNumber;
         }
         
         [HttpPost("evaluate/{applicationNumber}")]
-        public async Task<IActionResult> Evaluate([FromRoute] string applicationNumber)
+        public IActionResult Evaluate([FromRoute] string applicationNumber)
         {
-            await bus.Send(new EvaluateLoanApplication.Command
-            {
-                ApplicationNumber = applicationNumber
-            });
+            loanApplicationEvaluationService.EvaluateLoanApplication(applicationNumber);
             return Ok();
         }
         
         [HttpPost("accept/{applicationNumber}")]
-        public async Task<IActionResult> Accept([FromRoute] string applicationNumber)
+        public IActionResult Accept([FromRoute] string applicationNumber)
         {
-            await bus.Send(new AcceptLoanApplication.Command
-            {
-                ApplicationNumber = applicationNumber,
-                CurrentUser = User
-            });
+            loanApplicationDecisionService.AcceptApplication(applicationNumber,User);
             return Ok();
         }
         
         [HttpPost("reject/{applicationNumber}")]
-        public async Task<IActionResult> Reject([FromRoute] string applicationNumber)
+        public IActionResult Reject([FromRoute] string applicationNumber)
         {
-            await bus.Send(new RejectLoanApplication.Command
-            {
-                ApplicationNumber = applicationNumber,
-                CurrentUser = User
-            });
+            loanApplicationDecisionService.RejectApplication(applicationNumber,User, null);
             return Ok();
         }
         
         [HttpGet("{applicationNumber}")]
-        public async Task<LoanApplicationDto> Get([FromRoute] string applicationNumber)
+        public LoanApplicationDto Get([FromRoute] string applicationNumber)
         {
-            return await bus.Send(new GetLoanApplicationByNumber.Query {ApplicationNumber = applicationNumber});
+            return loanApplicationFinder.GetLoanApplication(applicationNumber);
         }
         
         [HttpPost("find")]
-        public async Task<IEnumerable<LoanApplicationInfoDto>> Find([FromBody] LoanApplicationSearchCriteriaDto criteria)
+        public IList<LoanApplicationInfoDto> Find([FromBody] LoanApplicationSearchCriteriaDto criteria)
         {
-            return await bus.Send(new FindLoanApplications.Query {Criteria = criteria});
+            return loanApplicationFinder.FindLoadApplication(criteria);
         }
     }
 }

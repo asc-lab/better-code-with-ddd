@@ -1,75 +1,75 @@
-CREATE SCHEMA ddd_loan;
-
-CREATE TABLE ddd_loan.mt_doc_loanapplication
+CREATE TABLE public."Operators"
 (
-  id uuid NOT NULL,
-  data jsonb NOT NULL,
-  mt_last_modified timestamp with time zone DEFAULT transaction_timestamp(),
-  mt_version uuid NOT NULL DEFAULT (md5(((random())::text || (clock_timestamp())::text)))::uuid,
-  mt_dotnet_type character varying,
-  "number" character varying(50),
-  CONSTRAINT pk_mt_doc_loanapplication PRIMARY KEY (id)
-)
-WITH (
-  OIDS=FALSE
+  "Password" character varying(50),
+  "FirstName" character varying(50),
+  "LastName" character varying(75),
+  "CompetenceLevel_Amount" numeric(19,2),
+  "Id" uuid NOT NULL,
+  "Login" character varying(50),
+  CONSTRAINT operators_pk PRIMARY KEY ("Id")
 );
 
-COMMENT ON TABLE ddd_loan.mt_doc_loanapplication
-  IS 'origin:Marten.IDocumentStore, Marten, Version=3.10.0.0, Culture=neutral, PublicKeyToken=null';
-
--- Index: ddd_loan.mt_doc_loanapplication_idx_number
-
--- DROP INDEX ddd_loan.mt_doc_loanapplication_idx_number;
-
-CREATE UNIQUE INDEX mt_doc_loanapplication_idx_number
-  ON ddd_loan.mt_doc_loanapplication
-  USING btree
-  (number COLLATE pg_catalog."default");
-
-
-CREATE TABLE ddd_loan.mt_doc_operator
+CREATE TABLE public."LoanApplications"
 (
-  id uuid NOT NULL,
-  data jsonb NOT NULL,
-  mt_last_modified timestamp with time zone DEFAULT transaction_timestamp(),
-  mt_version uuid NOT NULL DEFAULT (md5(((random())::text || (clock_timestamp())::text)))::uuid,
-  mt_dotnet_type character varying,
-  CONSTRAINT pk_mt_doc_operator PRIMARY KEY (id)
-)
-WITH (
-  OIDS=FALSE
+  "Number" character varying(50),
+  "Status" character varying(50),
+  "Score_Score" character varying(50),
+  "Score_Explanation" character varying(250),
+  "Customer_NationalIdentifier_Value" character varying(50),
+  "Customer_Name_First" character varying(50),
+  "Customer_Name_Last" character varying(50),
+  "Customer_Birthdate" date,
+  "Customer_MonthlyIncome_Amount" numeric(19,2),
+  "Customer_Address_Country" character varying(50),
+  "Customer_Address_ZipCode" character varying(50),
+  "Customer_Address_City" character varying(50),
+  "Customer_Address_Street" character varying(50),
+  "Property_Value_Amount" numeric(19,2),
+  "Property_Address_Country" character varying(50),
+  "Property_Address_ZipCode" character varying(50),
+  "Property_Address_City" character varying(50),
+  "Property_Address_Street" character varying(50),
+  "Loan_LoanAmount_Amount" numeric(19,2),
+  "Loan_LoanNumberOfYears" integer,
+  "Loan_InterestRate_Value" numeric(19,2),
+  "Decision_DecisionDate" date,
+  "Decision_DecisionBy_Value" uuid,
+  "Registration_RegistrationDate" date,
+  "Registration_RegisteredBy_Value" uuid,
+  "Id" uuid NOT NULL,
+  CONSTRAINT loan_applications_pk PRIMARY KEY ("Id")
 );
 
-COMMENT ON TABLE ddd_loan.mt_doc_operator
-  IS 'origin:Marten.IDocumentStore, Marten, Version=3.10.0.0, Culture=neutral, PublicKeyToken=null';
 
 
-CREATE OR REPLACE VIEW ddd_loan.loan_details_view AS 
- SELECT loan.data ->> 'Id'::text AS id,
-    loan.data ->> 'Number'::text AS number,
-    loan.data ->> 'Status'::text AS status,
-    (loan.data -> 'Score'::text) ->> 'Score'::text AS score,
-    ((loan.data -> 'Customer'::text) -> 'NationalIdentifier'::text) ->> 'Value'::text AS customernationalidentifier,
-    ((loan.data -> 'Customer'::text) -> 'Name'::text) ->> 'First'::text AS customerfirstname,
-    ((loan.data -> 'Customer'::text) -> 'Name'::text) ->> 'Last'::text AS customerlastname,
-    to_date((loan.data -> 'Customer'::text) ->> 'Birthdate'::text, 'YYYY-MM-DD'::text) AS customerbirthdate,
-    ((((loan.data -> 'Customer'::text) -> 'MonthlyIncome'::text) ->> 'Amount'::text))::numeric(19,2) AS customermonthlyincome,
-    ((loan.data -> 'Customer'::text) -> 'Address'::text) ->> 'Country'::text AS customeraddress_country,
-    ((loan.data -> 'Customer'::text) -> 'Address'::text) ->> 'ZipCode'::text AS customeraddress_zipcode,
-    ((loan.data -> 'Customer'::text) -> 'Address'::text) ->> 'City'::text AS customeraddress_city,
-    ((loan.data -> 'Customer'::text) -> 'Address'::text) ->> 'Street'::text AS customeraddress_street,
-    ((((loan.data -> 'Property'::text) -> 'Value'::text) ->> 'Amount'::text))::numeric(19,2) AS propertyvalue,
-    ((loan.data -> 'Property'::text) -> 'Address'::text) ->> 'Country'::text AS propertyaddress_country,
-    ((loan.data -> 'Property'::text) -> 'Address'::text) ->> 'ZipCode'::text AS propertyaddress_zipcode,
-    ((loan.data -> 'Property'::text) -> 'Address'::text) ->> 'City'::text AS propertyaddress_city,
-    ((loan.data -> 'Property'::text) -> 'Address'::text) ->> 'Street'::text AS propertyaddress_street,
-    ((((loan.data -> 'Loan'::text) -> 'LoanAmount'::text) ->> 'Amount'::text))::numeric(19,2) AS loanamount,
-    ((loan.data -> 'Loan'::text) ->> 'LoanNumberOfYears'::text)::integer AS loannumberofyears,
-    ((((loan.data -> 'Loan'::text) -> 'InterestRate'::text) ->> 'Value'::text))::numeric(19,2) AS interestrate,
-    to_date((loan.data -> 'Decision'::text) ->> 'DecisionDate'::text, 'YYYY-MM-DD'::text) AS decisiondate,
-    opdec.data ->> 'Login'::text AS decisionby,
-    opreg.data ->> 'Login'::text AS registeredby,
-    to_date((loan.data -> 'Registration'::text) ->> 'RegistrationDate'::text, 'YYYY-MM-DD'::text) AS registrationdate
-   FROM ddd_loan.mt_doc_loanapplication loan
-     LEFT JOIN ddd_loan.mt_doc_operator opreg ON (((loan.data -> 'Registration'::text) ->> 'RegisteredBy'::text)::uuid) = opreg.id
-     LEFT JOIN ddd_loan.mt_doc_operator opdec ON (((loan.data -> 'Decision'::text) ->> 'DecisionBy'::text)::uuid) = opdec.id;
+
+CREATE OR REPLACE VIEW loan_details_view AS 
+  SELECT 
+    loan."Id" id,
+    loan."Number" AS number,
+    loan."Status" AS status,
+    loan."Score_Score" AS score,
+    loan."Customer_NationalIdentifier_Value" AS customernationalidentifier,
+    loan."Customer_Name_First" AS customerfirstname,
+    loan."Customer_Name_Last" AS customerlastname,
+    loan."Customer_Birthdate" AS customerbirthdate,
+    loan."Customer_MonthlyIncome_Amount" AS customermonthlyincome,
+    loan."Customer_Address_Country" AS customeraddress_country,
+    loan."Customer_Address_ZipCode" AS customeraddress_zipcode,
+    loan."Customer_Address_City" AS customeraddress_city,
+    loan."Customer_Address_Street" AS customeraddress_street,
+    loan."Property_Value_Amount" AS propertyvalue,
+    loan."Property_Address_Country" AS propertyaddress_country,
+    loan."Property_Address_ZipCode" AS propertyaddress_zipcode,
+    loan."Property_Address_City" AS propertyaddress_city,
+    loan."Property_Address_Street" AS propertyaddress_street,
+    loan."Loan_LoanAmount_Amount" AS loanamount,
+    loan."Loan_LoanNumberOfYears" AS loannumberofyears,
+    loan."Loan_InterestRate_Value" AS interestrate,
+    loan."Decision_DecisionDate" AS decisiondate,
+    opdec."Login" AS decisionby,
+    opreg."Login" AS registeredby,
+    loan."Registration_RegistrationDate" AS registrationdate
+   FROM "LoanApplications" loan
+     LEFT JOIN "Operators" opreg ON loan."Registration_RegisteredBy_Value" = opreg."Id"
+     LEFT JOIN "Operators" opdec ON loan."Decision_DecisionBy_Value" = opreg."Id";

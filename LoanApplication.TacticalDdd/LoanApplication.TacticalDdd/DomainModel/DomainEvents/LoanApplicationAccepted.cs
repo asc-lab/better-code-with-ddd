@@ -9,7 +9,7 @@ namespace LoanApplication.TacticalDdd.DomainModel.DomainEvents
         public Guid LoanApplicationId { get; }
 
         public LoanApplicationAccepted(LoanApplication loanApplication)
-            : this(loanApplication.Id)
+            : this(loanApplication.Id.Value)
         {
         }
         

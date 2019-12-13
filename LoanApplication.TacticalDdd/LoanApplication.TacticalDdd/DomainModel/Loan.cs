@@ -30,6 +30,11 @@ namespace LoanApplication.TacticalDdd.DomainModel
             InterestRate = interestRate;
         }
 
+        //To Satisfy EF Core
+        protected Loan()
+        {
+        }
+
         public MonetaryAmount MonthlyInstallment()
         {
             var totalInstallments = LoanNumberOfYears * 12;

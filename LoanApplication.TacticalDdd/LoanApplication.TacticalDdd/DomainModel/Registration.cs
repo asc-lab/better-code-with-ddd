@@ -9,7 +9,7 @@ namespace LoanApplication.TacticalDdd.DomainModel
     {
         public DateTime RegistrationDate { get; }
         
-        public Guid RegisteredBy { get;  }
+        public OperatorId RegisteredBy { get;  }
 
         public Registration(DateTime registrationDate, Operator registeredBy)
             : this(registrationDate, registeredBy.Id)
@@ -17,10 +17,15 @@ namespace LoanApplication.TacticalDdd.DomainModel
         }
 
         [JsonConstructor]
-        public Registration(DateTime registrationDate, Guid registeredBy)
+        public Registration(DateTime registrationDate, OperatorId registeredBy)
         {
             RegistrationDate = registrationDate;
             RegisteredBy = registeredBy;
+        }
+        
+        //To satisfy EF Core
+        protected Registration()
+        {
         }
 
         protected override IEnumerable<object> GetAttributesToIncludeInEqualityCheck()

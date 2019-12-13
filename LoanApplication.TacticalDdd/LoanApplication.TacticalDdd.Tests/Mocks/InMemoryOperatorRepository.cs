@@ -8,7 +8,7 @@ namespace LoanApplication.TacticalDdd.Tests.Mocks
 {
     public class InMemoryOperatorRepository : IOperatorRepository
     {
-        private readonly ConcurrentDictionary<Guid, Operator> operators = new ConcurrentDictionary<Guid, Operator>();
+        private readonly ConcurrentDictionary<OperatorId, Operator> operators = new ConcurrentDictionary<OperatorId, Operator>();
 
         public InMemoryOperatorRepository(IEnumerable<Operator> initialData)
         {

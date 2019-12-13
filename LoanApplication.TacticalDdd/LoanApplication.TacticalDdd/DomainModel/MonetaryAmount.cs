@@ -9,6 +9,11 @@ namespace LoanApplication.TacticalDdd.DomainModel
         public decimal Amount { get; }
         
         public static readonly MonetaryAmount Zero = new MonetaryAmount(0M);
+        
+        //To satisfy EF Core
+        protected MonetaryAmount()
+        {
+        }
 
         public MonetaryAmount(decimal amount) => Amount = decimal.Round(amount,2,MidpointRounding.ToEven);
 

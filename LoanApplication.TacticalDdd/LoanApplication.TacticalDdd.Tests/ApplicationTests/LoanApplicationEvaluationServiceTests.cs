@@ -1,4 +1,3 @@
-using System.Threading;
 using LoanApplication.TacticalDdd.Application;
 using LoanApplication.TacticalDdd.DomainModel;
 using LoanApplication.TacticalDdd.Tests.Asserts;
@@ -8,10 +7,10 @@ using Xunit;
 
 namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
 {
-    public class EvaluateLoanApplicationTests
+    public class LoanApplicationEvaluationServiceTests
     {
         [Fact]
-        public async void EvaluateLoanApplication_ApplicationThatSatisfiesAllRules_IsEvaluatedGreen()
+        public void LoanApplicationEvaluationService_ApplicationThatSatisfiesAllRules_IsEvaluatedGreen()
         {
             var existingApplications = new InMemoryLoanApplicationRepository(new []
             {
@@ -23,18 +22,14 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
                     .Build()
             });
             
-            var handler = new EvaluateLoanApplication.Handler
+            var evaluationService = new LoanApplicationEvaluationService
             (
                 new UnitOfWorkMock(),
                 existingApplications,
                 new DebtorRegistryMock()
             );
             
-            await handler.Handle
-            (
-                new EvaluateLoanApplication.Command{ ApplicationNumber = "123"}, 
-                CancellationToken.None
-            );
+            evaluationService.EvaluateLoanApplication("123");
 
             LoanApplicationAssert
                 .That(existingApplications.WithNumber("123"))
@@ -42,7 +37,7 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
         }
         
         [Fact]
-        public async void EvaluateLoanApplication_ApplicationThatDoesNotSatisfyAllRules_IsEvaluatedRedAndRejected()
+        public void LoanApplicationEvaluationService_ApplicationThatDoesNotSatisfyAllRules_IsEvaluatedRedAndRejected()
         {
             var existingApplications = new InMemoryLoanApplicationRepository(new []
             {
@@ -54,18 +49,14 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
                     .Build()
             });
             
-            var handler = new EvaluateLoanApplication.Handler
+            var evaluationService = new LoanApplicationEvaluationService
             (
                 new UnitOfWorkMock(),
                 existingApplications,
                 new DebtorRegistryMock()
             );
             
-            await handler.Handle
-            (
-                new EvaluateLoanApplication.Command { ApplicationNumber = "123"},
-                CancellationToken.None
-            );
+            evaluationService.EvaluateLoanApplication("123");
 
             LoanApplicationAssert
                 .That(existingApplications.WithNumber("123"))

@@ -18,6 +18,11 @@ namespace LoanApplication.TacticalDdd.DomainModel
 
             Value = value;
         }
+        
+        //To satisfy EF Core
+        protected NationalIdentifier()
+        {
+        }
 
         protected override IEnumerable<object> GetAttributesToIncludeInEqualityCheck()
         {

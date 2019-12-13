@@ -30,6 +30,11 @@ namespace LoanApplication.TacticalDdd.DomainModel
             City = city;
             Street = street;
         }
+        
+        //To satisfy EF Core
+        protected Address()
+        {
+        }
 
         protected override IEnumerable<object> GetAttributesToIncludeInEqualityCheck()
         {

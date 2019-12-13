@@ -8,8 +8,8 @@ namespace LoanApplication.TacticalDdd.Tests.Mocks
 {
     public class InMemoryLoanApplicationRepository : ILoanApplicationRepository
     {
-        private readonly ConcurrentDictionary<Guid, DomainModel.LoanApplication> applications = 
-            new ConcurrentDictionary<Guid, DomainModel.LoanApplication>();
+        private readonly ConcurrentDictionary<LoanApplicationId, DomainModel.LoanApplication> applications = 
+            new ConcurrentDictionary<LoanApplicationId, DomainModel.LoanApplication>();
 
         public InMemoryLoanApplicationRepository(IEnumerable<DomainModel.LoanApplication> initialData)
         {

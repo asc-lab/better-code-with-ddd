@@ -18,6 +18,11 @@ namespace LoanApplication.TacticalDdd.DomainModel
             Value = value;
         }
         
+        //To satisfy EF Core
+        protected Percent()
+        {
+        }
+        
         public static bool operator >(Percent one, Percent two) => one.CompareTo(two)>0;
         
         public static bool operator <(Percent one, Percent two) => one.CompareTo(two)<0;

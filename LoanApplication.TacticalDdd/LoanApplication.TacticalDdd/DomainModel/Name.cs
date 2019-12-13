@@ -16,6 +16,12 @@ namespace LoanApplication.TacticalDdd.DomainModel
             First = first;
             Last = last;
         }
+
+        //To satisfy EF Core
+        protected Name()
+        {
+        }
+
         public string First { get; }
         public string Last { get; }
         
