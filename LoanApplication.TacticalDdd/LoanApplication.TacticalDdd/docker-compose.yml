@@ -1,0 +1,16 @@
+version: "2.4"
+services:
+  db:
+    image: postgres:12.0-alpine
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+      - ./SetupScripts/dbschema:/docker-entrypoint-initdb.d
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_DB: ddd_loans
+      POSTGRES_USER: lab_user
+      POSTGRES_PASSWORD: lab_pass
+
+volumes:
+  pg-data:
