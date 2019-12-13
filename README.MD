@@ -26,3 +26,13 @@ Repository contains two solutions. First solution presents typical layered appli
 
 Second solution presents usage of DDD tactical patterns like: value objects, entities, repositories, factories, domain services and application services to achieve better readability and expressiveness of the code. Applying DDD patterns together with ubiquitous language closes the gap between language spoken by experts and the team and language used in the code.
 Solution with DDD building blocks applied is located in the LoanApplication.TacticalDdd folder.
+
+
+## DDD Tactical Patterns Based Solution
+This  solution has two variants. On master branch you can find a version that uses [Marten](https://martendb.io/) to persist and load domain entities as JSON documents. Read side uses Dapper that executes SQL statements directly against database views.
+Second variant that lives on ef_cofe branch. This version uses Entity Framework Core to persist and load domain entities. Dapper is still used to handle query side of the application.
+
+DDD solution conatins three projects:
+* LoanApplication.TacticalDdd which contains all the domain logic, application layer which exposes domain logic to the external world, read model which handles queries and adapter that implement infrustructure needed to communicate with databases, message queues and external systems.
+* LoanApplication.TacticalDdd.Tests which contains unit tests for domain model and application layer
+* DebtorRegistryMock which contains mocked version of debtor registry system.
