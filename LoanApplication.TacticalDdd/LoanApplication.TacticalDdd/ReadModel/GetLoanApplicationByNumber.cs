@@ -10,7 +10,7 @@ using Npgsql;
 
 namespace LoanApplication.TacticalDdd.ReadModel
 {
-    public class GetLoanApplicationByNumber
+    public static class GetLoanApplicationByNumber
     {
         public class Query : IRequest<LoanApplicationDto>
         {

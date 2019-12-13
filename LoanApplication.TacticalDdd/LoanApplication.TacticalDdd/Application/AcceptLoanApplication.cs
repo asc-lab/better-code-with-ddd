@@ -8,7 +8,7 @@ using MediatR;
 
 namespace LoanApplication.TacticalDdd.Application
 {
-    public class AcceptLoanApplication
+    public static class AcceptLoanApplication
     {
         public class Command : IRequest<Unit>
         {

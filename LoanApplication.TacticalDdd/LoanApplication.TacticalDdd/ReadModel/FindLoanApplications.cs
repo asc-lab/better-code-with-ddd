@@ -11,7 +11,7 @@ using Npgsql;
 
 namespace LoanApplication.TacticalDdd.ReadModel
 {
-    public class FindLoanApplications
+    public static class FindLoanApplications
     {
         public class Query : IRequest<IEnumerable<LoanApplicationInfoDto>>
         {

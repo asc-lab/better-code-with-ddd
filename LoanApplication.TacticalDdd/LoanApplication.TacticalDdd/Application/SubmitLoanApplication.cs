@@ -9,7 +9,7 @@ using MediatR;
 
 namespace LoanApplication.TacticalDdd.Application
 {
-    public class SubmitLoanApplication
+    public static class SubmitLoanApplication
     {
         public class Command : IRequest<string>
         {
