@@ -21,3 +21,7 @@ The rules:
 
 
 ## Solutions
+
+Repository contains two solutions. First solution presents typical layered application building approach with anemic model and business logic scattered in services that reside in application layer. This solution also presents usage of generic repository and mixing read and write concerns in the same application service class. First solution is located in the LoanApplication.EnterpriseCake folder.
+
+Second solution presents usage of DDD tactical patterns like: value objects, entities, repositories, factories, domain services and application services to achieve better readability and expressiveness of the code. Applying DDD patterns together with ubiquitous language closes the gap between language spoken by experts and the team and language used in the code.
