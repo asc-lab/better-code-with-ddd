@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanApplication.Contracts", "LoanApplication.Contracts\LoanApplication.Contracts.csproj", "{4D293290-E4AA-4D9B-8476-0A5D1E87A944}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanApplication.BusinessLogic", "LoanApplication.BusinessLogic\LoanApplication.BusinessLogic.csproj", "{C4A1BAE8-CDB3-4084-A3A2-6A449D9F0B38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanApplication.DataAccess", "LoanApplication.DataAccess\LoanApplication.DataAccess.csproj", "{CA95B150-82B2-482A-96BC-01CA79689F30}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanApplication.Infrastructure", "LoanApplication.Infrastructure\LoanApplication.Infrastructure.csproj", "{75D28097-658B-4945-842D-6A647C4672ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanApplication.WebApi", "LoanApplication.WebApi\LoanApplication.WebApi.csproj", "{6E907BB7-13F2-48BC-8D01-89544EE7479C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebtorRegistryMock", "DebtorRegistryMock\DebtorRegistryMock.csproj", "{016E7E78-31A1-45A3-9C09-446A64BB038A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C7630968-27B0-4035-A387-2E941B00A5CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7630968-27B0-4035-A387-2E941B00A5CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7630968-27B0-4035-A387-2E941B00A5CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7630968-27B0-4035-A387-2E941B00A5CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D293290-E4AA-4D9B-8476-0A5D1E87A944}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D293290-E4AA-4D9B-8476-0A5D1E87A944}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D293290-E4AA-4D9B-8476-0A5D1E87A944}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D293290-E4AA-4D9B-8476-0A5D1E87A944}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4A1BAE8-CDB3-4084-A3A2-6A449D9F0B38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4A1BAE8-CDB3-4084-A3A2-6A449D9F0B38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4A1BAE8-CDB3-4084-A3A2-6A449D9F0B38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4A1BAE8-CDB3-4084-A3A2-6A449D9F0B38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA95B150-82B2-482A-96BC-01CA79689F30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA95B150-82B2-482A-96BC-01CA79689F30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA95B150-82B2-482A-96BC-01CA79689F30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA95B150-82B2-482A-96BC-01CA79689F30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75D28097-658B-4945-842D-6A647C4672ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75D28097-658B-4945-842D-6A647C4672ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75D28097-658B-4945-842D-6A647C4672ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75D28097-658B-4945-842D-6A647C4672ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E907BB7-13F2-48BC-8D01-89544EE7479C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E907BB7-13F2-48BC-8D01-89544EE7479C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E907BB7-13F2-48BC-8D01-89544EE7479C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E907BB7-13F2-48BC-8D01-89544EE7479C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{016E7E78-31A1-45A3-9C09-446A64BB038A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{016E7E78-31A1-45A3-9C09-446A64BB038A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{016E7E78-31A1-45A3-9C09-446A64BB038A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{016E7E78-31A1-45A3-9C09-446A64BB038A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
