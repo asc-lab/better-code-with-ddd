@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using LoanApplication.TacticalDdd.DomainModel.Ddd;
-using Newtonsoft.Json;
 
 namespace LoanApplication.TacticalDdd.DomainModel
 {
@@ -70,11 +69,7 @@ namespace LoanApplication.TacticalDdd.DomainModel
             Decision = new Decision(SysTime.Now(), decisionBy);
         }
         
-        /*
-         * Needed for Json serialization
-         */
-        [JsonConstructor]
-        protected LoanApplication(
+        private LoanApplication(
             string number, 
             LoanApplicationStatus status, 
             Customer customer, 
