@@ -21,7 +21,7 @@ namespace LoanApplication.TacticalDdd.Tests.Builders
 
         public Operator Build()
         {
-            return new Operator(login,login,login,login,new MonetaryAmount(competenceLevel));
+            return new Operator(new Login(login), new Password(login),new Name(login,login),new MonetaryAmount(competenceLevel));
         }
     }
 }

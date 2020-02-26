@@ -4,6 +4,6 @@ namespace LoanApplication.TacticalDdd.DomainModel
     {
         void Add(Operator @operator);
 
-        Operator WithLogin(string login);
+        Operator WithLogin(Login login);
     }
 }

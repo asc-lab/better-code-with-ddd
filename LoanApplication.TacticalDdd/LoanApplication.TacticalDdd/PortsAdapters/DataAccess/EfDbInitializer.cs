@@ -28,10 +28,9 @@ namespace LoanApplication.TacticalDdd.PortsAdapters.DataAccess
             {
                 dbCtx.Operators.Add(new Operator
                 (
-                    "admin",
-                    "admin",
-                    "admin",
-                    "admin",
+                    new Login("admin"),
+                    new Password("admin"),
+                    new Name("admin","admin"),
                     new MonetaryAmount(1_000_000M)
                 ));
 

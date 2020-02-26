@@ -23,7 +23,7 @@ namespace LoanApplication.TacticalDdd.Tests.Mocks
             operators[@operator.Id] = @operator;
         }
 
-        public Operator WithLogin(string login)
+        public Operator WithLogin(Login login)
         {
             return operators.Values.FirstOrDefault(o => o.Login == login);
         }

@@ -21,7 +21,7 @@ namespace LoanApplication.TacticalDdd.Application
         
         public string SubmitLoanApplication(LoanApplicationDto loanApplicationDto, ClaimsPrincipal principal)
         {
-            var user = operators.WithLogin(principal.Identity.Name);
+            var user = operators.WithLogin(Login.Of(principal.Identity.Name));
             
             var application = new DomainModel.LoanApplication
             (

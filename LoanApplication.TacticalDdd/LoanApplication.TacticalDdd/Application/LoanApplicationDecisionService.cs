@@ -27,7 +27,7 @@ namespace LoanApplication.TacticalDdd.Application
         public void RejectApplication(string applicationNumber, ClaimsPrincipal principal, string rejectionReason)
         {
             var loanApplication = loanApplications.WithNumber(LoanApplicationNumber.Of(applicationNumber));
-            var user = operators.WithLogin(principal.Identity.Name);
+            var user = operators.WithLogin(Login.Of(principal.Identity.Name));
             
             loanApplication.Reject(user);
             
@@ -39,7 +39,7 @@ namespace LoanApplication.TacticalDdd.Application
         public void AcceptApplication(string applicationNumber, ClaimsPrincipal principal)
         {
             var loanApplication = loanApplications.WithNumber(LoanApplicationNumber.Of(applicationNumber));
-            var user = operators.WithLogin(principal.Identity.Name);
+            var user = operators.WithLogin(Login.Of(principal.Identity.Name));
             
             loanApplication.Accept(user);
             

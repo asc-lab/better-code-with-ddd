@@ -17,7 +17,7 @@ namespace LoanApplication.TacticalDdd.PortsAdapters.DataAccess
             dbContext.Operators.Add(@operator);
         }
 
-        public Operator WithLogin(string login)
+        public Operator WithLogin(Login login)
         {
             return dbContext.Operators.FirstOrDefault(o => o.Login == login);
         }

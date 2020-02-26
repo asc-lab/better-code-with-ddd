@@ -109,7 +109,20 @@ namespace LoanApplication.TacticalDdd.PortsAdapters.DataAccess
                 .HasConversion(x=>x.Value, x=> new OperatorId(x));
             modelBuilder.Entity<DomainModel.Operator>()
                 .OwnsOne(o => o.CompetenceLevel, cl => cl.Property(c=>c.Amount));
-
+            modelBuilder.Entity<DomainModel.Operator>()
+                .Property(l => l.Login)
+                .HasConversion(x => x.Value, x => new Login(x));
+            modelBuilder.Entity<DomainModel.Operator>()
+                .Property(l => l.Password)
+                .HasConversion(x=>x.Value, x => new Password(x));
+            modelBuilder.Entity<DomainModel.Operator>()
+                .OwnsOne(
+                    l => l.Name,
+                    n =>
+                    {
+                        n.Property(o => o.First).HasColumnName("FirstName");
+                        n.Property(o => o.Last).HasColumnName("LastName");
+                    });
         }
     }
 }
