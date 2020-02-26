@@ -46,13 +46,13 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
             decisionService.AcceptApplication("123", OperatorIdentity("admin"));
             
             LoanApplicationAssert
-                .That(existingApplications.WithNumber("123"))
+                .That(existingApplications.WithNumber(LoanApplicationNumber.Of("123")))
                 .IsInStatus(LoanApplicationStatus.Accepted);
             
             DomainEventsAssert
                 .That(eventBus.Events)
                 .HasExpectedNumberOfEvents(1)
-                .ContainsEvent<LoanApplicationAccepted>(e => e.LoanApplicationId==existingApplications.WithNumber("123").Id.Value);
+                .ContainsEvent<LoanApplicationAccepted>(e => e.LoanApplicationId==existingApplications.WithNumber(LoanApplicationNumber.Of("123")).Id.Value);
         }
         
         [Fact]
@@ -88,13 +88,13 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
             decisionService.RejectApplication("123", OperatorIdentity("admin"), null);
             
             LoanApplicationAssert
-                .That(existingApplications.WithNumber("123"))
+                .That(existingApplications.WithNumber(LoanApplicationNumber.Of("123")))
                 .IsInStatus(LoanApplicationStatus.Rejected);
 
             DomainEventsAssert
                 .That(eventBus.Events)
                 .HasExpectedNumberOfEvents(1)
-                .ContainsEvent<LoanApplicationRejected>(e => e.LoanApplicationId==existingApplications.WithNumber("123").Id.Value);
+                .ContainsEvent<LoanApplicationRejected>(e => e.LoanApplicationId==existingApplications.WithNumber(LoanApplicationNumber.Of("123")).Id.Value);
         }
         
         private ClaimsPrincipal OperatorIdentity(string login)

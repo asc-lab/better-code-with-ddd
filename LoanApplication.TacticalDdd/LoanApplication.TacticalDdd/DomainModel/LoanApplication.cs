@@ -6,7 +6,7 @@ namespace LoanApplication.TacticalDdd.DomainModel
 {
     public class LoanApplication : Entity<LoanApplicationId>
     {
-        public string Number { get; }
+        public LoanApplicationNumber Number { get; }
         public LoanApplicationStatus Status { get; private set; }
         public ScoringResult Score { get; private set; }
         public Customer Customer { get; }
@@ -18,8 +18,9 @@ namespace LoanApplication.TacticalDdd.DomainModel
         public Registration Registration { get; }
 
         
-        public LoanApplication(string number, Customer customer, Property property, Loan loan, Operator registeredBy)
-            : this(number, LoanApplicationStatus.New, customer, property,loan, null,new Registration(SysTime.Now(), registeredBy), null)
+        public LoanApplication(LoanApplicationNumber number, Customer customer, Property property, Loan loan, Operator registeredBy)
+            : this(number, LoanApplicationStatus.New, customer, property,loan, 
+                null,new Registration(SysTime.Now(), registeredBy), null)
         {
         }
 
@@ -70,7 +71,7 @@ namespace LoanApplication.TacticalDdd.DomainModel
         }
         
         private LoanApplication(
-            string number, 
+            LoanApplicationNumber number, 
             LoanApplicationStatus status, 
             Customer customer, 
             Property property, 
@@ -79,8 +80,8 @@ namespace LoanApplication.TacticalDdd.DomainModel
             Registration registration,
             Decision decision)
         {
-            if (string.IsNullOrWhiteSpace(number))
-                throw new ArgumentException("Number cannot be null or empty");
+            if (number==null)
+                throw new ArgumentException("Number cannot be null");
             if (customer==null)
                 throw new ArgumentException("Customer cannot be null");
             if (property==null)
@@ -119,5 +120,29 @@ namespace LoanApplication.TacticalDdd.DomainModel
         protected LoanApplicationId()
         {
         }
+    }
+    
+    public class LoanApplicationNumber : ValueObject<LoanApplicationNumber>
+    {
+        public string Number { get; }
+        public LoanApplicationNumber(string number)
+        {
+            if (string.IsNullOrWhiteSpace(number))
+                throw new ArgumentException("Loan application number cannot be null or empty string");
+            Number = number;
+        }
+        
+        
+        public static LoanApplicationNumber NewNumber() => new LoanApplicationNumber(Guid.NewGuid().ToString());
+        
+        public static LoanApplicationNumber Of(string number) => new LoanApplicationNumber(number);
+
+        public static implicit operator string(LoanApplicationNumber number) => number.Number;
+        
+        protected override IEnumerable<object> GetAttributesToIncludeInEqualityCheck()
+        {
+            yield return Number;
+        }
+
     }
 }

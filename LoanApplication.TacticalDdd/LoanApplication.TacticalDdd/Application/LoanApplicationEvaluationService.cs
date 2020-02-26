@@ -19,7 +19,7 @@ namespace LoanApplication.TacticalDdd.Application
         }
         public void EvaluateLoanApplication(string applicationNumber)
         {
-            var loanApplication = loanApplications.WithNumber(applicationNumber);
+            var loanApplication = loanApplications.WithNumber(LoanApplicationNumber.Of(applicationNumber));
             
             loanApplication.Evaluate(scoringRulesFactory.DefaultSet);
             

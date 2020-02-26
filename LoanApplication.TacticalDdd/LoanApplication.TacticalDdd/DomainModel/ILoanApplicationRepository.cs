@@ -4,6 +4,6 @@ namespace LoanApplication.TacticalDdd.DomainModel
     {
         void Add(LoanApplication loanApplication);
 
-        LoanApplication WithNumber(string loanApplicationNumber);
+        LoanApplication WithNumber(LoanApplicationNumber loanApplicationNumber);
     }
 }

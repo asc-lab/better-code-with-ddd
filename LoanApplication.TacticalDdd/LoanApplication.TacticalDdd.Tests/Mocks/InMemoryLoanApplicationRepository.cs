@@ -23,7 +23,7 @@ namespace LoanApplication.TacticalDdd.Tests.Mocks
             applications[loanApplication.Id] = loanApplication;
         }
 
-        public DomainModel.LoanApplication WithNumber(string loanApplicationNumber)
+        public DomainModel.LoanApplication WithNumber(LoanApplicationNumber loanApplicationNumber)
         {
             return applications.Values.FirstOrDefault(a => a.Number == loanApplicationNumber);
         }

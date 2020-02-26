@@ -10,7 +10,7 @@ namespace LoanApplication.TacticalDdd.Tests.Builders
         private Customer customer = new CustomerBuilder().Build(); 
         private Property property = new PropertyBuilder().Build();
         private Loan loan = new LoanBuilder().Build();
-        private string applicationNumber = Guid.NewGuid().ToString();
+        private LoanApplicationNumber applicationNumber = new LoanApplicationNumber(Guid.NewGuid().ToString());
         private bool evaluated = false;
         private LoanApplicationStatus targetStatus = LoanApplicationStatus.New;
         private ScoringRulesFactory scoringRulesFactory = new ScoringRulesFactory(new DebtorRegistryMock());
@@ -41,7 +41,7 @@ namespace LoanApplication.TacticalDdd.Tests.Builders
         
         public LoanApplicationBuilder WithNumber(string number)
         {
-            applicationNumber = number;
+            applicationNumber = new LoanApplicationNumber(number);
             return this;
         }
         

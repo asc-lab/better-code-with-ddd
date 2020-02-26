@@ -25,7 +25,7 @@ namespace LoanApplication.TacticalDdd.Application
             
             var application = new DomainModel.LoanApplication
             (
-                Guid.NewGuid().ToString(),
+                LoanApplicationNumber.NewNumber(),
                 new Customer
                 (
                     new NationalIdentifier(loanApplicationDto.CustomerNationalIdentifier),

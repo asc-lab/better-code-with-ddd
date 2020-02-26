@@ -60,7 +60,7 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
                 .SubmitLoanApplication(validApplication, OperatorIdentity("admin"));
             
             Assert.False(string.IsNullOrWhiteSpace(newApplicationNumber));
-            var createdLoanApplication = existingApplications.WithNumber(newApplicationNumber);
+            var createdLoanApplication = existingApplications.WithNumber(LoanApplicationNumber.Of(newApplicationNumber));
             Assert.NotNull(createdLoanApplication);
         }
         

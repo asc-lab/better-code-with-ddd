@@ -29,10 +29,10 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
                 new DebtorRegistryMock()
             );
             
-            evaluationService.EvaluateLoanApplication("123");
+            evaluationService.EvaluateLoanApplication(LoanApplicationNumber.Of("123"));
 
             LoanApplicationAssert
-                .That(existingApplications.WithNumber("123"))
+                .That(existingApplications.WithNumber(LoanApplicationNumber.Of("123")))
                 .ScoreIs(ApplicationScore.Green);
         }
         
@@ -59,7 +59,7 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
             evaluationService.EvaluateLoanApplication("123");
 
             LoanApplicationAssert
-                .That(existingApplications.WithNumber("123"))
+                .That(existingApplications.WithNumber(LoanApplicationNumber.Of("123")))
                 .ScoreIs(ApplicationScore.Red)
                 .IsInStatus(LoanApplicationStatus.Rejected);
         }

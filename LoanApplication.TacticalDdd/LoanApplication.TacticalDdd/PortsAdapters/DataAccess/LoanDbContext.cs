@@ -17,7 +17,8 @@ namespace LoanApplication.TacticalDdd.PortsAdapters.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<DomainModel.LoanApplication>()
-                .Property(l => l.Number);
+                .Property(l => l.Number)
+                .HasConversion(x => x.Number, x => new LoanApplicationNumber(x));
             modelBuilder.Entity<DomainModel.LoanApplication>()
                 .HasKey(l => l.Id);
             modelBuilder.Entity<DomainModel.LoanApplication>()

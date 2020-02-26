@@ -17,7 +17,7 @@ namespace LoanApplication.TacticalDdd.PortsAdapters.DataAccess
             dbContext.LoanApplications.Add(loanApplication);
         }
 
-        public DomainModel.LoanApplication WithNumber(string loanApplicationNumber)
+        public DomainModel.LoanApplication WithNumber(LoanApplicationNumber loanApplicationNumber)
         {
             return dbContext.LoanApplications.FirstOrDefault(l => l.Number == loanApplicationNumber);
         }
