@@ -7,14 +7,15 @@ namespace LoanApplication.TacticalDdd.Application
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly ILoanApplicationRepository loanApplications;
-        private readonly IDebtorRegistry debtorRegistry;
         private readonly ScoringRulesFactory scoringRulesFactory;
         
-        public LoanApplicationEvaluationService(IUnitOfWork unitOfWork,ILoanApplicationRepository loanApplications, IDebtorRegistry debtorRegistry)
+        public LoanApplicationEvaluationService(
+            IUnitOfWork unitOfWork,
+            ILoanApplicationRepository loanApplications, 
+            IDebtorRegistry debtorRegistry)
         {
             this.unitOfWork = unitOfWork;
             this.loanApplications = loanApplications;
-            this.debtorRegistry = debtorRegistry;
             this.scoringRulesFactory = new ScoringRulesFactory(debtorRegistry);
         }
         public void EvaluateLoanApplication(string applicationNumber)

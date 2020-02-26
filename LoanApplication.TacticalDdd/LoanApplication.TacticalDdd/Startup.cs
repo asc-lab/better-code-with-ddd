@@ -38,7 +38,6 @@ namespace LoanApplication.TacticalDdd
             services.AddAuthentication("BasicAuthentication")
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
             
-            //services.AddMartenDbAdapters(Configuration.GetConnectionString("LoanDb"));
             services.AddEfDbAdapters(Configuration.GetConnectionString("LoanDb"));
             
             services.AddRabbitMqClient("host=localhost");
