@@ -36,9 +36,9 @@ Operator represents a bank employee responsible for processing loan application.
 <center>
 
 ![Domain model - aggregates](https://raw.githubusercontent.com/asc-lab/better-code-with-ddd/ef_core/LoanApplication.TacticalDdd/Docs/class_model_scoring_rules.png)
-Domain mode - aggregates
 
 </center>
+<center>Domain mode - aggregates</center>
 
 The core functionality of our serice is loan application evaluation. Each rule is implemented as a separate class that implements IScoringRule interface. A domain service is created to encapsulate rules and score calculation.
 
