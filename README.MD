@@ -40,7 +40,7 @@ Operator represents a bank employee responsible for processing loan application.
 </center>
 
 
-The core functionality of our serice is loan application evaluation. Each rule is implemented as a separate class that implements IScoringRule interface. A domain service is created to encapsulate rules and score calculation.
+The core functionality of our service is loan application evaluation. Each rule is implemented as a separate class that implements IScoringRule interface. A domain service is created to encapsulate rules and score calculation.
 
 <center>
 
