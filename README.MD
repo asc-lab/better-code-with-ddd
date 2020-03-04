@@ -26,3 +26,10 @@ Repository contains two solutions. First solution presents typical layered appli
 
 Second solution presents usage of DDD tactical patterns like: value objects, entities, repositories, factories, domain services and application services to achieve better readability and expressiveness of the code. Applying DDD patterns together with ubiquitous language closes the gap between language spoken by experts and the team and language used in the code.
 Solution with DDD building blocks applied is located in the LoanApplication.TacticalDdd folder.
+
+
+## Domain model
+Domain model is pretty simple. There are two aggregates LoanApplication and Operator. LoanApplication represenst, as you can guess, a loan application submitted for processsing.
+LoadApplication is composed of several value objects, which in turn are also composed from other value object.
+Operator represents a bank employee responsible for processing loan application.
+

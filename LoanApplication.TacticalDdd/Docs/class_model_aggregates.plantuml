@@ -1,0 +1,52 @@
+@startuml
+class Customer <<value object>> {
+    NationalIdentifier NationalIdentifier
+    Name Name
+    DateTime Birthdate
+    MonetaryAmount MonthlyIncome
+    Address Address
+    AgeInYears AgeInYearsAt(DateTime date)
+}
+
+class LoanApplication <<aggregate root>> {
+    LoanApplicationNumber Number
+    LoanApplicationStatus Status
+    ScoringResult Score
+    Decision Decision
+    Registration Registration
+
+    void Evaluate(ScoringRules rules)
+    void Accept(Operator decisionBy)
+    void Reject(Operator decisionBy)
+}
+
+class Loan <<value object>> {
+    MonetaryAmount LoanAmount
+    int LoanNumberOfYears
+    Percent InterestRate
+
+    MonetaryAmount MonthlyInstallment()
+    DateTime LastInstallmentsDate()
+}
+
+class Property <<value object>> {
+    MonetaryAmount Value
+    Address Address
+}
+
+class Operator <<aggregate root>> {
+    bool CanAccept(MonetaryAmount loanLoanAmount)
+}
+
+class ScoringRules <<domain service>>
+
+LoanApplication *--> Customer : customer
+
+
+LoanApplication *--> Loan : loan
+
+LoanApplication *--> Property : property
+
+LoanApplication ..> ScoringRules : <<uses>>
+ 
+@enduml

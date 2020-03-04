@@ -1,0 +1,35 @@
+@startuml
+class ScoringRules <<domain service>> {
+    ScoringResult Evaluate(LoanApplication loanApplication)
+}
+
+interface IScoringRule {
+    bool IsSatisfiedBy(LoanApplication loanApplication)
+    string Message()
+}
+
+class LoanAmountMustBeLowerThanPropertyValue
+
+class CustomerAgeAtTheDateOfLastInstallmentMustBeBelow65
+
+class InstallmentAmountMustBeLowerThen15PercentOfCustomerIncome
+
+class CustomerIsNotARegisteredDebtor
+
+interface IDebtorRegistry {
+    bool IsRegisteredDebtor(Customer customer)
+}
+
+ScoringRules *--> IScoringRule : rules
+
+IScoringRule <|-- LoanAmountMustBeLowerThanPropertyValue
+
+IScoringRule <|-- CustomerAgeAtTheDateOfLastInstallmentMustBeBelow65
+
+IScoringRule <|-- InstallmentAmountMustBeLowerThen15PercentOfCustomerIncome
+
+IScoringRule <|-- CustomerIsNotARegisteredDebtor
+
+CustomerIsNotARegisteredDebtor ..> IDebtorRegistry : <<uses>>
+
+@enduml
