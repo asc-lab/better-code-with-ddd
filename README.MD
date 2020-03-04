@@ -56,7 +56,7 @@ Diagram below presents dependencies between one sample application service and d
 
 <center>
 
-![Application services interaction with the domain model](https://github.com/asc-lab/better-code-with-ddd/blob/ef_core/LoanApplication.TacticalDdd/Docs/class_model_scoring_rules.png?raw=true)
-Domain mode - business rules
+![Application services interaction with the domain model](https://github.com/asc-lab/better-code-with-ddd/blob/ef_core/LoanApplication.TacticalDdd/Docs/class_model_decision_services.png?raw=true)
+Application services interaction with the domain model
 
 </center>
