@@ -2,8 +2,6 @@
 
 This repository contains code that accompanies presentation ASC LAB team gave at meetup about “Creating better code with Domain Driven Design”.
 
-Link to [presentation](https://docs.google.com/presentation/d/19lkUIcRJZAYUIzAiHJeWf9AGVfjmZLOHy0OEhFtXWPM/edit#slide=id.g5e710f8351_0_141)
-
 ## Business case
 
 Domain Driven Design tactical patterns are presented here using mortgage loan application processing use case.  Business wants to increase efficiency of mortgage loan application processing for individual customers by: automating application score calculation, combining information from online available sources, auto rejecting applications with RED score, having ability to relatively easy add new rules for scoring.
@@ -30,11 +28,23 @@ Second solution presents usage of DDD tactical patterns like: value objects, ent
 Solution with DDD building blocks applied is located in the LoanApplication.TacticalDdd folder.
 
 
-## DDD Tactical Patterns Based Solution
-This  solution has two variants. On master branch you can find a version that uses [Marten](https://martendb.io/) to persist and load domain entities as JSON documents. Read side uses Dapper that executes SQL statements directly against database views.
-Second variant that lives on ef_cofe branch. This version uses Entity Framework Core to persist and load domain entities. Dapper is still used to handle query side of the application.
+## Domain model
+Domain model is pretty simple. There are two aggregates LoanApplication and Operator. LoanApplication represenst, as you can guess, a loan application submitted for processsing.
+LoadApplication is composed of several value objects, which in turn are also composed from other value object.
+Operator represents a bank employee responsible for processing loan application.
 
-DDD solution conatins three projects:
-* LoanApplication.TacticalDdd which contains all the domain logic, application layer which exposes domain logic to the external world, read model which handles queries and adapter that implement infrustructure needed to communicate with databases, message queues and external systems.
-* LoanApplication.TacticalDdd.Tests which contains unit tests for domain model and application layer
-* DebtorRegistryMock which contains mocked version of debtor registry system.
+<center>
+
+![Domain model - aggregates](https://raw.githubusercontent.com/asc-lab/better-code-with-ddd/ef_core/LoanApplication.TacticalDdd/Docs/class_model_scoring_rules.png)
+Domain mode - aggregates
+
+</center>
+
+The core functionality of our serice is loan application evaluation. Each rule is implemented as a separate class that implements IScoringRule interface. A domain service is created to encapsulate rules and score calculation.
+
+<center>
+
+![Domain model - rules](https://github.com/asc-lab/better-code-with-ddd/blob/ef_core/LoanApplication.TacticalDdd/Docs/class_model_scoring_rules.png?raw=true)
+Domain mode - business rules
+
+</center>
