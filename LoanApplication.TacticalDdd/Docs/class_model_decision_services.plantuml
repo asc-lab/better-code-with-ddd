@@ -1,0 +1,42 @@
+@startuml
+class LoanApplicationDecisionService <<application service>> {
+    void RejectApplication(string applicationNumber, ClaimsPrincipal principal, string rejectionReason)
+    void AcceptApplication(string applicationNumber, ClaimsPrincipal principal)
+}
+
+
+interface ILoanApplicationRepository <<repository>> {
+    void Add(LoanApplication loanApplication)
+    LoanApplication WithNumber(LoanApplicationNumber loanApplicationNumber)
+}
+
+interface IOperatorRepository <<repository>>{
+    void Add(Operator @operator)
+    Operator WithLogin(Login login)
+}
+
+interface IEventPublisher {
+    void Publish(DomainEvent @event)
+}
+
+
+LoanApplicationDecisionService ..> ILoanApplicationRepository : <<uses>>
+
+LoanApplicationDecisionService ..> IOperatorRepository : <<uses>>
+
+LoanApplicationDecisionService ..> IEventPublisher : <<uses>>
+
+
+class EfLoanApplicationRepository 
+
+class EfOperatorRepository
+
+class RabbitMqEventPublisher
+ 
+EfLoanApplicationRepository --|> ILoanApplicationRepository
+
+EfOperatorRepository --|> IOperatorRepository
+
+RabbitMqEventPublisher --|> IEventPublisher
+
+@enduml
