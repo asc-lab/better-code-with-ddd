@@ -36,6 +36,7 @@ Operator represents a bank employee responsible for processing loan application.
 <center>
 
 ![Domain model - aggregates](https://raw.githubusercontent.com/asc-lab/better-code-with-ddd/ef_core/LoanApplication.TacticalDdd/Docs/class_model_scoring_rules.png)
+Domain mode - aggregates
 
 </center>
 
@@ -45,5 +46,17 @@ The core functionality of our service is loan application evaluation. Each rule 
 <center>
 
 ![Domain model - rules](https://github.com/asc-lab/better-code-with-ddd/blob/ef_core/LoanApplication.TacticalDdd/Docs/class_model_scoring_rules.png?raw=true)
+Domain mode - business rules
+
+</center>
+
+Application services are clients of domain model. We have three application services one that is responsible for loan application submission, second that evaluates applications and third one that lets users accept or reject application.
+Diagram below presents dependencies between one sample application service and domain model parts. It also presents dependency between infrastructure layer and domain model, where infrastructure layer provides implementations for interfaces defined as part of the domain model (for example for repositories).  
+
+
+<center>
+
+![Application services interaction with the domain model](https://github.com/asc-lab/better-code-with-ddd/blob/ef_core/LoanApplication.TacticalDdd/Docs/class_model_scoring_rules.png?raw=true)
+Domain mode - business rules
 
 </center>
