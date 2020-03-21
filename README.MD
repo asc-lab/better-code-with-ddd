@@ -2,6 +2,8 @@
 
 This repository contains code that accompanies presentation ASC LAB team gave at meetup about “Creating better code with Domain Driven Design”.
 
+Check out our article on [Altkom Software & Consulting blog](https://altkomsoftware.pl/en/blog/create-better-code-using-domain-driven-design/).
+
 ## Business case
 
 Domain Driven Design tactical patterns are presented here using mortgage loan application processing use case.  Business wants to increase efficiency of mortgage loan application processing for individual customers by: automating application score calculation, combining information from online available sources, auto rejecting applications with RED score, having ability to relatively easy add new rules for scoring.
