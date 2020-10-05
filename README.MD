@@ -37,7 +37,7 @@ Operator represents a bank employee responsible for processing loan application.
 
 <center>
 
-![Domain model - aggregates](https://raw.githubusercontent.com/asc-lab/better-code-with-ddd/ef_core/LoanApplication.TacticalDdd/Docs/class_model_scoring_rules.png)
+![Domain model - aggregates](https://raw.githubusercontent.com/asc-lab/better-code-with-ddd/ef_core/LoanApplication.TacticalDdd/Docs/class_model_aggregates.png)
 Domain mode - aggregates
 
 </center>
