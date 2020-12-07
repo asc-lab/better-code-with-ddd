@@ -1,4 +1,5 @@
 using System;
+using FluentAssertions;
 using LoanApplication.TacticalDdd.DomainModel;
 using LoanApplication.TacticalDdd.Tests.Asserts;
 using LoanApplication.TacticalDdd.Tests.Builders;
@@ -20,8 +21,10 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
                 .WithProperty(prop => prop.WithValue(250_000M))
                 .Build();
 
-            LoanApplicationAssert.That(application)
-                .IsInStatus(LoanApplicationStatus.New)
+            application
+                .Should()
+                .BeInStatus(LoanApplicationStatus.New)
+                .And
                 .ScoreIsNull();
         }
 
@@ -36,8 +39,10 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
             
             application.Evaluate(scoringRulesFactory.DefaultSet);
 
-            LoanApplicationAssert.That(application)
-                .IsInStatus(LoanApplicationStatus.New)
+            application
+                .Should()
+                .BeInStatus(LoanApplicationStatus.New)
+                .And
                 .ScoreIs(ApplicationScore.Green);
         }
         
@@ -52,9 +57,10 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
             
             application.Evaluate(scoringRulesFactory.DefaultSet);
 
-            LoanApplicationAssert.That(application)
-                .IsInStatus(LoanApplicationStatus.Rejected)
-                .ScoreIs(ApplicationScore.Red);
+            application
+                .Should()
+                .BeInStatus(LoanApplicationStatus.Rejected)
+                .And.ScoreIs(ApplicationScore.Red);
         }
 
         [Fact]
@@ -74,9 +80,10 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
             
             application.Accept(user);
 
-            LoanApplicationAssert.That(application)
-                .IsInStatus(LoanApplicationStatus.Accepted)
-                .ScoreIs(ApplicationScore.Green);
+            application
+                .Should()
+                .BeInStatus(LoanApplicationStatus.Accepted)
+                .And.ScoreIs(ApplicationScore.Green);
         }
         
         [Fact]
@@ -93,9 +100,13 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
                 .WithLogin("admin")
                 .WithCompetenceLevel(100_000M)
                 .Build();
+
+            Action act = () => application.Accept(user);
             
-            var ex = Assert.Throws<ApplicationException>(()=>application.Accept(user));
-            Assert.Equal("Operator does not have required competence level to accept application", ex.Message);
+            act
+                .Should()
+                .Throw<ApplicationException>()
+                .WithMessage("Operator does not have required competence level to accept application");
         }
         
         [Fact]
@@ -111,9 +122,10 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
             var user = new OperatorBuilder().WithLogin("admin").Build();
             application.Reject(user);
 
-            LoanApplicationAssert.That(application)
-                .IsInStatus(LoanApplicationStatus.Rejected)
-                .ScoreIs(ApplicationScore.Green);
+            application
+                .Should()
+                .BeInStatus(LoanApplicationStatus.Rejected)
+                .And.ScoreIs(ApplicationScore.Green);
         }
 
         [Fact]
@@ -127,8 +139,13 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
                 .Build();
             
             var user = new OperatorBuilder().WithLogin("admin").Build();
-            var ex = Assert.Throws<ApplicationException>(() => application.Accept(user));
-            Assert.Equal("Cannot accept application before scoring", ex.Message);
+
+            Action act = () => application.Accept(user);
+            
+            act
+                .Should()
+                .Throw<ApplicationException>()
+                .WithMessage("Cannot accept application before scoring");
         }
         
         [Fact]
@@ -144,9 +161,10 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
             var user = new OperatorBuilder().WithLogin("admin").Build();
             application.Reject(user);
 
-            LoanApplicationAssert.That(application)
-                .IsInStatus(LoanApplicationStatus.Rejected)
-                .ScoreIsNull();
+            application
+                .Should()
+                .BeInStatus(LoanApplicationStatus.Rejected)
+                .And.ScoreIsNull();
         }
 
         [Fact]
@@ -161,8 +179,13 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
                 .Build();
             
             var user = new OperatorBuilder().WithLogin("admin").Build();
-            var ex = Assert.Throws<ApplicationException>(() => application.Reject(user));
-            Assert.Equal("Cannot reject application that is already accepted or rejected", ex.Message);
+
+            Action act = () => application.Reject(user);
+            
+            act
+                .Should()
+                .Throw<ApplicationException>()
+                .WithMessage("Cannot reject application that is already accepted or rejected");
         }
         
         [Fact]
@@ -177,8 +200,13 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
                 .Build();
             
             var user = new OperatorBuilder().WithLogin("admin").Build();
-            var ex = Assert.Throws<ApplicationException>(() => application.Accept(user));
-            Assert.Equal("Cannot accept application that is already accepted or rejected", ex.Message);
+
+            Action act = () => application.Accept(user);
+            
+            act
+                .Should()
+                .Throw<ApplicationException>()
+                .WithMessage("Cannot accept application that is already accepted or rejected");
         }
     }
 }

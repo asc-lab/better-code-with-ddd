@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using FluentAssertions;
 using LoanApplication.TacticalDdd.Application;
 using LoanApplication.TacticalDdd.Application.Api;
 using LoanApplication.TacticalDdd.DomainModel;
@@ -59,9 +60,9 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
             var newApplicationNumber = loanApplicationSubmissionService
                 .SubmitLoanApplication(validApplication, OperatorIdentity("admin"));
             
-            Assert.False(string.IsNullOrWhiteSpace(newApplicationNumber));
-            var createdLoanApplication = existingApplications.WithNumber(LoanApplicationNumber.Of(newApplicationNumber));
-            Assert.NotNull(createdLoanApplication);
+            newApplicationNumber.Should().NotBeEmpty();
+            var createdLoanApplication = existingApplications.WithNumber(new LoanApplicationNumber(newApplicationNumber));
+            createdLoanApplication.Should().NotBeNull();
         }
         
         [Fact]
@@ -108,10 +109,13 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
                 InterestRate = 1.1M
             };
 
-            var ex = Assert.Throws<ArgumentException>(() => loanApplicationSubmissionService
-                .SubmitLoanApplication(validApplication, OperatorIdentity("admin")));
-            
-            Assert.Equal("National Identifier must be 11 chars long", ex.Message);
+            Action act = () => loanApplicationSubmissionService
+                .SubmitLoanApplication(validApplication, OperatorIdentity("admin"));
+
+            act
+                .Should()
+                .Throw<ArgumentException>()
+                .WithMessage("National Identifier must be 11 chars long");
         }
 
         private ClaimsPrincipal OperatorIdentity(string login)

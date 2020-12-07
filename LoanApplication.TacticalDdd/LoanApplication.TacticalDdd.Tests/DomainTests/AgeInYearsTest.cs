@@ -1,4 +1,5 @@
 using System;
+using FluentAssertions;
 using LoanApplication.TacticalDdd.DomainModel;
 using Xunit;
 
@@ -10,8 +11,8 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         public void AgeInYears_PersonBorn1974_AfterBirthdateIn2019_45()
         {
             var age = AgeInYears.Between(new DateTime(1974, 6, 26), new DateTime(2019, 11, 28));
-            
-            Assert.Equal(45.Years(), age);
+           
+            age.Should().Be(45.Years());
         }
         
         [Fact]
@@ -19,7 +20,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         {
             var age = AgeInYears.Between(new DateTime(1974, 6, 26), new DateTime(2019, 5, 28));
             
-            Assert.Equal(45.Years(), age);
+            age.Should().Be(45.Years());
         }
     }
 }

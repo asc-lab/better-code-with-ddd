@@ -1,3 +1,4 @@
+using FluentAssertions;
 using LoanApplication.TacticalDdd.DomainModel;
 using Xunit;
 
@@ -31,7 +32,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
                 )
             );
             
-            Assert.True(propOne.Equals(propTwo));
+            propOne.Equals(propTwo).Should().BeTrue();
         }
         
         [Fact]
@@ -60,7 +61,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
                 )
             );
             
-            Assert.False(propOne.Equals(propTwo));
+            propOne.Equals(propTwo).Should().BeFalse();
         }
         
         [Fact]
@@ -89,7 +90,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
                 )
             );
             
-            Assert.False(propOne.Equals(propTwo));
+            propOne.Equals(propTwo).Should().BeFalse();
         }
     }
 }

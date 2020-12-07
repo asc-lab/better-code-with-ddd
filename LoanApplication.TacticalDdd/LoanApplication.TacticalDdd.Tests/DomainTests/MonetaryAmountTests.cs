@@ -1,3 +1,4 @@
+using FluentAssertions;
 using LoanApplication.TacticalDdd.DomainModel;
 using Xunit;
 
@@ -10,9 +11,9 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         {
             var one = new MonetaryAmount(10M);
             var two = new MonetaryAmount(10M);
-            
-            Assert.Equal(one,two);
-            Assert.True(one == two);
+
+            one.Equals(two).Should().BeTrue();
+            (one == two).Should().BeTrue();
         }
         
         [Fact]
@@ -21,8 +22,8 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
             var one = new MonetaryAmount(10M);
             var two = new MonetaryAmount(11M);
             
-            Assert.NotEqual(one,two);
-            Assert.True(one != two);
+            one.Equals(two).Should().BeFalse();
+            (one != two).Should().BeTrue();
         }
         
         [Fact]
@@ -31,8 +32,8 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
             var one = new MonetaryAmount(10M);
             var two = new MonetaryAmount(11M);
             
-            Assert.True(one < two);
-            Assert.False(one > two);
+            (one < two).Should().BeTrue();
+            (one > two).Should().BeFalse();
         }
 
         [Fact]
@@ -43,7 +44,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
 
             var sum = one + two;
             
-            Assert.Equal(sum, new MonetaryAmount(21M));
+            sum.Should().Be(new MonetaryAmount(21M));
         }
         
         [Fact]
@@ -54,7 +55,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
 
             var diff = one - two;
             
-            Assert.Equal(diff, new MonetaryAmount(5M));
+            diff.Should().Be(new MonetaryAmount(5M));
         }
         
         [Fact]
@@ -65,7 +66,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
 
             var percentOfOne = one * tenPercent;
             
-            Assert.Equal(percentOfOne, new MonetaryAmount(1M));
+            percentOfOne.Should().Be(new MonetaryAmount(1M));
         }
     }
 }

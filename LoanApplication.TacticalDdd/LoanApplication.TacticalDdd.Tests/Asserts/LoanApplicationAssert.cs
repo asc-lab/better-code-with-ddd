@@ -1,36 +1,42 @@
+using FluentAssertions;
+using FluentAssertions.Primitives;
 using LoanApplication.TacticalDdd.DomainModel;
 using Xunit;
 
 namespace LoanApplication.TacticalDdd.Tests.Asserts
 {
-    public class LoanApplicationAssert
+    public static class LoanApplicationAssertExtension
     {
-        private readonly DomainModel.LoanApplication loanApplication;
-
-        public LoanApplicationAssert(DomainModel.LoanApplication loanApplication)
-        {
-            this.loanApplication = loanApplication;
-        }
-
-        public static LoanApplicationAssert That(DomainModel.LoanApplication loanApplication) 
+        public static LoanApplicationAssert Should(this DomainModel.LoanApplication loanApplication) 
             => new LoanApplicationAssert(loanApplication);
+    }
 
-        public LoanApplicationAssert IsInStatus(LoanApplicationStatus expectedStatus)
+    public class LoanApplicationAssert : ReferenceTypeAssertions<DomainModel.LoanApplication,LoanApplicationAssert>
+    {
+        public LoanApplicationAssert(DomainModel.LoanApplication loanApplication)
+            : base(loanApplication)
         {
-            Assert.Equal(expectedStatus, loanApplication.Status);
-            return this;
+            
         }
         
-        public LoanApplicationAssert ScoreIsNull()
+        public AndConstraint<LoanApplicationAssert> BeInStatus(LoanApplicationStatus expectedStatus)
         {
-            Assert.Null(loanApplication.Score);
-            return this;
+            Subject.Status.Should().Be(expectedStatus);
+            return new AndConstraint<LoanApplicationAssert>(this);
         }
         
-        public LoanApplicationAssert ScoreIs(ApplicationScore expectedScore)
+        public AndConstraint<LoanApplicationAssert> ScoreIsNull()
         {
-            Assert.Equal(expectedScore, loanApplication.Score?.Score);
-            return this;
+            Subject.Score.Should().BeNull();
+            return new AndConstraint<LoanApplicationAssert>(this);
         }
+        
+        public AndConstraint<LoanApplicationAssert> ScoreIs(ApplicationScore expectedScore)
+        {
+            Subject.Score?.Score.Should().Be(expectedScore);
+            return new AndConstraint<LoanApplicationAssert>(this);
+        }
+
+        protected override string Identifier => "LoanApplicationAssert";
     }
 }

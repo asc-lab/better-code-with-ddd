@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using FluentAssertions;
 using LoanApplication.TacticalDdd.Application;
 using LoanApplication.TacticalDdd.DomainModel;
 using LoanApplication.TacticalDdd.DomainModel.DomainEvents;
@@ -45,14 +46,14 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
             
             decisionService.AcceptApplication("123", OperatorIdentity("admin"));
             
-            LoanApplicationAssert
-                .That(existingApplications.WithNumber(LoanApplicationNumber.Of("123")))
-                .IsInStatus(LoanApplicationStatus.Accepted);
+            existingApplications.WithNumber(new LoanApplicationNumber("123"))
+                .Should()
+                .BeInStatus(LoanApplicationStatus.Accepted);
             
-            DomainEventsAssert
-                .That(eventBus.Events)
-                .HasExpectedNumberOfEvents(1)
-                .ContainsEvent<LoanApplicationAccepted>(e => e.LoanApplicationId==existingApplications.WithNumber(LoanApplicationNumber.Of("123")).Id.Value);
+            eventBus.Events
+                .Should()
+                .HaveExpectedNumberOfEvents(1)
+                .And.ContainEvent<LoanApplicationAccepted>(e => e.LoanApplicationId==existingApplications.WithNumber(new LoanApplicationNumber("123")).Id.Value);
         }
         
         [Fact]
@@ -87,14 +88,14 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
             
             decisionService.RejectApplication("123", OperatorIdentity("admin"), null);
             
-            LoanApplicationAssert
-                .That(existingApplications.WithNumber(LoanApplicationNumber.Of("123")))
-                .IsInStatus(LoanApplicationStatus.Rejected);
+            existingApplications.WithNumber(new LoanApplicationNumber("123"))
+                .Should()
+                .BeInStatus(LoanApplicationStatus.Rejected);
 
-            DomainEventsAssert
-                .That(eventBus.Events)
-                .HasExpectedNumberOfEvents(1)
-                .ContainsEvent<LoanApplicationRejected>(e => e.LoanApplicationId==existingApplications.WithNumber(LoanApplicationNumber.Of("123")).Id.Value);
+            eventBus.Events
+                .Should()
+                .HaveExpectedNumberOfEvents(1)
+                .And.ContainEvent<LoanApplicationRejected>(e => e.LoanApplicationId==existingApplications.WithNumber(new LoanApplicationNumber("123")).Id.Value);
         }
         
         private ClaimsPrincipal OperatorIdentity(string login)

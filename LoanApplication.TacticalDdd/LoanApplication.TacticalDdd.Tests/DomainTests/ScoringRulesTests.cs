@@ -1,3 +1,4 @@
+using FluentAssertions;
 using LoanApplication.TacticalDdd.DomainModel;
 using LoanApplication.TacticalDdd.Tests.Builders;
 using LoanApplication.TacticalDdd.Tests.Mocks;
@@ -20,7 +21,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
             var rule = new LoanAmountMustBeLowerThanPropertyValue();
             var ruleCheckResult = rule.IsSatisfiedBy(application);
             
-            Assert.True(ruleCheckResult);
+            ruleCheckResult.Should().BeTrue();
         }
         
         [Fact]
@@ -34,7 +35,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
             var rule = new LoanAmountMustBeLowerThanPropertyValue();
             var ruleCheckResult = rule.IsSatisfiedBy(application);
             
-            Assert.False(ruleCheckResult);
+            ruleCheckResult.Should().BeFalse();
         }
 
         [Fact]
@@ -48,7 +49,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
             var rule = new CustomerAgeAtTheDateOfLastInstallmentMustBeBelow65();
             var ruleCheckResult = rule.IsSatisfiedBy(application);
             
-            Assert.True(ruleCheckResult);
+            ruleCheckResult.Should().BeTrue();
         }
         
         [Fact]
@@ -62,7 +63,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
             var rule = new CustomerAgeAtTheDateOfLastInstallmentMustBeBelow65();
             var ruleCheckResult = rule.IsSatisfiedBy(application);
             
-            Assert.False(ruleCheckResult);
+            ruleCheckResult.Should().BeFalse();
         }
 
         [Fact]
@@ -76,7 +77,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
             var rule = new InstallmentAmountMustBeLowerThen15PercentOfCustomerIncome();
             var ruleCheckResult = rule.IsSatisfiedBy(application);
             
-            Assert.True(ruleCheckResult);
+            ruleCheckResult.Should().BeTrue();
         }
         
         [Fact]
@@ -90,7 +91,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
             var rule = new InstallmentAmountMustBeLowerThen15PercentOfCustomerIncome();
             var ruleCheckResult = rule.IsSatisfiedBy(application);
             
-            Assert.False(ruleCheckResult);
+            ruleCheckResult.Should().BeFalse();
         }
 
         [Fact]
@@ -103,7 +104,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
             var rule = new CustomerIsNotARegisteredDebtor(new DebtorRegistryMock());
             var ruleCheckResult = rule.IsSatisfiedBy(application);
             
-            Assert.True(ruleCheckResult);
+            ruleCheckResult.Should().BeTrue();
         }
         
         [Fact]
@@ -116,7 +117,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
             var rule = new CustomerIsNotARegisteredDebtor(new DebtorRegistryMock());
             var ruleCheckResult = rule.IsSatisfiedBy(application);
             
-            Assert.False(ruleCheckResult);
+            ruleCheckResult.Should().BeFalse();
         }
         
         [Fact]
@@ -129,7 +130,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
 
             var score = scoringRulesFactory.DefaultSet.Evaluate(application);
             
-            Assert.Equal(ApplicationScore.Red, score.Score);
+            score.Score.Should().Be(ApplicationScore.Red);
         }
 
         [Fact]
@@ -143,7 +144,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
 
             var score = scoringRulesFactory.DefaultSet.Evaluate(application);
             
-            Assert.Equal(ApplicationScore.Green, score.Score);    
+            score.Score.Should().Be(ApplicationScore.Green);    
         }
     }
 }

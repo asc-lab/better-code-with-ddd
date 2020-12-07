@@ -1,35 +1,42 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentAssertions;
+using FluentAssertions.Collections;
+using FluentAssertions.Execution;
 using LoanApplication.TacticalDdd.DomainModel.Ddd;
-using Xunit;
 
 namespace LoanApplication.TacticalDdd.Tests.Asserts
 {
-    public class DomainEventsAssert
+    public static class DomainEventsAssertExtension
     {
-        private readonly IEnumerable<DomainEvent> events;
-
-        public DomainEventsAssert(IEnumerable<DomainEvent> events)
-        {
-            this.events = events;
-        }
-
-        public static DomainEventsAssert That(IEnumerable<DomainEvent> events)
+        public static DomainEventsAssert Should(this IEnumerable<DomainEvent> events)
         {
             return new DomainEventsAssert(events);
         }
-        
-        public DomainEventsAssert HasExpectedNumberOfEvents(int expectedNumberOfEvents)
+    }
+    
+    public class DomainEventsAssert : CollectionAssertions<IEnumerable<DomainEvent>,DomainEventsAssert>
+    {
+        public DomainEventsAssert(IEnumerable<DomainEvent> events) : base(events)
         {
-            Assert.Equal(expectedNumberOfEvents, events.Count());
-            return this;
         }
 
-        public DomainEventsAssert ContainsEvent<T>(Predicate<T> matcher) where T : DomainEvent
+        public AndConstraint<DomainEventsAssert> HaveExpectedNumberOfEvents(int expectedNumberOfEvents)
         {
-            Assert.Contains(events, e => e.GetType() == typeof(T) && matcher((T)e));
-            return this;
+            Subject.Count().Should().Be(expectedNumberOfEvents);
+            return new AndConstraint<DomainEventsAssert>(this);
         }
+
+        public AndConstraint<DomainEventsAssert> ContainEvent<T>(Predicate<T> matcher) where T : DomainEvent
+        {
+            Execute.Assertion
+                .ForCondition(Subject.Any(e => e.GetType() == typeof(T) && matcher((T) e)))
+                .FailWith("List of events does not contain any that meets criteria");
+            
+            return new AndConstraint<DomainEventsAssert>(this);
+        }
+
+        protected override string Identifier => "DomainEventsAssert";
     }
 }

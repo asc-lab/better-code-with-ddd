@@ -1,3 +1,4 @@
+using FluentAssertions;
 using LoanApplication.TacticalDdd.DomainModel;
 using LoanApplication.TacticalDdd.Tests.Builders;
 using Xunit;
@@ -17,7 +18,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
 
             var installment = loan.MonthlyInstallment(); 
             
-            Assert.Equal(new MonetaryAmount(12_587.78M), installment);
+            installment.Should().Be(new MonetaryAmount(12_587.78M));
         }
     }
 }
