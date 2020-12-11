@@ -4,6 +4,8 @@ using LoanApplication.TacticalDdd.Tests.Asserts;
 using LoanApplication.TacticalDdd.Tests.Builders;
 using LoanApplication.TacticalDdd.Tests.Mocks;
 using Xunit;
+using static LoanApplication.TacticalDdd.Tests.Builders.LoanApplicationBuilder;
+using static LoanApplication.TacticalDdd.Tests.Builders.OperatorBuilder;
 
 namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
 {
@@ -14,7 +16,7 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
         {
             var existingApplications = new InMemoryLoanApplicationRepository(new []
             {
-                new LoanApplicationBuilder()
+                GivenLoanApplication()
                     .WithNumber("123")
                     .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
                     .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
@@ -41,7 +43,7 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
         {
             var existingApplications = new InMemoryLoanApplicationRepository(new []
             {
-                new LoanApplicationBuilder()
+                GivenLoanApplication()
                     .WithNumber("123")
                     .WithCustomer(customer => customer.WithAge(55).WithIncome(15_000M))
                     .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))

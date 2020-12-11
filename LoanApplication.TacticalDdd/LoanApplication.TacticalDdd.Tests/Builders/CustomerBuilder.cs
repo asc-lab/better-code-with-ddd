@@ -1,3 +1,4 @@
+using System;
 using LoanApplication.TacticalDdd.DomainModel;
 
 namespace LoanApplication.TacticalDdd.Tests.Builders
@@ -6,9 +7,11 @@ namespace LoanApplication.TacticalDdd.Tests.Builders
     {
         private Name name = new Name("Jan","B");
         private NationalIdentifier nationalIdentifier = new NationalIdentifier("11111111111");
-        private int age;
-        private MonetaryAmount income = new MonetaryAmount(4_500M);
+        private MonetaryAmount income = new MonetaryAmount(15_500M);
         private Address address = new Address("PL","00-001","Warsaw","Zielona 6");
+        private DateTime birthDate = SysTime.Now().AddYears(-25);
+
+        public static CustomerBuilder GivenCustomer() => new CustomerBuilder();
         
         public CustomerBuilder WithIdentifier(string nationalId)
         {
@@ -24,7 +27,13 @@ namespace LoanApplication.TacticalDdd.Tests.Builders
         
         public CustomerBuilder WithAge(int age)
         {
-            this.age = age;
+            this.birthDate = SysTime.Now().AddYears(-1 * age);
+            return this;
+        }
+        
+        public CustomerBuilder BornOn(DateTime birthDate)
+        {
+            this.birthDate = birthDate;
             return this;
         }
         
@@ -46,7 +55,7 @@ namespace LoanApplication.TacticalDdd.Tests.Builders
             (
                 nationalIdentifier,
                 name,
-                SysTime.Now().AddYears(-1*age),
+                birthDate,
                 income,
                 address
             );

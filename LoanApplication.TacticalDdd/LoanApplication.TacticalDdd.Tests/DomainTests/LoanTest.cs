@@ -1,6 +1,6 @@
 using FluentAssertions;
 using LoanApplication.TacticalDdd.DomainModel;
-using LoanApplication.TacticalDdd.Tests.Builders;
+using static LoanApplication.TacticalDdd.Tests.Builders.LoanBuilder;
 using Xunit;
 
 namespace LoanApplication.TacticalDdd.Tests.DomainTests
@@ -10,7 +10,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void Can_calculate_monthly_installment()
         {
-            var loan = new LoanBuilder()
+            var loan = GivenLoan()
                 .WithAmount(420_000M)
                 .WithNumberOfYears(3)
                 .WithInterestRate(5M)

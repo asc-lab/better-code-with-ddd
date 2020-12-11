@@ -1,8 +1,8 @@
 using FluentAssertions;
 using LoanApplication.TacticalDdd.DomainModel;
-using LoanApplication.TacticalDdd.Tests.Builders;
 using LoanApplication.TacticalDdd.Tests.Mocks;
 using Xunit;
+using static LoanApplication.TacticalDdd.Tests.Builders.LoanApplicationBuilder;
 
 namespace LoanApplication.TacticalDdd.Tests.DomainTests
 {
@@ -13,7 +13,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void PropertyValueHigherThanLoan_LoanAmountMustBeLowerThanPropertyValue_IsSatisfied()
         {
-            var application = new LoanApplicationBuilder()
+            var application = GivenLoanApplication()
                 .WithProperty(prop => prop.WithValue(750_000M))
                 .WithLoan(loan => loan.WithAmount(300_000M))
                 .Build();
@@ -27,7 +27,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void PropertyValueLowerThanLoan_LoanAmountMustBeLowerThanPropertyValue_IsNotSatisfied()
         {
-            var application = new LoanApplicationBuilder()
+            var application = GivenLoanApplication()
                 .WithProperty(prop => prop.WithValue(750_000M))
                 .WithLoan(loan => loan.WithAmount(800_000M))
                 .Build();
@@ -41,7 +41,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void CustomerNotOlderThan65AtEndOfLoan_CustomerAgeAtTheDateOfLastInstallmentMustBeBelow65_IsSatisfied()
         {
-            var application = new LoanApplicationBuilder()
+            var application = GivenLoanApplication()
                 .WithLoan(loan => loan.WithNumberOfYears(20))
                 .WithCustomer(customer => customer.WithAge(26))
                 .Build();
@@ -55,7 +55,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void CustomerOlderThan65AtEndOfLoan_CustomerAgeAtTheDateOfLastInstallmentMustBeBelow65_IsNotSatisfied()
         {
-            var application = new LoanApplicationBuilder()
+            var application = GivenLoanApplication()
                 .WithLoan(loan => loan.WithNumberOfYears(20))
                 .WithCustomer(customer => customer.WithAge(46))
                 .Build();
@@ -69,7 +69,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void CustomerIncome15PercentHigherThenOfInstallment_InstallmentAmountMustBeLowerThen15PercentOfCustomerIncome_IsSatisfied()
         {
-            var application = new LoanApplicationBuilder()
+            var application = GivenLoanApplication()
                 .WithLoan(loan => loan.WithNumberOfYears(25).WithAmount(400_000M).WithInterestRate(1M))
                 .WithCustomer(customer => customer.WithIncome(11_000M))
                 .Build();
@@ -83,7 +83,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void CustomerIncome15PercentLowerThenOfInstallment_InstallmentAmountMustBeLowerThen15PercentOfCustomerIncome_IsNotSatisfied()
         {
-            var application = new LoanApplicationBuilder()
+            var application = GivenLoanApplication()
                 .WithLoan(loan => loan.WithNumberOfYears(20).WithAmount(400_000M).WithInterestRate(1M))
                 .WithCustomer(customer => customer.WithIncome(4_000M))
                 .Build();
@@ -97,7 +97,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void CustomerIsNotARegisteredDebtor_CustomerNotADebtor_IsSatisfied()
         {
-            var application = new LoanApplicationBuilder()
+            var application = GivenLoanApplication()
                 .WithCustomer(customer => customer.WithIdentifier("71041864667"))
                 .Build();
             
@@ -110,7 +110,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void CustomerIsNotARegisteredDebtor_CustomerNotADebtor_IsNotSatisfied()
         {
-            var application = new LoanApplicationBuilder()
+            var application = GivenLoanApplication()
                 .WithCustomer(customer => customer.WithIdentifier(DebtorRegistryMock.DebtorNationalIdentifier))
                 .Build();
             
@@ -123,7 +123,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void WhenAnyRuleIsNotSatisfied_ScoringResult_IsRed()
         {
-            var application = new LoanApplicationBuilder()
+            var application = GivenLoanApplication()
                 .WithLoan(loan => loan.WithNumberOfYears(20).WithAmount(400_000M).WithInterestRate(1M))
                 .WithCustomer(customer => customer.WithIncome(4_000M))
                 .Build();
@@ -136,7 +136,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void WhenAllRulesAreSatisfied_ScoringResult_IsGreen()
         {
-            var application = new LoanApplicationBuilder()
+            var application = GivenLoanApplication()
                 .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
                 .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
                 .WithProperty(prop => prop.WithValue(250_000M))

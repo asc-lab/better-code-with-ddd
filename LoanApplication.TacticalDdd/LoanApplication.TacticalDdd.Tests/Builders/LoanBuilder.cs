@@ -7,7 +7,9 @@ namespace LoanApplication.TacticalDdd.Tests.Builders
         private MonetaryAmount amount = new MonetaryAmount(200_000M);
         private int numberOfYears = 20;
         private Percent interestRate = 1.Percent();
-
+        
+        public static LoanBuilder GivenLoan() => new LoanBuilder();
+        
         public LoanBuilder WithAmount(decimal loanAmount)
         {
             amount = new MonetaryAmount(loanAmount);

@@ -2,9 +2,10 @@ using System;
 using FluentAssertions;
 using LoanApplication.TacticalDdd.DomainModel;
 using LoanApplication.TacticalDdd.Tests.Asserts;
-using LoanApplication.TacticalDdd.Tests.Builders;
 using LoanApplication.TacticalDdd.Tests.Mocks;
 using Xunit;
+using static LoanApplication.TacticalDdd.Tests.Builders.LoanApplicationBuilder;
+using static LoanApplication.TacticalDdd.Tests.Builders.OperatorBuilder;
 
 namespace LoanApplication.TacticalDdd.Tests.DomainTests
 {
@@ -15,7 +16,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void NewApplication_IsCreatedIn_NewStatus_AndNullScore()
         {
-            var application = new LoanApplicationBuilder()
+            var application = GivenLoanApplication()
                 .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
                 .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
                 .WithProperty(prop => prop.WithValue(250_000M))
@@ -31,7 +32,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void ValidApplication_EvaluationScore_IsGreen()
         {
-            var application = new LoanApplicationBuilder()
+            var application = GivenLoanApplication()
                 .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
                 .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
                 .WithProperty(prop => prop.WithValue(250_000M))
@@ -49,7 +50,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void InvalidApplication_EvaluationScore_IsRed_And_StatusIsRejected()
         {
-            var application = new LoanApplicationBuilder()
+            var application = GivenLoanApplication()
                 .WithCustomer(customer => customer.WithAge(55).WithIncome(15_000M))
                 .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
                 .WithProperty(prop => prop.WithValue(250_000M))
@@ -66,15 +67,14 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void LoanApplication_InStatusNew_EvaluatedGreen_OperatorHasCompetenceLevel_CanBeAccepted()
         {
-            var application = new LoanApplicationBuilder()
+            var application = GivenLoanApplication()
                 .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
                 .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
                 .WithProperty(prop => prop.WithValue(250_000M))
                 .Evaluated()
                 .Build();
             
-            var user = new OperatorBuilder()
-                .WithLogin("admin")
+            var user = GivenOperator()
                 .WithCompetenceLevel(1_000_000M)
                 .Build();
             
@@ -89,15 +89,14 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void LoanApplication_InStatusNew_EvaluatedGreen_OperatorDoesNotHaveCompetenceLevel_CannotBeAccepted()
         {
-            var application = new LoanApplicationBuilder()
+            var application = GivenLoanApplication()
                 .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
                 .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
                 .WithProperty(prop => prop.WithValue(250_000M))
                 .Evaluated()
                 .Build();
             
-            var user = new OperatorBuilder()
-                .WithLogin("admin")
+            var user = GivenOperator()
                 .WithCompetenceLevel(100_000M)
                 .Build();
 
@@ -112,14 +111,14 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void LoanApplication_InStatusNew_EvaluatedGreen_CanBeRejected()
         {
-            var application = new LoanApplicationBuilder()
+            var application = GivenLoanApplication()
                 .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
                 .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
                 .WithProperty(prop => prop.WithValue(250_000M))
                 .Evaluated()
                 .Build();
             
-            var user = new OperatorBuilder().WithLogin("admin").Build();
+            var user = GivenOperator().Build();
             application.Reject(user);
 
             application
@@ -131,14 +130,14 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void LoanApplication_WithoutScore_CannotBeAccepted()
         {
-            var application = new LoanApplicationBuilder()
+            var application = GivenLoanApplication()
                 .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
                 .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
                 .WithProperty(prop => prop.WithValue(250_000M))
                 .NotEvaluated()
                 .Build();
             
-            var user = new OperatorBuilder().WithLogin("admin").Build();
+            var user = GivenOperator().Build();
 
             Action act = () => application.Accept(user);
             
@@ -151,14 +150,14 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void LoanApplication_WithoutScore_CanBeRejected()
         {
-            var application = new LoanApplicationBuilder()
+            var application = GivenLoanApplication()
                 .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
                 .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
                 .WithProperty(prop => prop.WithValue(250_000M))
                 .NotEvaluated()
                 .Build();
             
-            var user = new OperatorBuilder().WithLogin("admin").Build();
+            var user = GivenOperator().Build();
             application.Reject(user);
 
             application
@@ -170,15 +169,12 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void LoanApplication_Accepted_CannotBeRejected()
         {
-            var application = new LoanApplicationBuilder()
-                .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
-                .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
-                .WithProperty(prop => prop.WithValue(250_000M))
+            var application = GivenLoanApplication()
                 .Evaluated()
                 .Accepted()
                 .Build();
             
-            var user = new OperatorBuilder().WithLogin("admin").Build();
+            var user = GivenOperator().Build();
 
             Action act = () => application.Reject(user);
             
@@ -191,7 +187,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void LoanApplication_Rejected_CannotBeAccepted()
         {
-            var application = new LoanApplicationBuilder()
+            var application = GivenLoanApplication()
                 .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
                 .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
                 .WithProperty(prop => prop.WithValue(250_000M))
@@ -199,7 +195,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
                 .Rejected()
                 .Build();
             
-            var user = new OperatorBuilder().WithLogin("admin").Build();
+            var user = GivenOperator().Build();
 
             Action act = () => application.Accept(user);
             

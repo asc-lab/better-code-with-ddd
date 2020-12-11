@@ -7,6 +7,8 @@ namespace LoanApplication.TacticalDdd.Tests.Builders
         private string login = "admin";
         private decimal competenceLevel = 1_000_000M;
 
+        public static OperatorBuilder GivenOperator() => new OperatorBuilder();
+
         public OperatorBuilder WithLogin(string login)
         {
             this.login = login;

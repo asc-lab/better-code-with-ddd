@@ -2,6 +2,7 @@ using System;
 using FluentAssertions;
 using LoanApplication.TacticalDdd.DomainModel;
 using Xunit;
+using static LoanApplication.TacticalDdd.Tests.Builders.CustomerBuilder; 
 
 namespace LoanApplication.TacticalDdd.Tests.DomainTests
 {
@@ -10,14 +11,9 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void Customer_Born1974_IsAt2019_45YearsOld()
         {
-            var customer = new Customer
-            (
-                new NationalIdentifier("11111111116"),
-                new Name("Jan","B"),
-                new DateTime(1974,6,26), 
-                new MonetaryAmount(5_000M),
-                new Address("Poland","00-001","Warsaw","Zielona 8")
-            );
+            var customer =  GivenCustomer()
+                .BornOn(new DateTime(1974, 6, 26))
+                .Build();
 
             var ageAt2019 = customer.AgeInYearsAt(new DateTime(2019, 1, 1));
             
@@ -27,14 +23,10 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void Customer_Born1974_IsAt2020_46YearsOld()
         {
-            var customer = new Customer
-            (
-                new NationalIdentifier("11111111116"),
-                new Name("Jan","B"),
-                new DateTime(1974,6,26), 
-                new MonetaryAmount(5_000M),
-                new Address("Poland","00-001","Warsaw","Zielona 8")
-            );
+            var customer = GivenCustomer()
+                .BornOn(new DateTime(1974, 6, 26))
+                .Build();
+            
 
             var ageAt2020 = customer.AgeInYearsAt(new DateTime(2020, 1, 1));
             
@@ -44,14 +36,10 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
         [Fact]
         public void Customer_Born1974_IsAt2021_47YearsOld()
         {
-            var customer = new Customer
-            (
-                new NationalIdentifier("11111111116"),
-                new Name("Jan","B"),
-                new DateTime(1974,6,26), 
-                new MonetaryAmount(5_000M),
-                new Address("Poland","00-001","Warsaw","Zielona 8")
-            );
+            var customer =  GivenCustomer()
+                .BornOn(new DateTime(1974, 6, 26))
+                .Build();
+
 
             var ageAt2021 = customer.AgeInYearsAt(new DateTime(2021, 1, 1));
             

@@ -14,7 +14,8 @@ namespace LoanApplication.TacticalDdd.Tests.Builders
         private bool evaluated = false;
         private LoanApplicationStatus targetStatus = LoanApplicationStatus.New;
         private ScoringRulesFactory scoringRulesFactory = new ScoringRulesFactory(new DebtorRegistryMock());
-
+        public static LoanApplicationBuilder GivenLoanApplication() => new LoanApplicationBuilder();
+        
         public LoanApplicationBuilder Accepted()
         {
             targetStatus = LoanApplicationStatus.Accepted;

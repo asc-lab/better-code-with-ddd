@@ -8,6 +8,8 @@ using LoanApplication.TacticalDdd.DomainModel;
 using LoanApplication.TacticalDdd.Tests.Builders;
 using LoanApplication.TacticalDdd.Tests.Mocks;
 using Xunit;
+using static LoanApplication.TacticalDdd.Tests.Builders.OperatorBuilder;
+using static LoanApplication.TacticalDdd.Tests.Builders.LoanApplicationBuilder;
 
 namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
 {
@@ -18,7 +20,7 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
         {
             var operators = new InMemoryOperatorRepository(new List<Operator>
             {
-                new OperatorBuilder().WithLogin("admin").Build()    
+                GivenOperator().WithLogin("admin").Build()    
             });
             
             var existingApplications = new InMemoryLoanApplicationRepository(new List<DomainModel.LoanApplication>());
@@ -70,7 +72,7 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
         {
             var operators = new InMemoryOperatorRepository(new List<Operator>
             {
-                new OperatorBuilder().WithLogin("admin").Build()    
+                GivenOperator().WithLogin("admin").Build()    
             });
             
             var existingApplications = new InMemoryLoanApplicationRepository(new List<DomainModel.LoanApplication>());
