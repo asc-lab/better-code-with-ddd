@@ -24,7 +24,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
 
             application
                 .Should()
-                .BeInStatus(LoanApplicationStatus.New)
+                .BeNew()
                 .And
                 .ScoreIsNull();
         }
@@ -42,7 +42,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
 
             application
                 .Should()
-                .BeInStatus(LoanApplicationStatus.New)
+                .BeNew()
                 .And
                 .HaveGreenScore();
         }
@@ -60,7 +60,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
 
             application
                 .Should()
-                .BeInStatus(LoanApplicationStatus.Rejected)
+                .BeRejected()
                 .And.HaveRedScore();
         }
 
@@ -82,7 +82,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
 
             application
                 .Should()
-                .BeInStatus(LoanApplicationStatus.Accepted)
+                .BeAccepted()
                 .And.HaveGreenScore();
         }
         
@@ -123,7 +123,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
 
             application
                 .Should()
-                .BeInStatus(LoanApplicationStatus.Rejected)
+                .BeRejected()
                 .And.HaveGreenScore();
         }
 
@@ -162,7 +162,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests
 
             application
                 .Should()
-                .BeInStatus(LoanApplicationStatus.Rejected)
+                .BeRejected()
                 .And.ScoreIsNull();
         }
 

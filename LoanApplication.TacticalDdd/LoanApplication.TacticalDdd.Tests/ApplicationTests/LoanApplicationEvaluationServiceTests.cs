@@ -64,7 +64,7 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
                 .Should()
                 .HaveRedScore()
                 .And
-                .BeInStatus(LoanApplicationStatus.Rejected);
+                .BeRejected();
         }
     }
 }

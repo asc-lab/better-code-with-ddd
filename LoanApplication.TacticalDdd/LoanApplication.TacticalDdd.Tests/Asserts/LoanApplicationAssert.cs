@@ -25,6 +25,21 @@ namespace LoanApplication.TacticalDdd.Tests.Asserts
             return new AndConstraint<LoanApplicationAssert>(this);
         }
         
+        public AndConstraint<LoanApplicationAssert> BeAccepted()
+        {
+            return BeInStatus(LoanApplicationStatus.Accepted);
+        }
+        
+        public AndConstraint<LoanApplicationAssert> BeRejected()
+        {
+            return BeInStatus(LoanApplicationStatus.Rejected);
+        }
+        
+        public AndConstraint<LoanApplicationAssert> BeNew()
+        {
+            return BeInStatus(LoanApplicationStatus.New);
+        }
+        
         public AndConstraint<LoanApplicationAssert> ScoreIsNull()
         {
             Subject.Score.Should().BeNull();

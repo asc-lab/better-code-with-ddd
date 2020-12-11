@@ -47,7 +47,7 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
             
             existingApplications.WithNumber(new LoanApplicationNumber("123"))
                 .Should()
-                .BeInStatus(LoanApplicationStatus.Accepted);
+                .BeAccepted();
             
             eventBus.Events
                 .Should()
@@ -89,7 +89,7 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
             
             existingApplications.WithNumber(new LoanApplicationNumber("123"))
                 .Should()
-                .BeInStatus(LoanApplicationStatus.Rejected);
+                .BeRejected();
 
             eventBus.Events
                 .Should()
