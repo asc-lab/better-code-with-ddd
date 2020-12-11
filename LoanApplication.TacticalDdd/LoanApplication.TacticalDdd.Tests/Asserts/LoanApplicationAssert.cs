@@ -36,6 +36,16 @@ namespace LoanApplication.TacticalDdd.Tests.Asserts
             Subject.Score?.Score.Should().Be(expectedScore);
             return new AndConstraint<LoanApplicationAssert>(this);
         }
+        
+        public AndConstraint<LoanApplicationAssert> HaveRedScore()
+        {
+            return ScoreIs(ApplicationScore.Red);
+        }
+        
+        public AndConstraint<LoanApplicationAssert> HaveGreenScore()
+        {
+            return ScoreIs(ApplicationScore.Green);
+        }
 
         protected override string Identifier => "LoanApplicationAssert";
     }

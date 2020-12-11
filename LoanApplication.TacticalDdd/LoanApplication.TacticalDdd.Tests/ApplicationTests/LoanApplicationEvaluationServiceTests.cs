@@ -35,7 +35,7 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
 
             existingApplications.WithNumber(new LoanApplicationNumber("123"))
                 .Should()
-                .ScoreIs(ApplicationScore.Green);
+                .HaveGreenScore();
         }
         
         [Fact]
@@ -62,7 +62,7 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
 
             existingApplications.WithNumber(new LoanApplicationNumber("123"))
                 .Should()
-                .ScoreIs(ApplicationScore.Red)
+                .HaveRedScore()
                 .And
                 .BeInStatus(LoanApplicationStatus.Rejected);
         }
