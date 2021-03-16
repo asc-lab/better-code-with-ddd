@@ -11,7 +11,7 @@ namespace LoanApplication.TacticalDdd.DomainModel
             if (string.IsNullOrWhiteSpace(first))
                 throw new ArgumentException("First name cannot be empty");
             if (string.IsNullOrWhiteSpace(last))
-                throw new ArgumentException("First name cannot be empty");
+                throw new ArgumentException("Last name cannot be empty");
             
             First = first;
             Last = last;
