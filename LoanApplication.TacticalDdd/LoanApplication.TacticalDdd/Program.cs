@@ -1,23 +1,58 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Carter;
+using LoanApplication.TacticalDdd.Application;
+using LoanApplication.TacticalDdd.PortsAdapters.DataAccess;
+using LoanApplication.TacticalDdd.PortsAdapters.ExternalServices;
+using LoanApplication.TacticalDdd.PortsAdapters.MessageQueue;
+using LoanApplication.TacticalDdd.PortsAdapters.Security;
+using LoanApplication.TacticalDdd.ReadModel;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.OpenApi.Models;
 
-namespace LoanApplication.TacticalDdd
+var builder = WebApplication.CreateBuilder();
+
+builder.Services.AddAuthentication("BasicAuthentication")
+    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+builder.Services.AddAuthorization();
+builder.Services.AddEfDbAdapters(builder.Configuration.GetConnectionString("LoanDb"));
+builder.Services.AddRabbitMqClient("host=localhost");
+builder.Services.AddExternalServicesClients();
+builder.Services.AddApplicationServices();
+builder.Services.AddReadModelServices(builder.Configuration.GetConnectionString("LoanDb"));
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
 {
-    public class Program
+    options.AddSecurityDefinition("basic", new OpenApiSecurityScheme
     {
-        public static void Main(string[] args)
+        Name = "Authorization",  
+        Type = SecuritySchemeType.Http,  
+        Scheme = "basic",  
+        In = ParameterLocation.Header,  
+        Description = "Basic Auth"
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
         {
-            CreateHostBuilder(args).Build().Run();
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id="basic"
+                }
+            },
+            Array.Empty<string>()
         }
+    });
+});
+builder.Services.AddCarter();
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
-    }
-}
+var app = builder.Build();
+
+
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseSwagger();
+app.UseSwaggerUI();
+app.MapCarter();
+
+app.Run();

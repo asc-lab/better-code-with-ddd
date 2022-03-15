@@ -5,127 +5,124 @@ using FluentAssertions;
 using LoanApplication.TacticalDdd.Application;
 using LoanApplication.TacticalDdd.Application.Api;
 using LoanApplication.TacticalDdd.DomainModel;
-using LoanApplication.TacticalDdd.Tests.Builders;
 using LoanApplication.TacticalDdd.Tests.Mocks;
 using Xunit;
 using static LoanApplication.TacticalDdd.Tests.Builders.OperatorBuilder;
-using static LoanApplication.TacticalDdd.Tests.Builders.LoanApplicationBuilder;
 
-namespace LoanApplication.TacticalDdd.Tests.ApplicationTests
+namespace LoanApplication.TacticalDdd.Tests.ApplicationTests;
+
+public class LoanApplicationSubmissionServiceTests
 {
-    public class LoanApplicationSubmissionServiceTests
+    [Fact]
+    public void LoanApplicationSubmissionService_ValidApplication_GetsSubmitted()
     {
-        [Fact]
-        public void LoanApplicationSubmissionService_ValidApplication_GetsSubmitted()
+        var operators = new InMemoryOperatorRepository(new List<Operator>
         {
-            var operators = new InMemoryOperatorRepository(new List<Operator>
-            {
-                GivenOperator().WithLogin("admin").Build()    
-            });
+            GivenOperator().WithLogin("admin").Build()    
+        });
             
-            var existingApplications = new InMemoryLoanApplicationRepository(new List<DomainModel.LoanApplication>());
+        var existingApplications = new InMemoryLoanApplicationRepository(new List<DomainModel.LoanApplication>());
             
-            var loanApplicationSubmissionService = new LoanApplicationSubmissionService
+        var loanApplicationSubmissionService = new LoanApplicationSubmissionService
+        (
+            new UnitOfWorkMock(), 
+            existingApplications,
+            operators
+        );
+
+        var validApplication = new LoanApplicationSubmissionDto
+        (
+            CustomerNationalIdentifier : "11111111119",
+            CustomerFirstName : "Frank",
+            CustomerLastName : "Oz",
+            CustomerBirthdate : SysTime.Now().AddYears(-25),
+            CustomerMonthlyIncome : 10_000M,
+            CustomerAddress : new AddressDto
             (
-                new UnitOfWorkMock(), 
-                existingApplications,
-                operators
-            );
+                Country : "PL",
+                City : "Warsaw",
+                Street : "Chłodna 52",
+                ZipCode : "00-121"
+            ),
+            PropertyValue : 320_000M,
+            PropertyAddress : new AddressDto
+            (
+                Country : "PL",
+                City : "Warsaw",
+                Street : "Wilcza 10",
+                ZipCode : "00-421"
+            ),
+            LoanAmount : 100_000M,
+            LoanNumberOfYears : 25,
+            InterestRate : 1.1M
+        );
 
-            var validApplication = new LoanApplicationDto
-            {
-                CustomerNationalIdentifier = "11111111119",
-                CustomerFirstName = "Frank",
-                CustomerLastName = "Oz",
-                CustomerBirthdate = SysTime.Now().AddYears(-25),
-                CustomerMonthlyIncome = 10_000M,
-                CustomerAddress = new AddressDto
-                {
-                    Country = "PL",
-                    City = "Warsaw",
-                    Street = "Chłodna 52",
-                    ZipCode = "00-121"
-                },
-                PropertyValue = 320_000M,
-                PropertyAddress = new AddressDto
-                {
-                    Country = "PL",
-                    City = "Warsaw",
-                    Street = "Wilcza 10",
-                    ZipCode = "00-421"
-                },
-                LoanAmount = 100_000M,
-                LoanNumberOfYears = 25,
-                InterestRate = 1.1M
-            };
-
-            var newApplicationNumber = loanApplicationSubmissionService
-                .SubmitLoanApplication(validApplication, OperatorIdentity("admin"));
+        var newApplicationNumber = loanApplicationSubmissionService
+            .SubmitLoanApplication(validApplication, OperatorIdentity("admin"));
             
-            newApplicationNumber.Should().NotBeEmpty();
-            var createdLoanApplication = existingApplications.WithNumber(new LoanApplicationNumber(newApplicationNumber));
-            createdLoanApplication.Should().NotBeNull();
-        }
+        newApplicationNumber.Should().NotBeEmpty();
+        var createdLoanApplication = existingApplications.WithNumber(new LoanApplicationNumber(newApplicationNumber));
+        createdLoanApplication.Should().NotBeNull();
+    }
         
-        [Fact]
-        public void LoanApplicationSubmissionService_InvalidApplication_IsNotSaved()
+    [Fact]
+    public void LoanApplicationSubmissionService_InvalidApplication_IsNotSaved()
+    {
+        var operators = new InMemoryOperatorRepository(new List<Operator>
         {
-            var operators = new InMemoryOperatorRepository(new List<Operator>
-            {
-                GivenOperator().WithLogin("admin").Build()    
-            });
+            GivenOperator().WithLogin("admin").Build()    
+        });
             
-            var existingApplications = new InMemoryLoanApplicationRepository(new List<DomainModel.LoanApplication>());
+        var existingApplications = new InMemoryLoanApplicationRepository(new List<DomainModel.LoanApplication>());
             
-            var loanApplicationSubmissionService = new LoanApplicationSubmissionService
+        var loanApplicationSubmissionService = new LoanApplicationSubmissionService
+        (
+            new UnitOfWorkMock(), 
+            existingApplications,
+            operators
+        );
+
+        var validApplication = new LoanApplicationSubmissionDto
+        (
+            CustomerNationalIdentifier : "11111111119111",
+            CustomerFirstName : "Frank",
+            CustomerLastName : "Oz",
+            CustomerBirthdate : SysTime.Now().AddYears(-25),
+            CustomerMonthlyIncome : 10_000M,
+            CustomerAddress : new AddressDto
             (
-                new UnitOfWorkMock(), 
-                existingApplications,
-                operators
-            );
+                Country : "PL",
+                City : "Warsaw",
+                Street : "Chłodna 52",
+                ZipCode : "00-121"
+            ),
+            PropertyValue : 320_000M,
+            PropertyAddress : new AddressDto
+            (
+                Country : "PL",
+                City : "Warsaw",
+                Street : "Wilcza 10",
+                ZipCode : "00-421"
+            ),
+            LoanAmount : 100_000M,
+            LoanNumberOfYears : 25,
+            InterestRate : 1.1M
+        );
 
-            var validApplication = new LoanApplicationDto
-            {
-                CustomerNationalIdentifier = "11111111119111",
-                CustomerFirstName = "Frank",
-                CustomerLastName = "Oz",
-                CustomerBirthdate = SysTime.Now().AddYears(-25),
-                CustomerMonthlyIncome = 10_000M,
-                CustomerAddress = new AddressDto
-                {
-                    Country = "PL",
-                    City = "Warsaw",
-                    Street = "Chłodna 52",
-                    ZipCode = "00-121"
-                },
-                PropertyValue = 320_000M,
-                PropertyAddress = new AddressDto
-                {
-                    Country = "PL",
-                    City = "Warsaw",
-                    Street = "Wilcza 10",
-                    ZipCode = "00-421"
-                },
-                LoanAmount = 100_000M,
-                LoanNumberOfYears = 25,
-                InterestRate = 1.1M
-            };
+        Action act = () => loanApplicationSubmissionService
+            .SubmitLoanApplication(validApplication, OperatorIdentity("admin"));
 
-            Action act = () => loanApplicationSubmissionService
-                .SubmitLoanApplication(validApplication, OperatorIdentity("admin"));
+        act
+            .Should()
+            .Throw<ArgumentException>()
+            .WithMessage("National Identifier must be 11 chars long");
+    }
 
-            act
-                .Should()
-                .Throw<ArgumentException>()
-                .WithMessage("National Identifier must be 11 chars long");
-        }
-
-        private ClaimsPrincipal OperatorIdentity(string login)
+    private ClaimsPrincipal OperatorIdentity(string login)
+    {
+        return new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
         {
-            return new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-            {
-                new Claim(ClaimTypes.Name, login) 
-            }));
-        }
+            new Claim(ClaimTypes.Name, login) 
+        }));
     }
 }

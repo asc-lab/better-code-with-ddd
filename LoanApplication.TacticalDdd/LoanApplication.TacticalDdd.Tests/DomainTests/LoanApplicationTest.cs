@@ -1,4 +1,3 @@
-using System;
 using FluentAssertions;
 using LoanApplication.TacticalDdd.DomainModel;
 using LoanApplication.TacticalDdd.Tests.Asserts;
@@ -7,202 +6,201 @@ using Xunit;
 using static LoanApplication.TacticalDdd.Tests.Builders.LoanApplicationBuilder;
 using static LoanApplication.TacticalDdd.Tests.Builders.OperatorBuilder;
 
-namespace LoanApplication.TacticalDdd.Tests.DomainTests
+namespace LoanApplication.TacticalDdd.Tests.DomainTests;
+
+public class LoanApplicationTest
 {
-    public class LoanApplicationTest
+    private readonly ScoringRulesFactory scoringRulesFactory = new ScoringRulesFactory(new DebtorRegistryMock());
+        
+    [Fact]
+    public void NewApplication_IsCreatedIn_NewStatus_AndNullScore()
     {
-        private readonly ScoringRulesFactory scoringRulesFactory = new ScoringRulesFactory(new DebtorRegistryMock());
+        var application = GivenLoanApplication()
+            .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
+            .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
+            .WithProperty(prop => prop.WithValue(250_000M))
+            .Build();
+
+        application
+            .Should()
+            .BeNew()
+            .And
+            .ScoreIsNull();
+    }
+
+    [Fact]
+    public void ValidApplication_EvaluationScore_IsGreen()
+    {
+        var application = GivenLoanApplication()
+            .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
+            .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
+            .WithProperty(prop => prop.WithValue(250_000M))
+            .Build();
+            
+        application.Evaluate(scoringRulesFactory.DefaultSet);
+
+        application
+            .Should()
+            .BeNew()
+            .And
+            .HaveGreenScore();
+    }
         
-        [Fact]
-        public void NewApplication_IsCreatedIn_NewStatus_AndNullScore()
-        {
-            var application = GivenLoanApplication()
-                .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
-                .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
-                .WithProperty(prop => prop.WithValue(250_000M))
-                .Build();
-
-            application
-                .Should()
-                .BeNew()
-                .And
-                .ScoreIsNull();
-        }
-
-        [Fact]
-        public void ValidApplication_EvaluationScore_IsGreen()
-        {
-            var application = GivenLoanApplication()
-                .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
-                .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
-                .WithProperty(prop => prop.WithValue(250_000M))
-                .Build();
+    [Fact]
+    public void InvalidApplication_EvaluationScore_IsRed_And_StatusIsRejected()
+    {
+        var application = GivenLoanApplication()
+            .WithCustomer(customer => customer.WithAge(55).WithIncome(15_000M))
+            .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
+            .WithProperty(prop => prop.WithValue(250_000M))
+            .Build();
             
-            application.Evaluate(scoringRulesFactory.DefaultSet);
+        application.Evaluate(scoringRulesFactory.DefaultSet);
 
-            application
-                .Should()
-                .BeNew()
-                .And
-                .HaveGreenScore();
-        }
+        application
+            .Should()
+            .BeRejected()
+            .And.HaveRedScore();
+    }
+
+    [Fact]
+    public void LoanApplication_InStatusNew_EvaluatedGreen_OperatorHasCompetenceLevel_CanBeAccepted()
+    {
+        var application = GivenLoanApplication()
+            .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
+            .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
+            .WithProperty(prop => prop.WithValue(250_000M))
+            .Evaluated()
+            .Build();
+            
+        var user = GivenOperator()
+            .WithCompetenceLevel(1_000_000M)
+            .Build();
+            
+        application.Accept(user);
+
+        application
+            .Should()
+            .BeAccepted()
+            .And.HaveGreenScore();
+    }
         
-        [Fact]
-        public void InvalidApplication_EvaluationScore_IsRed_And_StatusIsRejected()
-        {
-            var application = GivenLoanApplication()
-                .WithCustomer(customer => customer.WithAge(55).WithIncome(15_000M))
-                .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
-                .WithProperty(prop => prop.WithValue(250_000M))
-                .Build();
+    [Fact]
+    public void LoanApplication_InStatusNew_EvaluatedGreen_OperatorDoesNotHaveCompetenceLevel_CannotBeAccepted()
+    {
+        var application = GivenLoanApplication()
+            .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
+            .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
+            .WithProperty(prop => prop.WithValue(250_000M))
+            .Evaluated()
+            .Build();
             
-            application.Evaluate(scoringRulesFactory.DefaultSet);
+        var user = GivenOperator()
+            .WithCompetenceLevel(100_000M)
+            .Build();
 
-            application
-                .Should()
-                .BeRejected()
-                .And.HaveRedScore();
-        }
-
-        [Fact]
-        public void LoanApplication_InStatusNew_EvaluatedGreen_OperatorHasCompetenceLevel_CanBeAccepted()
-        {
-            var application = GivenLoanApplication()
-                .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
-                .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
-                .WithProperty(prop => prop.WithValue(250_000M))
-                .Evaluated()
-                .Build();
+        Action act = () => application.Accept(user);
             
-            var user = GivenOperator()
-                .WithCompetenceLevel(1_000_000M)
-                .Build();
-            
-            application.Accept(user);
-
-            application
-                .Should()
-                .BeAccepted()
-                .And.HaveGreenScore();
-        }
+        act
+            .Should()
+            .Throw<ApplicationException>()
+            .WithMessage("Operator does not have required competence level to accept application");
+    }
         
-        [Fact]
-        public void LoanApplication_InStatusNew_EvaluatedGreen_OperatorDoesNotHaveCompetenceLevel_CannotBeAccepted()
-        {
-            var application = GivenLoanApplication()
-                .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
-                .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
-                .WithProperty(prop => prop.WithValue(250_000M))
-                .Evaluated()
-                .Build();
+    [Fact]
+    public void LoanApplication_InStatusNew_EvaluatedGreen_CanBeRejected()
+    {
+        var application = GivenLoanApplication()
+            .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
+            .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
+            .WithProperty(prop => prop.WithValue(250_000M))
+            .Evaluated()
+            .Build();
             
-            var user = GivenOperator()
-                .WithCompetenceLevel(100_000M)
-                .Build();
+        var user = GivenOperator().Build();
+        application.Reject(user);
 
-            Action act = () => application.Accept(user);
+        application
+            .Should()
+            .BeRejected()
+            .And.HaveGreenScore();
+    }
+
+    [Fact]
+    public void LoanApplication_WithoutScore_CannotBeAccepted()
+    {
+        var application = GivenLoanApplication()
+            .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
+            .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
+            .WithProperty(prop => prop.WithValue(250_000M))
+            .NotEvaluated()
+            .Build();
             
-            act
-                .Should()
-                .Throw<ApplicationException>()
-                .WithMessage("Operator does not have required competence level to accept application");
-        }
+        var user = GivenOperator().Build();
+
+        Action act = () => application.Accept(user);
+            
+        act
+            .Should()
+            .Throw<ApplicationException>()
+            .WithMessage("Cannot accept application before scoring");
+    }
         
-        [Fact]
-        public void LoanApplication_InStatusNew_EvaluatedGreen_CanBeRejected()
-        {
-            var application = GivenLoanApplication()
-                .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
-                .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
-                .WithProperty(prop => prop.WithValue(250_000M))
-                .Evaluated()
-                .Build();
+    [Fact]
+    public void LoanApplication_WithoutScore_CanBeRejected()
+    {
+        var application = GivenLoanApplication()
+            .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
+            .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
+            .WithProperty(prop => prop.WithValue(250_000M))
+            .NotEvaluated()
+            .Build();
             
-            var user = GivenOperator().Build();
-            application.Reject(user);
+        var user = GivenOperator().Build();
+        application.Reject(user);
 
-            application
-                .Should()
-                .BeRejected()
-                .And.HaveGreenScore();
-        }
+        application
+            .Should()
+            .BeRejected()
+            .And.ScoreIsNull();
+    }
 
-        [Fact]
-        public void LoanApplication_WithoutScore_CannotBeAccepted()
-        {
-            var application = GivenLoanApplication()
-                .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
-                .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
-                .WithProperty(prop => prop.WithValue(250_000M))
-                .NotEvaluated()
-                .Build();
+    [Fact]
+    public void LoanApplication_Accepted_CannotBeRejected()
+    {
+        var application = GivenLoanApplication()
+            .Evaluated()
+            .Accepted()
+            .Build();
             
-            var user = GivenOperator().Build();
+        var user = GivenOperator().Build();
 
-            Action act = () => application.Accept(user);
+        Action act = () => application.Reject(user);
             
-            act
-                .Should()
-                .Throw<ApplicationException>()
-                .WithMessage("Cannot accept application before scoring");
-        }
+        act
+            .Should()
+            .Throw<ApplicationException>()
+            .WithMessage("Cannot reject application that is already accepted or rejected");
+    }
         
-        [Fact]
-        public void LoanApplication_WithoutScore_CanBeRejected()
-        {
-            var application = GivenLoanApplication()
-                .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
-                .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
-                .WithProperty(prop => prop.WithValue(250_000M))
-                .NotEvaluated()
-                .Build();
+    [Fact]
+    public void LoanApplication_Rejected_CannotBeAccepted()
+    {
+        var application = GivenLoanApplication()
+            .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
+            .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
+            .WithProperty(prop => prop.WithValue(250_000M))
+            .Evaluated()
+            .Rejected()
+            .Build();
             
-            var user = GivenOperator().Build();
-            application.Reject(user);
+        var user = GivenOperator().Build();
 
-            application
-                .Should()
-                .BeRejected()
-                .And.ScoreIsNull();
-        }
-
-        [Fact]
-        public void LoanApplication_Accepted_CannotBeRejected()
-        {
-            var application = GivenLoanApplication()
-                .Evaluated()
-                .Accepted()
-                .Build();
+        Action act = () => application.Accept(user);
             
-            var user = GivenOperator().Build();
-
-            Action act = () => application.Reject(user);
-            
-            act
-                .Should()
-                .Throw<ApplicationException>()
-                .WithMessage("Cannot reject application that is already accepted or rejected");
-        }
-        
-        [Fact]
-        public void LoanApplication_Rejected_CannotBeAccepted()
-        {
-            var application = GivenLoanApplication()
-                .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
-                .WithLoan(loan => loan.WithAmount(200_000).WithNumberOfYears(25).WithInterestRate(1.1M))
-                .WithProperty(prop => prop.WithValue(250_000M))
-                .Evaluated()
-                .Rejected()
-                .Build();
-            
-            var user = GivenOperator().Build();
-
-            Action act = () => application.Accept(user);
-            
-            act
-                .Should()
-                .Throw<ApplicationException>()
-                .WithMessage("Cannot accept application that is already accepted or rejected");
-        }
+        act
+            .Should()
+            .Throw<ApplicationException>()
+            .WithMessage("Cannot accept application that is already accepted or rejected");
     }
 }

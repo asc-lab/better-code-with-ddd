@@ -1,9 +1,8 @@
-namespace LoanApplication.TacticalDdd.DomainModel
-{
-    public interface ILoanApplicationRepository
-    {
-        void Add(LoanApplication loanApplication);
+namespace LoanApplication.TacticalDdd.DomainModel;
 
-        LoanApplication WithNumber(LoanApplicationNumber loanApplicationNumber);
-    }
+public interface ILoanApplicationRepository
+{
+    void Add(LoanApplication loanApplication);
+
+    LoanApplication WithNumber(LoanApplicationNumber loanApplicationNumber);
 }

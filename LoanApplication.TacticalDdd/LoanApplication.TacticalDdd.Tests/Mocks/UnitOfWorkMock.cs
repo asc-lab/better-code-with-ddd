@@ -1,12 +1,11 @@
 using LoanApplication.TacticalDdd.DomainModel.Ddd;
 
-namespace LoanApplication.TacticalDdd.Tests.Mocks
+namespace LoanApplication.TacticalDdd.Tests.Mocks;
+
+public class UnitOfWorkMock : IUnitOfWork
 {
-    public class UnitOfWorkMock : IUnitOfWork
+    public void CommitChanges()
     {
-        public void CommitChanges()
-        {
-            //do nothing
-        }
+        //do nothing
     }
 }

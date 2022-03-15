@@ -1,8 +1,7 @@
-namespace LoanApplication.TacticalDdd.DomainModel
+namespace LoanApplication.TacticalDdd.DomainModel;
+
+public enum ApplicationScore
 {
-    public enum ApplicationScore
-    {
-        Red,
-        Green
-    }
+    Red,
+    Green
 }

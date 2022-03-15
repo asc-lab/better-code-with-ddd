@@ -1,12 +1,9 @@
-using Microsoft.Extensions.DependencyInjection;
+namespace LoanApplication.TacticalDdd.ReadModel;
 
-namespace LoanApplication.TacticalDdd.ReadModel
+public static class ReadModelInstaller
 {
-    public static class ReadModelInstaller
+    public static void AddReadModelServices(this IServiceCollection services, string connectionString)
     {
-        public static void AddReadModelServices(this IServiceCollection services, string connectionString)
-        {
-            services.AddSingleton(_ => new LoanApplicationFinder(connectionString));
-        }
+        services.AddSingleton(_ => new LoanApplicationFinder(connectionString));
     }
 }

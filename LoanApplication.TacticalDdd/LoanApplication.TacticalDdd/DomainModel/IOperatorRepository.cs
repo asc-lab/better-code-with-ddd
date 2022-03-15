@@ -1,9 +1,8 @@
-namespace LoanApplication.TacticalDdd.DomainModel
-{
-    public interface IOperatorRepository
-    {
-        void Add(Operator @operator);
+namespace LoanApplication.TacticalDdd.DomainModel;
 
-        Operator WithLogin(Login login);
-    }
+public interface IOperatorRepository
+{
+    void Add(Operator @operator);
+
+    Operator WithLogin(Login login);
 }

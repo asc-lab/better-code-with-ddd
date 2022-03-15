@@ -1,23 +1,32 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using DebtorRegistryMock;
 
-namespace DebtorRegistryMock
+var builder = WebApplication.CreateBuilder();
+
+var app = builder.Build();
+
+app.MapGet("/DebtorInfo/{pesel}", (string pesel) =>
 {
-    public class Program
+    app.Logger.LogInformation($"Getting debtor info for pesel = {pesel}");
+    
+    if (pesel == "11111111116")
     {
-        public static void Main(string[] args)
+        return new DebtorInfo
         {
-            CreateHostBuilder(args).Build().Run();
-        }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+            Pesel = pesel,
+            Debts = new ()
+            {
+                new Debt { Amount = 3000M}
+            }
+        };
     }
-}
+    
+    return new DebtorInfo
+    {
+        Pesel = pesel,
+        Debts = new ()
+    };
+
+});
+
+
+app.Run();

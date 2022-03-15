@@ -1,37 +1,34 @@
-using System;
-using System.Collections.Generic;
 using LoanApplication.TacticalDdd.DomainModel.Ddd;
 using Newtonsoft.Json;
 
-namespace LoanApplication.TacticalDdd.DomainModel
+namespace LoanApplication.TacticalDdd.DomainModel;
+
+public class Registration : ValueObject<Registration>
 {
-    public class Registration : ValueObject<Registration>
+    public DateOnly RegistrationDate { get; }
+        
+    public OperatorId RegisteredBy { get;  }
+
+    public Registration(DateOnly registrationDate, Operator registeredBy)
+        : this(registrationDate, registeredBy.Id)
     {
-        public DateTime RegistrationDate { get; }
+    }
+
+    [JsonConstructor]
+    public Registration(DateOnly registrationDate, OperatorId registeredBy)
+    {
+        RegistrationDate = registrationDate;
+        RegisteredBy = registeredBy;
+    }
         
-        public OperatorId RegisteredBy { get;  }
+    //To satisfy EF Core
+    protected Registration()
+    {
+    }
 
-        public Registration(DateTime registrationDate, Operator registeredBy)
-            : this(registrationDate, registeredBy.Id)
-        {
-        }
-
-        [JsonConstructor]
-        public Registration(DateTime registrationDate, OperatorId registeredBy)
-        {
-            RegistrationDate = registrationDate;
-            RegisteredBy = registeredBy;
-        }
-        
-        //To satisfy EF Core
-        protected Registration()
-        {
-        }
-
-        protected override IEnumerable<object> GetAttributesToIncludeInEqualityCheck()
-        {
-            yield return RegistrationDate;
-            yield return RegisteredBy;
-        }
+    protected override IEnumerable<object> GetAttributesToIncludeInEqualityCheck()
+    {
+        yield return RegistrationDate;
+        yield return RegisteredBy;
     }
 }

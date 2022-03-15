@@ -1,61 +1,61 @@
-using System;
-using System.Collections.Generic;
 using LoanApplication.TacticalDdd.DomainModel.Ddd;
 
-namespace LoanApplication.TacticalDdd.DomainModel
+namespace LoanApplication.TacticalDdd.DomainModel;
+
+public class Customer : ValueObject<Customer>
 {
-    public class Customer : ValueObject<Customer>
+    public NationalIdentifier NationalIdentifier { get;  }
+    public Name Name { get; }
+    public DateOnly Birthdate { get; }
+    public MonetaryAmount MonthlyIncome { get; }
+    public Address Address { get;  }
+
+    public Customer
+    (
+        NationalIdentifier nationalIdentifier, 
+        Name name, 
+        DateOnly birthdate, 
+        MonetaryAmount monthlyIncome, 
+        Address address
+    )
     {
-        public NationalIdentifier NationalIdentifier { get;  }
-        public Name Name { get; }
-        public DateTime Birthdate { get; }
-        public MonetaryAmount MonthlyIncome { get; }
-        public Address Address { get;  }
-
-        public Customer(
-            NationalIdentifier nationalIdentifier, 
-            Name name, DateTime birthdate, 
-            MonetaryAmount monthlyIncome, 
-            Address address)
-        {
-            if (nationalIdentifier==null)
-                throw new ArgumentException("National identifier cannot be null");
-            if (name==null)
-                throw new ArgumentException("Name cannot be null");
-            if (monthlyIncome==null)
-                throw new ArgumentException("Monthly income cannot be null");
-            if (address==null)
-                throw new ArgumentException("Address cannot be null");
-            if (birthdate==default)
-                throw new ArgumentException("Birthdate cannot be empty");
+        if (nationalIdentifier==null)
+            throw new ArgumentException("National identifier cannot be null");
+        if (name==null)
+            throw new ArgumentException("Name cannot be null");
+        if (monthlyIncome==null)
+            throw new ArgumentException("Monthly income cannot be null");
+        if (address==null)
+            throw new ArgumentException("Address cannot be null");
+        if (birthdate==default)
+            throw new ArgumentException("Birthdate cannot be empty");
             
-            NationalIdentifier = nationalIdentifier;
-            Name = name;
-            Birthdate = birthdate;
-            MonthlyIncome = monthlyIncome;
-            Address = address;
-        }
+        NationalIdentifier = nationalIdentifier;
+        Name = name;
+        Birthdate = birthdate;
+        MonthlyIncome = monthlyIncome;
+        Address = address;
+    }
 
-        //To satisfy EF Core
-        protected Customer()
-        {
-        }
+    //To satisfy EF Core
+    protected Customer()
+    {
+    }
 
-        public AgeInYears AgeInYearsAt(DateTime date)
-        {
-            return AgeInYears.Between(Birthdate, date);
-        }
+    public AgeInYears AgeInYearsAt(DateOnly date)
+    {
+        return AgeInYears.Between(Birthdate, date);
+    }
 
-        protected override IEnumerable<object> GetAttributesToIncludeInEqualityCheck()
+    protected override IEnumerable<object> GetAttributesToIncludeInEqualityCheck()
+    {
+        return new List<object>
         {
-            return new List<object>
-            {
-                NationalIdentifier,
-                Name,
-                Birthdate,
-                MonthlyIncome,
-                Address
-            };
-        }
+            NationalIdentifier,
+            Name,
+            Birthdate,
+            MonthlyIncome,
+            Address
+        };
     }
 }

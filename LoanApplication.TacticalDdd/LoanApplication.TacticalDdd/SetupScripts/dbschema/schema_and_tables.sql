@@ -72,4 +72,4 @@ CREATE OR REPLACE VIEW loan_details_view AS
     loan."Registration_RegistrationDate" AS registrationdate
    FROM "LoanApplications" loan
      LEFT JOIN "Operators" opreg ON loan."Registration_RegisteredBy_Value" = opreg."Id"
-     LEFT JOIN "Operators" opdec ON loan."Decision_DecisionBy_Value" = opreg."Id";
+     LEFT JOIN "Operators" opdec ON loan."Decision_DecisionBy_Value" = opdec."Id";

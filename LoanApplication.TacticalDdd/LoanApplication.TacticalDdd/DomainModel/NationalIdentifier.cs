@@ -1,33 +1,29 @@
-using System;
-using System.Collections.Generic;
 using LoanApplication.TacticalDdd.DomainModel.Ddd;
 
-namespace LoanApplication.TacticalDdd.DomainModel
+namespace LoanApplication.TacticalDdd.DomainModel;
+
+public class NationalIdentifier : ValueObject<NationalIdentifier>
 {
-    public class NationalIdentifier : ValueObject<NationalIdentifier>
+    public string Value { get; }
+
+    public NationalIdentifier(string value)
     {
-        public string Value { get; }
-
-        public NationalIdentifier(string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-                throw new ArgumentException("National Identifier cannot be null or empty string");
+        if (string.IsNullOrWhiteSpace(value))
+            throw new ArgumentException("National Identifier cannot be null or empty string");
             
-            if (value.Length!=11)
-                throw new ArgumentException("National Identifier must be 11 chars long");
+        if (value.Length!=11)
+            throw new ArgumentException("National Identifier must be 11 chars long");
 
-            Value = value;
-        }
-        
-        //To satisfy EF Core
-        protected NationalIdentifier()
-        {
-        }
-
-        protected override IEnumerable<object> GetAttributesToIncludeInEqualityCheck()
-        {
-            yield return Value;
-        }
+        Value = value;
     }
-    
+        
+    //To satisfy EF Core
+    protected NationalIdentifier()
+    {
+    }
+
+    protected override IEnumerable<object> GetAttributesToIncludeInEqualityCheck()
+    {
+        yield return Value;
+    }
 }

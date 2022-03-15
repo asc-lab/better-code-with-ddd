@@ -1,7 +1,6 @@
-namespace LoanApplication.TacticalDdd.DomainModel
+namespace LoanApplication.TacticalDdd.DomainModel;
+
+public interface IDebtorRegistry
 {
-    public interface IDebtorRegistry
-    {
-        bool IsRegisteredDebtor(Customer customer);
-    }
+    bool IsRegisteredDebtor(Customer customer);
 }

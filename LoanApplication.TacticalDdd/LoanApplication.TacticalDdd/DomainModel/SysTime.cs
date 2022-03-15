@@ -1,11 +1,10 @@
-using System;
+namespace LoanApplication.TacticalDdd.DomainModel;
 
-namespace LoanApplication.TacticalDdd.DomainModel
+public class SysTime
 {
-    public class SysTime
-    {
-        public static Func<DateTime> CurrentTimeProvider { get; set; } = () => DateTime.Now;
+    public static Func<DateTime> CurrentTimeProvider { get; set; } = () => DateTime.Now;
         
-        public static DateTime Now() => CurrentTimeProvider();
-    }
+    public static DateTime Now() => CurrentTimeProvider();
+
+    public static DateOnly Today() => DateOnly.FromDateTime(Now());
 }
