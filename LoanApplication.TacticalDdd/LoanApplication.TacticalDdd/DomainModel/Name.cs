@@ -20,8 +20,8 @@ public class Name : ValueObject<Name>
     {
     }
 
-    public string First { get;  set; }
-    public string Last { get;  set; }
+    public string First { get;  private set; }
+    public string Last { get;  private set; }
         
     protected override IEnumerable<object> GetAttributesToIncludeInEqualityCheck()
     {
