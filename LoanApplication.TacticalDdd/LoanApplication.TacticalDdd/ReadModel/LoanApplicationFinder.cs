@@ -24,18 +24,21 @@ public class LoanApplicationFinder
             .ToList();
     }
 
-    private string BuildSearchQuery(LoanApplicationSearchCriteriaDto criteria)
+    private static string BuildSearchQuery(LoanApplicationSearchCriteriaDto criteria)
     {
         var query = new StringBuilder();
-        query.AppendLine("SELECT ");
-        query.AppendLine("number AS Number, ");
-        query.AppendLine("status AS Status, ");
-        query.AppendLine("CustomerFirstName || ' ' || CustomerLastName AS CustomerName, ");
-        query.AppendLine("decisionDate AS DecisionDate, ");
-        query.AppendLine("LoanAmount AS LoanAmount, ");
-        query.AppendLine("DecisionBy AS DecisionBy");
-        query.AppendLine("FROM loan_details_view");
-        query.AppendLine("WHERE 1=1 ");
+        query.AppendLine
+        ("""
+            SELECT 
+                number AS Number, 
+                status AS Status,
+            CustomerFirstName || ' ' || CustomerLastName AS CustomerName, 
+            decisionDate AS DecisionDate, 
+            LoanAmount AS LoanAmount, 
+            DecisionBy AS DecisionBy
+            FROM loan_details_view
+            WHERE 1=1 
+        """);
             
         if (!string.IsNullOrWhiteSpace(criteria.ApplicationNumber))
         {
@@ -80,45 +83,45 @@ public class LoanApplicationFinder
             .FirstOrDefault();
     }
 
-    private string BuildSelectDetailsQuery()
+    private static string BuildSelectDetailsQuery()
     {
-        var query = new StringBuilder();
-        query.AppendLine("SELECT ");
-            
-        query.AppendLine("number AS Number, ");
-        query.AppendLine("status AS Status, ");
-        query.AppendLine("score AS Score, ");
-            
-        query.AppendLine("customerNationalIdentifier AS CustomerNationalIdentifier, ");
-        query.AppendLine("customerFirstName AS CustomerFirstName, ");
-        query.AppendLine("customerLastName AS CustomerLastName, ");
-        query.AppendLine("customerBirthdate AS CustomerBirthdate, ");
-        query.AppendLine("customerMonthlyIncome AS CustomerMonthlyIncome, ");
+        return """
+            SELECT 
+                
+                number AS Number, 
+                status AS Status, 
+                score AS Score, 
+                    
+                customerNationalIdentifier AS CustomerNationalIdentifier, 
+                customerFirstName AS CustomerFirstName, 
+                customerLastName AS CustomerLastName, 
+                customerBirthdate AS CustomerBirthdate, 
+                customerMonthlyIncome AS CustomerMonthlyIncome, 
 
-        query.AppendLine("propertyValue AS PropertyValue, ");
+                propertyValue AS PropertyValue, 
 
-        query.AppendLine("loanAmount AS LoanAmount, ");
-        query.AppendLine("loanNumberOfYears AS LoanNumberOfYears, ");
-        query.AppendLine("interestRate AS InterestRate, ");
+                loanAmount AS LoanAmount, 
+                loanNumberOfYears AS LoanNumberOfYears, 
+                interestRate AS InterestRate, 
 
-        query.AppendLine("registeredBy AS RegisteredBy, ");
-        query.AppendLine("registrationDate AS RegistrationDate, ");
+                registeredBy AS RegisteredBy, 
+                registrationDate AS RegistrationDate, 
 
-        query.AppendLine("decisionDate AS DecisionDate, ");
-        query.AppendLine("decisionBy AS DecisionBy, ");
-            
-        query.AppendLine("customerAddress_country AS Country, ");
-        query.AppendLine("customerAddress_zipCode AS ZipCode, ");
-        query.AppendLine("customerAddress_city AS City, ");
-        query.AppendLine("customerAddress_street AS Street, ");
-            
-        query.AppendLine("propertyAddress_country AS Country, ");
-        query.AppendLine("propertyAddress_zipCode AS ZipCode, ");
-        query.AppendLine("propertyAddress_city AS City, ");
-        query.AppendLine("propertyAddress_street AS Street ");
+                decisionDate AS DecisionDate, 
+                decisionBy AS DecisionBy, 
+                    
+                customerAddress_country AS Country, 
+                customerAddress_zipCode AS ZipCode, 
+                customerAddress_city AS City, 
+                customerAddress_street AS Street, 
+                    
+                propertyAddress_country AS Country, 
+                propertyAddress_zipCode AS ZipCode, 
+                propertyAddress_city AS City, 
+                propertyAddress_street AS Street 
 
-        query.AppendLine("FROM loan_details_view ");
-        query.AppendLine("WHERE number = :ApplicationNumber ");
-        return query.ToString();
+            FROM loan_details_view 
+            WHERE number = :ApplicationNumber 
+        """;
     }
 }

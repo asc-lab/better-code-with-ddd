@@ -6,9 +6,13 @@ namespace LoanApplication.TacticalDdd.PortsAdapters.DataAccess;
 
 public static class EfInstaller
 {
-    public static void AddEfDbAdapters(this IServiceCollection services, string cnnString)
+    public static void AddEfDbAdapters(this IServiceCollection services, ConfigurationManager cfgManager)
     {
-        services.AddDbContext<LoanDbContext>(opts => { opts.UseNpgsql(cnnString); });
+        services.AddDbContext<LoanDbContext>(opts =>
+        {
+            opts.UseNpgsql(cfgManager.GetConnectionString("LoanDb")); 
+            
+        });
             
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
         services.AddScoped<ILoanApplicationRepository, EfLoanApplicationRepository>();

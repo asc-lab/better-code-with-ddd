@@ -2,6 +2,7 @@ using System.Security.Claims;
 using LoanApplication.TacticalDdd.Application;
 using LoanApplication.TacticalDdd.Application.Api;
 using LoanApplication.TacticalDdd.ReadModel;
+using O9d.AspNet.FluentValidation;
 
 namespace LoanApplication.TacticalDdd.PortsAdapters.WebApi;
 
@@ -11,54 +12,52 @@ public class LoanApplicationApi : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app
-            .MapPost("LoanApplication",(LoanApplicationSubmissionDto loanApplicationDto,ClaimsPrincipal user, LoanApplicationSubmissionService loanApplicationSubmissionService) =>
+        var group = app.MapGroup("LoanApplication")
+            .RequireAuthorization()
+            .WithValidationFilter();
+        
+        group
+            .MapPost("",([Validate] LoanApplicationSubmissionDto loanApplicationDto,ClaimsPrincipal user, LoanApplicationSubmissionService loanApplicationSubmissionService) =>
             {
                 var newApplicationNumber = loanApplicationSubmissionService.SubmitLoanApplication(loanApplicationDto, user);
                 return Results.Ok(newApplicationNumber);
             })
-            .RequireAuthorization()
             .Produces<string>()
             .WithName("SubmitLoanApplication");
         
-        app
-            .MapPut("LoanApplication/evaluate/{applicationNumber}", (string applicationNumber, LoanApplicationEvaluationService loanApplicationEvaluationService) =>
+        group
+            .MapPut("evaluate/{applicationNumber}", (string applicationNumber, LoanApplicationEvaluationService loanApplicationEvaluationService) =>
             {
                 loanApplicationEvaluationService.EvaluateLoanApplication(applicationNumber);
                 return Results.Ok();
             })
-            .RequireAuthorization()
             .Produces(200);
 
-        app
-            .MapPut("LoanApplication/accept/{applicationNumber}", (string applicationNumber, ClaimsPrincipal user, LoanApplicationDecisionService loanApplicationDecisionService) =>
+        group
+            .MapPut("accept/{applicationNumber}", (string applicationNumber, ClaimsPrincipal user, LoanApplicationDecisionService loanApplicationDecisionService) =>
             {
                 loanApplicationDecisionService.AcceptApplication(applicationNumber,user);
                 return Results.Ok();
             })
-            .RequireAuthorization()
             .Produces(200);
 
         
-        app
-            .MapPut("LoanApplication/reject/{applicationNumber}", (string applicationNumber, ClaimsPrincipal user ,LoanApplicationDecisionService loanApplicationDecisionService) =>
+        group
+            .MapPut("reject/{applicationNumber}", (string applicationNumber, ClaimsPrincipal user ,LoanApplicationDecisionService loanApplicationDecisionService) =>
             {
                 loanApplicationDecisionService.RejectApplication(applicationNumber,user, null);
                 return Results.Ok();
             })
-            .RequireAuthorization()
             .Produces(200);
 
 
-        app
-            .MapGet("LoanApplication/{applicationNumber}", (string applicationNumber, LoanApplicationFinder loanApplicationFinder) => loanApplicationFinder.GetLoanApplication(applicationNumber))
-            .RequireAuthorization()
+        group
+            .MapGet("{applicationNumber}", (string applicationNumber, LoanApplicationFinder loanApplicationFinder) => loanApplicationFinder.GetLoanApplication(applicationNumber))
             .Produces<LoanApplicationDto>();
         
-        app
-            .MapGet("LoanApplication/find", (string applicationNumber, string customerNationalIdentifier,string decisionBy,string registeredBy, LoanApplicationFinder loanApplicationFinder) 
+        group
+            .MapGet("find", (string applicationNumber, string customerNationalIdentifier,string decisionBy,string registeredBy, LoanApplicationFinder loanApplicationFinder) 
             => loanApplicationFinder.FindLoadApplication(new LoanApplicationSearchCriteriaDto(applicationNumber,customerNationalIdentifier,decisionBy,registeredBy)))
-            .RequireAuthorization()
             .Produces<IList<LoanApplicationInfoDto>>();
 
     }

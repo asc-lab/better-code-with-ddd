@@ -13,11 +13,12 @@ var builder = WebApplication.CreateBuilder();
 builder.Services.AddAuthentication("BasicAuthentication")
     .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 builder.Services.AddAuthorization();
-builder.Services.AddEfDbAdapters(builder.Configuration.GetConnectionString("LoanDb"));
+builder.Services.AddFluentValidators();
+builder.Services.AddEfDbAdapters(builder.Configuration);
 builder.Services.AddRabbitMqClient("host=localhost");
 builder.Services.AddExternalServicesClients();
 builder.Services.AddApplicationServices();
-builder.Services.AddReadModelServices(builder.Configuration.GetConnectionString("LoanDb"));
+builder.Services.AddReadModelServices(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
