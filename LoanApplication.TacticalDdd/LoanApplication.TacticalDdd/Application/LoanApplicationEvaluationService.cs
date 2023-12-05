@@ -9,10 +9,12 @@ public class LoanApplicationEvaluationService
     private readonly ILoanApplicationRepository loanApplications;
     private readonly ScoringRulesFactory scoringRulesFactory;
         
-    public LoanApplicationEvaluationService(
+    public LoanApplicationEvaluationService
+    (
         IUnitOfWork unitOfWork,
         ILoanApplicationRepository loanApplications, 
-        IDebtorRegistry debtorRegistry)
+        IDebtorRegistry debtorRegistry
+    )
     {
         this.unitOfWork = unitOfWork;
         this.loanApplications = loanApplications;

@@ -28,12 +28,8 @@ public class AgeInYears : ValueObject<AgeInYears>, IComparable<AgeInYears>
     public static bool operator >=(AgeInYears one, AgeInYears two) => one.CompareTo(two)>=0;
         
     public static bool operator <=(AgeInYears one, AgeInYears two) => one.CompareTo(two)<=0;
-
-
-    public int CompareTo(AgeInYears other)
-    {
-        return this.age.CompareTo(other.age);
-    }
+    
+    public int CompareTo(AgeInYears other) => age.CompareTo(other.age);
 }
 
 public static class AgeInYearsExtensions

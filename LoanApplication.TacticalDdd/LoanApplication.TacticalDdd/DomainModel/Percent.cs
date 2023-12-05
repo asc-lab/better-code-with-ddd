@@ -29,10 +29,7 @@ public class Percent : ValueObject<Percent>,  IComparable<Percent>
         
     public static bool operator <=(Percent one, Percent two) => one.CompareTo(two)<=0;
 
-    public int CompareTo(Percent other)
-    {
-        return Value.CompareTo(other.Value);
-    }
+    public int CompareTo(Percent other) => Value.CompareTo(other.Value);
         
     protected override IEnumerable<object> GetAttributesToIncludeInEqualityCheck()
     {

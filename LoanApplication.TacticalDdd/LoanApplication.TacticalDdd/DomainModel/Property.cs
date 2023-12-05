@@ -25,8 +25,6 @@ public class Property : ValueObject<Property>
     {
     }
 
-    protected override IEnumerable<object> GetAttributesToIncludeInEqualityCheck()
-    {
-        return new List<object> {Value, Address};
-    }
+    protected override IEnumerable<object> GetAttributesToIncludeInEqualityCheck() => new List<object> {Value, Address};
+    
 }

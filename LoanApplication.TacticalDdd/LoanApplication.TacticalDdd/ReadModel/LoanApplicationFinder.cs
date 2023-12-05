@@ -5,15 +5,8 @@ using Npgsql;
 
 namespace LoanApplication.TacticalDdd.ReadModel;
 
-public class LoanApplicationFinder
+public class LoanApplicationFinder(string connectionString)
 {
-    private readonly string connectionString;
-        
-    public LoanApplicationFinder(string connectionString)
-    {
-        this.connectionString = connectionString;
-    }
-
     public IList<LoanApplicationInfoDto> FindLoadApplication(LoanApplicationSearchCriteriaDto criteria)
     {
         using var cn = new NpgsqlConnection(connectionString);

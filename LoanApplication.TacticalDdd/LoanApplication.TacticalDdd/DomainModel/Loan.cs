@@ -38,10 +38,7 @@ public class Loan : ValueObject<Loan>
         return new MonetaryAmount(LoanAmount.Amount / Convert.ToDecimal(x));
     }
         
-    public DateOnly LastInstallmentsDate()
-    {
-        return SysTime.Today().AddYears(LoanNumberOfYears);
-    }
+    public DateOnly LastInstallmentsDate() => SysTime.Today().AddYears(LoanNumberOfYears);
 
     protected override IEnumerable<object> GetAttributesToIncludeInEqualityCheck()
     {

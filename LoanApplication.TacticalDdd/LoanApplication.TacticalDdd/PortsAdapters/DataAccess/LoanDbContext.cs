@@ -6,9 +6,9 @@ namespace LoanApplication.TacticalDdd.PortsAdapters.DataAccess;
 
 public class LoanDbContext : DbContext
 {
-    public DbSet<DomainModel.LoanApplication> LoanApplications { get; set; }
-        
-    public DbSet<Operator> Operators { get; set; }
+    public DbSet<DomainModel.LoanApplication> LoanApplications => Set<DomainModel.LoanApplication>();
+
+    public DbSet<Operator> Operators => Set<Operator>();
 
     public LoanDbContext(DbContextOptions options) : base(options)
     {

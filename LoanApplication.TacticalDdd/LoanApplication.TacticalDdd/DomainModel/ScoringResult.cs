@@ -26,18 +26,13 @@ public class ScoringResult : ValueObject<ScoringResult>
         yield return Explanation;
     }
 
-    public static ScoringResult Green()
-    {
-        return new ScoringResult(ApplicationScore.Green, null);
-    }
+    public static ScoringResult Green() =>
+        new (ApplicationScore.Green, null);
+    
         
-    public static ScoringResult Red(string[] messages)
-    {
-        return new ScoringResult(ApplicationScore.Red, string.Join(Environment.NewLine,messages));
-    }
+    public static ScoringResult Red(string[] messages) 
+        => new (ApplicationScore.Red, string.Join(Environment.NewLine,messages));
+    
 
-    public bool IsRed()
-    {
-        return Score == ApplicationScore.Red;
-    }
+    public bool IsRed() =>Score == ApplicationScore.Red;
 }

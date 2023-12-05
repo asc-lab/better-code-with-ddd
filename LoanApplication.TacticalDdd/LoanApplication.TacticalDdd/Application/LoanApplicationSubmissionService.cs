@@ -5,19 +5,8 @@ using LoanApplication.TacticalDdd.DomainModel.Ddd;
 
 namespace LoanApplication.TacticalDdd.Application;
 
-public class LoanApplicationSubmissionService
+public class LoanApplicationSubmissionService(IUnitOfWork unitOfWork,ILoanApplicationRepository loanApplications, IOperatorRepository operators)
 {
-    private readonly IUnitOfWork unitOfWork;
-    private readonly ILoanApplicationRepository loanApplications;
-    private readonly IOperatorRepository operators;
-
-    public LoanApplicationSubmissionService(IUnitOfWork unitOfWork,ILoanApplicationRepository loanApplications, IOperatorRepository operators)
-    {
-        this.unitOfWork = unitOfWork;
-        this.loanApplications = loanApplications;
-        this.operators = operators;
-    }
-        
     public string SubmitLoanApplication(LoanApplicationSubmissionDto loanApplicationDto, ClaimsPrincipal principal)
     {
         var user = operators.WithLogin(Login.Of(principal.Identity.Name));

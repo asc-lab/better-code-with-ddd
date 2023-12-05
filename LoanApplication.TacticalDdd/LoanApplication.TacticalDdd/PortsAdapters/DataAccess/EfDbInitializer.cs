@@ -2,15 +2,8 @@ using LoanApplication.TacticalDdd.DomainModel;
 
 namespace LoanApplication.TacticalDdd.PortsAdapters.DataAccess;
 
-public class EfDbInitializer : IHostedService
+public class EfDbInitializer(IServiceProvider serviceProvider) : IHostedService
 {
-    private readonly IServiceProvider serviceProvider;
-
-    public EfDbInitializer(IServiceProvider serviceProvider)
-    {
-        this.serviceProvider = serviceProvider;
-    }
-
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         using var scope = serviceProvider.CreateScope();

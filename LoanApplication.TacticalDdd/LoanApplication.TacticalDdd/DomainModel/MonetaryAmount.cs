@@ -40,8 +40,5 @@ public class MonetaryAmount : ValueObject<MonetaryAmount>, IComparable<MonetaryA
         yield return Amount;
     }
 
-    public int CompareTo(MonetaryAmount other)
-    {
-        return Amount.CompareTo(other.Amount);
-    }
+    public int CompareTo(MonetaryAmount other) => Amount.CompareTo(other.Amount);
 }

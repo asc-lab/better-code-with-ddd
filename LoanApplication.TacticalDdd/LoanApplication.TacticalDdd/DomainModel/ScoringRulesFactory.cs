@@ -1,14 +1,7 @@
 namespace LoanApplication.TacticalDdd.DomainModel;
 
-public class ScoringRulesFactory
+public class ScoringRulesFactory(IDebtorRegistry debtorRegistry)
 {
-    private readonly IDebtorRegistry debtorRegistry;
-
-    public ScoringRulesFactory(IDebtorRegistry debtorRegistry)
-    {
-        this.debtorRegistry = debtorRegistry;
-    }
-        
     public ScoringRules DefaultSet => new ScoringRules(new List<IScoringRule>
     {
         new LoanAmountMustBeLowerThanPropertyValue(),

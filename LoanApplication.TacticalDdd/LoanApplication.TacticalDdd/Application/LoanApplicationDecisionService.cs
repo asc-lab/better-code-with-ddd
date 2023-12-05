@@ -5,25 +5,9 @@ using LoanApplication.TacticalDdd.DomainModel.DomainEvents;
 
 namespace LoanApplication.TacticalDdd.Application;
 
-public class LoanApplicationDecisionService
+public class LoanApplicationDecisionService(IUnitOfWork unitOfWork, ILoanApplicationRepository loanApplications, IOperatorRepository operators, IEventPublisher eventPublisher)
 {
-    private readonly IUnitOfWork unitOfWork;
-    private readonly ILoanApplicationRepository loanApplications;
-    private readonly IOperatorRepository operators;
-    private readonly IEventPublisher eventPublisher;
-
-    public LoanApplicationDecisionService(
-        IUnitOfWork unitOfWork,
-        ILoanApplicationRepository loanApplications, 
-        IOperatorRepository operators, 
-        IEventPublisher eventPublisher)
-    {
-        this.unitOfWork = unitOfWork;
-        this.loanApplications = loanApplications;
-        this.operators = operators;
-        this.eventPublisher = eventPublisher;
-    }
-        
+    
     public void RejectApplication(string applicationNumber, ClaimsPrincipal principal, string rejectionReason)
     {
         var loanApplication = loanApplications.WithNumber(LoanApplicationNumber.Of(applicationNumber));

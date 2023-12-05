@@ -1,14 +1,7 @@
 namespace LoanApplication.TacticalDdd.DomainModel;
 
-public class ScoringRules
+public class ScoringRules(IList<IScoringRule> rules)
 {
-    private readonly IList<IScoringRule> rules;
-        
-    public ScoringRules(IList<IScoringRule> rules)
-    {
-        this.rules = rules;
-    }
-
     public ScoringResult Evaluate(LoanApplication loanApplication)
     {
         var brokenRules = rules

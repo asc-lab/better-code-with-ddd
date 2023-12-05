@@ -2,15 +2,8 @@ using LoanApplication.TacticalDdd.DomainModel;
 
 namespace LoanApplication.TacticalDdd.PortsAdapters.DataAccess;
 
-public class EfOperatorRepository : IOperatorRepository
+public class EfOperatorRepository(LoanDbContext dbContext) : IOperatorRepository
 {
-    private readonly LoanDbContext dbContext;
-
-    public EfOperatorRepository(LoanDbContext dbContext)
-    {
-        this.dbContext = dbContext;
-    }
-
     public void Add(Operator @operator)
     {
         dbContext.Operators.Add(@operator);

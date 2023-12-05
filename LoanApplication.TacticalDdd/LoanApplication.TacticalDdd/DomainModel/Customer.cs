@@ -42,10 +42,7 @@ public class Customer : ValueObject<Customer>
     {
     }
 
-    public AgeInYears AgeInYearsAt(DateOnly date)
-    {
-        return AgeInYears.Between(Birthdate, date);
-    }
+    public AgeInYears AgeInYearsAt(DateOnly date) => AgeInYears.Between(Birthdate, date);
 
     protected override IEnumerable<object> GetAttributesToIncludeInEqualityCheck()
     {

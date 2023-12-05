@@ -2,15 +2,8 @@ using LoanApplication.TacticalDdd.DomainModel;
 
 namespace LoanApplication.TacticalDdd.PortsAdapters.DataAccess;
 
-public class EfLoanApplicationRepository : ILoanApplicationRepository
+public class EfLoanApplicationRepository(LoanDbContext dbContext) : ILoanApplicationRepository
 {
-    private readonly LoanDbContext dbContext;
-
-    public EfLoanApplicationRepository(LoanDbContext dbContext)
-    {
-        this.dbContext = dbContext;
-    }
-
     public void Add(DomainModel.LoanApplication loanApplication)
     {
         dbContext.LoanApplications.Add(loanApplication);
