@@ -11,7 +11,7 @@
       <PackageReference Include="Dapper" Version="2.1.24" />
       <PackageReference Include="EasyNetQ" Version="7.7.0" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
-      <PackageReference Include="Npgsql" Version="8.0.0" />
+      <PackageReference Include="Npgsql" Version="8.0.3" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
       <PackageReference Include="O9d.AspNet.FluentValidation" Version="0.1.1" />
       <PackageReference Include="RestEase" Version="1.6.4" />
