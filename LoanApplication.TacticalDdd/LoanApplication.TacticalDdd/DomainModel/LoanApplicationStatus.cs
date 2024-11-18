@@ -1,9 +1,8 @@
-namespace LoanApplication.TacticalDdd.DomainModel
+namespace LoanApplication.TacticalDdd.DomainModel;
+
+public enum LoanApplicationStatus
 {
-    public enum LoanApplicationStatus
-    {
-        New,
-        Accepted,
-        Rejected
-    }
+    New,
+    Accepted,
+    Rejected
 }

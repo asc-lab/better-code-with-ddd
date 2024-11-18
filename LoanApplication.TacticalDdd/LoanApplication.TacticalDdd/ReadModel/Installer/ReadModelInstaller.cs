@@ -1,12 +1,11 @@
-using Microsoft.Extensions.DependencyInjection;
+using Dapper;
 
-namespace LoanApplication.TacticalDdd.ReadModel.Installer
+namespace LoanApplication.TacticalDdd.ReadModel.Installer;
+
+public static class ReadModelInstaller
 {
-    public static class ReadModelInstaller
+    public static void AddReadModelServices(this IServiceCollection services, string connectionString)
     {
-        public static void AddReadModelServices(this IServiceCollection services, string connectionString)
-        {
-            
-        }
+        SqlMapper.AddTypeHandler(new DapperSqlDateOnlyTypeHandler());
     }
 }

@@ -11,7 +11,7 @@ services:
       POSTGRES_DB: ddd_loans
       POSTGRES_USER: lab_user
       POSTGRES_PASSWORD: lab_pass
-      
+  
   rabbitmq:
     image: "rabbitmq:3-management"
     hostname: "rabbit"

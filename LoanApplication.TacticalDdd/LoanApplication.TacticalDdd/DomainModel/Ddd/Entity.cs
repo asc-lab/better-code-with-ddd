@@ -1,9 +1,6 @@
-using System;
+namespace LoanApplication.TacticalDdd.DomainModel.Ddd;
 
-namespace LoanApplication.TacticalDdd.DomainModel.Ddd
+public abstract class Entity
 {
-    public abstract class Entity
-    {
-        public Guid Id { get; protected set; }
-    }
+    public Guid Id { get; protected set; }
 }

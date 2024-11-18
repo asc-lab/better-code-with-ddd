@@ -1,7 +1,6 @@
-namespace LoanApplication.TacticalDdd.DomainModel.Ddd
+namespace LoanApplication.TacticalDdd.DomainModel.Ddd;
+
+public interface IUnitOfWork
 {
-    public interface IUnitOfWork
-    {
-        void CommitChanges();
-    }
+    void CommitChanges();
 }

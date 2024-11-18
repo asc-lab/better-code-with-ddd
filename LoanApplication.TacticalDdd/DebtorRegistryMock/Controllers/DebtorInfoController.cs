@@ -1,48 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace DebtorRegistryMock.Controllers
+namespace DebtorRegistryMock.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class DebtorInfoController(ILogger<DebtorInfoController> logger) : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class DebtorInfoController : ControllerBase
+    [HttpGet("{pesel}")]
+    public DebtorInfo Get([FromRoute] string pesel)
     {
-        private readonly ILogger<DebtorInfoController> logger;
+        logger.Log(LogLevel.Information, $"Getting debtor info for pesel = {pesel}");
 
-        public DebtorInfoController(ILogger<DebtorInfoController> logger)
+        if (pesel == "11111111116")
         {
-            this.logger = logger;
-        }
-
-        [HttpGet("{pesel}")]
-        public DebtorInfo Get([FromRoute]string pesel)
-        {
-            logger.Log(LogLevel.Information, $"Getting debtor info for pesel = {pesel}");
-            
-            if (pesel == "11111111116")
-            {
-                return new DebtorInfo
-                {
-                    Pesel = pesel,
-                    Debts = new List<Debt>
-                    {
-                        new Debt { Amount = 3000M}
-                    }
-                };
-            }
-            else
-            {
-                return new DebtorInfo
-                {
-                    Pesel = pesel,
-                    Debts = new List<Debt>()
-                };
-            }
+            return new DebtorInfo(pesel, [ new(3000M)]);
         }
         
+
+        return new DebtorInfo(pesel,[]);
     }
 }

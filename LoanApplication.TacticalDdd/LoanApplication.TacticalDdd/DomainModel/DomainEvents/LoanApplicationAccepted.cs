@@ -1,22 +1,20 @@
-using System;
 using LoanApplication.TacticalDdd.DomainModel.Ddd;
 using Newtonsoft.Json;
 
-namespace LoanApplication.TacticalDdd.DomainModel.DomainEvents
-{
-    public class LoanApplicationAccepted : DomainEvent
-    {
-        public Guid LoanApplicationId { get; }
+namespace LoanApplication.TacticalDdd.DomainModel.DomainEvents;
 
-        public LoanApplicationAccepted(LoanApplication loanApplication)
-            : this(loanApplication.Id)
-        {
-        }
+public class LoanApplicationAccepted : DomainEvent
+{
+    public Guid LoanApplicationId { get; }
+
+    public LoanApplicationAccepted(LoanApplication loanApplication)
+        : this(loanApplication.Id)
+    {
+    }
         
-        [JsonConstructor]
-        protected LoanApplicationAccepted(Guid id)
-        {
-            LoanApplicationId = id;
-        }
+    [JsonConstructor]
+    protected LoanApplicationAccepted(Guid id)
+    {
+        LoanApplicationId = id;
     }
 }

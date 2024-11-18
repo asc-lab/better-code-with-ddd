@@ -1,22 +1,12 @@
-using System.Collections.Generic;
+namespace LoanApplication.TacticalDdd.DomainModel;
 
-namespace LoanApplication.TacticalDdd.DomainModel
+public class ScoringRulesFactory(IDebtorRegistry registry)
 {
-    public class ScoringRulesFactory
+    public ScoringRules DefaultSet => new(new List<IScoringRule>
     {
-        private readonly IDebtorRegistry debtorRegistry;
-
-        public ScoringRulesFactory(IDebtorRegistry debtorRegistry)
-        {
-            this.debtorRegistry = debtorRegistry;
-        }
-        
-        public ScoringRules DefaultSet => new ScoringRules(new List<IScoringRule>
-        {
-            new LoanAmountMustBeLowerThanPropertyValue(),
-            new CustomerAgeAtTheDateOfLastInstallmentMustBeBelow65(),
-            new InstallmentAmountMustBeLowerThen15PercentOfCustomerIncome(),
-            new CustomerIsNotARegisteredDebtor(debtorRegistry)
-        });
-    }
+        new LoanAmountMustBeLowerThanPropertyValue(),
+        new CustomerAgeAtTheDateOfLastInstallmentMustBeBelow65(),
+        new InstallmentAmountMustBeLowerThen15PercentOfCustomerIncome(),
+        new CustomerIsNotARegisteredDebtor(registry)
+    });
 }

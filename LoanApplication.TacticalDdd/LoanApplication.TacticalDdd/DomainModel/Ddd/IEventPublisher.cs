@@ -1,7 +1,6 @@
-namespace LoanApplication.TacticalDdd.DomainModel.Ddd
+namespace LoanApplication.TacticalDdd.DomainModel.Ddd;
+
+public interface IEventPublisher
 {
-    public interface IEventPublisher
-    {
-        void Publish(DomainEvent @event);
-    }
+    void Publish(DomainEvent @event);
 }

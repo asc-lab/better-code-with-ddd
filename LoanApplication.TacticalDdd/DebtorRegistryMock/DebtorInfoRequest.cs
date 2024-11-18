@@ -1,16 +1,5 @@
-using System;
-using System.Collections.Generic;
+namespace DebtorRegistryMock;
 
-namespace DebtorRegistryMock
-{
-    public class DebtorInfo
-    {
-        public string Pesel { get; set; }
-        public List<Debt> Debts { get; set; }
-    }
+public record DebtorInfo(string Pesel, List<Debt> Debts);
 
-    public class Debt
-    {
-        public decimal Amount { get; set; }
-    }
-}
+public record Debt(decimal Amount);

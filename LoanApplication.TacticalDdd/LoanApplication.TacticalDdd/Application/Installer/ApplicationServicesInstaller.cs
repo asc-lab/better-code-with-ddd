@@ -1,13 +1,11 @@
 using MediatR;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace LoanApplication.TacticalDdd.Application.Installer
+namespace LoanApplication.TacticalDdd.Application.Installer;
+
+public static class ApplicationServicesInstaller
 {
-    public static class ApplicationServicesInstaller
+    public static void AddApplicationServices(this IServiceCollection services)
     {
-        public static void AddApplicationServices(this IServiceCollection services)
-        {
-            services.AddMediatR(typeof(ApplicationServicesInstaller).Assembly);        
-        }
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Startup>());
     }
 }
