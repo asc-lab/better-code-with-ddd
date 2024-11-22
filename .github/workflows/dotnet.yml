@@ -23,7 +23,7 @@ jobs:
     - name: Change directory
       run: cd LoanApplication.TacticalDdd
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore LoanApplication.TacticalDdd.sln
     - name: Build
       run: dotnet build --no-restore
     - name: Test
