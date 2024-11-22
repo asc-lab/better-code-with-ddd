@@ -2,7 +2,7 @@ using LoanApplication.TacticalDdd.DomainModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace LoanApplication.TacticalDdd.PortsAdapters.DataAccess;
+namespace LoanApplication.TacticalDdd.Infrastructure.DataAccess;
 
 public class LoanDbContext : DbContext
 {

@@ -4,7 +4,7 @@ using LoanApplication.TacticalDdd.Application.Api;
 using LoanApplication.TacticalDdd.ReadModel;
 using O9d.AspNet.FluentValidation;
 
-namespace LoanApplication.TacticalDdd.PortsAdapters.WebApi;
+namespace LoanApplication.TacticalDdd.Web;
 
 using Carter;
 

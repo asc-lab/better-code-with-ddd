@@ -1,6 +1,6 @@
 using RestEase;
 
-namespace LoanApplication.TacticalDdd.PortsAdapters.ExternalServices;
+namespace LoanApplication.TacticalDdd.Infrastructure.ExternalServices;
 
 public interface IDebtorRegistryService
 {

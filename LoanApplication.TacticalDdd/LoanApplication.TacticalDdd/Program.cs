@@ -1,9 +1,10 @@
 using Carter;
 using LoanApplication.TacticalDdd.Application;
-using LoanApplication.TacticalDdd.PortsAdapters.DataAccess;
-using LoanApplication.TacticalDdd.PortsAdapters.ExternalServices;
-using LoanApplication.TacticalDdd.PortsAdapters.MessageQueue;
-using LoanApplication.TacticalDdd.PortsAdapters.Security;
+using LoanApplication.TacticalDdd.Application.Api;
+using LoanApplication.TacticalDdd.Infrastructure.DataAccess;
+using LoanApplication.TacticalDdd.Infrastructure.ExternalServices;
+using LoanApplication.TacticalDdd.Infrastructure.MessageQueue;
+using LoanApplication.TacticalDdd.Security;
 using LoanApplication.TacticalDdd.ReadModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.OpenApi.Models;

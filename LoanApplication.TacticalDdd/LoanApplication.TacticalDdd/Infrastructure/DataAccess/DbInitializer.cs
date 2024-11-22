@@ -1,6 +1,4 @@
-using LoanApplication.TacticalDdd.DomainModel;
-
-namespace LoanApplication.TacticalDdd.PortsAdapters.DataAccess;
+namespace LoanApplication.TacticalDdd.Infrastructure.DataAccess;
 
 /*
 public class DbInitializer : IHostedService

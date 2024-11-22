@@ -2,7 +2,7 @@ using LoanApplication.TacticalDdd.DomainModel;
 using LoanApplication.TacticalDdd.DomainModel.Ddd;
 using Microsoft.EntityFrameworkCore;
 
-namespace LoanApplication.TacticalDdd.PortsAdapters.DataAccess;
+namespace LoanApplication.TacticalDdd.Infrastructure.DataAccess;
 
 public static class EfInstaller
 {
@@ -10,8 +10,8 @@ public static class EfInstaller
     {
         services.AddDbContext<LoanDbContext>(opts =>
         {
-            opts.UseNpgsql(cfgManager.GetConnectionString("LoanDb")); 
-            
+            opts
+                .UseNpgsql(cfgManager.GetConnectionString("LoanDb"));
         });
             
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();

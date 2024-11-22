@@ -1,7 +1,7 @@
 using EasyNetQ;
 using LoanApplication.TacticalDdd.DomainModel.Ddd;
 
-namespace LoanApplication.TacticalDdd.PortsAdapters.MessageQueue;
+namespace LoanApplication.TacticalDdd.Infrastructure.MessageQueue;
 
 public static class MessageQueueClientInstaller
 {
