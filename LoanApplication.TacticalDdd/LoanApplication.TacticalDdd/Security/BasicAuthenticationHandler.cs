@@ -10,9 +10,8 @@ namespace LoanApplication.TacticalDdd.Security;
 public class BasicAuthenticationHandler(
     IOptionsMonitor<AuthenticationSchemeOptions> options,
     ILoggerFactory logger,
-    UrlEncoder encoder,
-    ISystemClock clock)
-    : AuthenticationHandler<AuthenticationSchemeOptions>(options, logger, encoder, clock)
+    UrlEncoder encoder)
+    : AuthenticationHandler<AuthenticationSchemeOptions>(options, logger, encoder)
 {
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
@@ -24,7 +23,7 @@ public class BasicAuthenticationHandler(
         {
             var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
             var credentialBytes = Convert.FromBase64String(authHeader.Parameter);
-            var credentials = Encoding.UTF8.GetString(credentialBytes).Split(new[] { ':' }, 2);
+            var credentials = Encoding.UTF8.GetString(credentialBytes).Split([':'], 2);
             var username = credentials[0];
             var password = credentials[1];
             validatedLogin = (username=="admin" && password=="admin") ? "admin" : null;

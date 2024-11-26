@@ -11,8 +11,12 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder();
 
-builder.Services.AddAuthentication("BasicAuthentication")
-    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+builder.Services
+    .AddAuthentication("BasicAuthentication")
+    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", opts =>
+    {
+        opts.TimeProvider = TimeProvider.System;
+    });
 builder.Services.AddAuthorization();
 builder.Services.AddFluentValidators();
 builder.Services.AddEfDbAdapters(builder.Configuration);
