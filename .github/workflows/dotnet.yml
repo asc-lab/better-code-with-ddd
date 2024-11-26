@@ -1,0 +1,37 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: [ "ef_core" ]
+  pull_request:
+    branches: [ "ef_core" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Setup .NET Core SDK
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0' 
+
+      # Step 3: Restore dependencies
+      - name: Restore dependencies
+        run: dotnet restore LoanApplication.TacticalDdd/LoanApplication.TacticalDdd.sln
+
+      # Step 4: Build the solution
+      - name: Build solution
+        run: dotnet build LoanApplication.TacticalDdd/LoanApplication.TacticalDdd.sln --no-restore --configuration Release
+
+      # Step 5: Run tests
+      - name: Run tests
+        run: dotnet test LoanApplication.TacticalDdd.Tests/LoanApplication.TacticalDdd.Tests.csproj --no-build --configuration Release
