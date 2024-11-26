@@ -1,8 +1,10 @@
 # Better code with DDD building blocks
 
+[![.NET](https://github.com/asc-lab/better-code-with-ddd/actions/workflows/dotnet.yml/badge.svg)](https://github.com/asc-lab/better-code-with-ddd/actions/workflows/dotnet.yml)
+
 This repository contains code that accompanies presentation ASC LAB team gave at meetup about “Creating better code with Domain Driven Design”.
 
-Check out our article on [Altkom Software & Consulting blog](https://altkomsoftware.pl/en/blog/create-better-code-using-domain-driven-design/).
+Check out our article on [Altkom Software & Consulting blog](https://www.altkomsoftware.com/blog/better-code-using-domain-driven-design/).
 
 ## Business case
 
