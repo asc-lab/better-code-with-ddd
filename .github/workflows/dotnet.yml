@@ -34,4 +34,4 @@ jobs:
 
       # Step 5: Run tests
       - name: Run tests
-        run: dotnet test LoanApplication.TacticalDdd.Tests/LoanApplication.TacticalDdd.Tests.csproj --no-build --configuration Release
+        run: dotnet test LoanApplication.TacticalDdd/LoanApplication.TacticalDdd.Tests/LoanApplication.TacticalDdd.Tests.csproj --no-build --configuration Release
