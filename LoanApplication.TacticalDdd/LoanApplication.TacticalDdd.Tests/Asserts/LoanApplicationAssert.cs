@@ -10,12 +10,13 @@ public static class LoanApplicationAssertExtension
         => new LoanApplicationAssert(loanApplication);
 }
 
-public class LoanApplicationAssert : ReferenceTypeAssertions<DomainModel.LoanApplication,LoanApplicationAssert>
+public class LoanApplicationAssert
 {
+    private readonly DomainModel.LoanApplication Subject;
+
     public LoanApplicationAssert(DomainModel.LoanApplication loanApplication)
-        : base(loanApplication)
     {
-            
+        Subject = loanApplication;
     }
         
     public AndConstraint<LoanApplicationAssert> BeInStatus(LoanApplicationStatus expectedStatus)
@@ -61,5 +62,6 @@ public class LoanApplicationAssert : ReferenceTypeAssertions<DomainModel.LoanApp
         return ScoreIs(ApplicationScore.Green);
     }
 
-    protected override string Identifier => "LoanApplicationAssert";
+    // kept for compatibility with previous naming in messages
+    private const string Identifier = "LoanApplicationAssert";
 }
