@@ -13,7 +13,7 @@ namespace LoanApplication.TacticalDdd.Tests.ApplicationTests;
 public class LoanApplicationDecisionServiceTests
 {
     [Fact]
-    public void LoanApplicationDecisionService_GreenApplication_CanBeAccepted()
+    public async Task LoanApplicationDecisionService_GreenApplication_CanBeAccepted()
     {
         var operators = new InMemoryOperatorRepository(new List<Operator>
         {
@@ -41,7 +41,7 @@ public class LoanApplicationDecisionServiceTests
         );
             
             
-        decisionService.AcceptApplication("123", OperatorIdentity("admin"));
+        await decisionService.AcceptApplication("123", OperatorIdentity("admin"));
             
         existingApplications.WithNumber(new LoanApplicationNumber("123"))
             .Should()
@@ -54,7 +54,7 @@ public class LoanApplicationDecisionServiceTests
     }
         
     [Fact]
-    public void LoanApplicationDecisionService_GreenApplication_CanBeRejected()
+    public async Task LoanApplicationDecisionService_GreenApplication_CanBeRejected()
     {
         var operators = new InMemoryOperatorRepository(new List<Operator>
         {
@@ -82,7 +82,7 @@ public class LoanApplicationDecisionServiceTests
         );
             
             
-        decisionService.RejectApplication("123", OperatorIdentity("admin"), null);
+        await decisionService.RejectApplication("123", OperatorIdentity("admin"), null);
             
         existingApplications.WithNumber(new LoanApplicationNumber("123"))
             .Should()

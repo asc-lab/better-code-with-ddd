@@ -35,18 +35,18 @@ public class LoanApplicationApi : ICarterModule
             .Produces(Status200OK);
 
         group
-            .MapPut("accept/{applicationNumber}", (string applicationNumber, ClaimsPrincipal user, LoanApplicationDecisionService loanApplicationDecisionService) =>
+            .MapPut("accept/{applicationNumber}", async (string applicationNumber, ClaimsPrincipal user, LoanApplicationDecisionService loanApplicationDecisionService) =>
             {
-                loanApplicationDecisionService.AcceptApplication(applicationNumber,user);
+                await loanApplicationDecisionService.AcceptApplication(applicationNumber,user);
                 return Results.Ok();
             })
             .Produces(Status200OK);
 
         
         group
-            .MapPut("reject/{applicationNumber}", (string applicationNumber, ClaimsPrincipal user ,LoanApplicationDecisionService loanApplicationDecisionService) =>
+            .MapPut("reject/{applicationNumber}", async (string applicationNumber, ClaimsPrincipal user ,LoanApplicationDecisionService loanApplicationDecisionService) =>
             {
-                loanApplicationDecisionService.RejectApplication(applicationNumber,user, null);
+                await loanApplicationDecisionService.RejectApplication(applicationNumber,user, null);
                 return Results.Ok();
             })
             .Produces(Status200OK);

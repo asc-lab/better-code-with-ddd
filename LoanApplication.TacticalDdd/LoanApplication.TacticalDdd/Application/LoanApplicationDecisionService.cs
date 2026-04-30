@@ -8,7 +8,7 @@ namespace LoanApplication.TacticalDdd.Application;
 public class LoanApplicationDecisionService(IUnitOfWork unitOfWork, ILoanApplicationRepository loanApplications, IOperatorRepository operators, IEventPublisher eventPublisher)
 {
     
-    public void RejectApplication(string applicationNumber, ClaimsPrincipal principal, string rejectionReason)
+    public async Task RejectApplication(string applicationNumber, ClaimsPrincipal principal, string rejectionReason)
     {
         var loanApplication = loanApplications.WithNumber(LoanApplicationNumber.Of(applicationNumber));
         var user = operators.WithLogin(Login.Of(principal.Identity.Name));
@@ -17,10 +17,10 @@ public class LoanApplicationDecisionService(IUnitOfWork unitOfWork, ILoanApplica
             
         unitOfWork.CommitChanges();
             
-        eventPublisher.Publish(new LoanApplicationRejected(loanApplication));
+        await eventPublisher.Publish(new LoanApplicationRejected(loanApplication));
     }
 
-    public void AcceptApplication(string applicationNumber, ClaimsPrincipal principal)
+    public async Task AcceptApplication(string applicationNumber, ClaimsPrincipal principal)
     {
         var loanApplication = loanApplications.WithNumber(LoanApplicationNumber.Of(applicationNumber));
         var user = operators.WithLogin(Login.Of(principal.Identity.Name));
@@ -29,6 +29,6 @@ public class LoanApplicationDecisionService(IUnitOfWork unitOfWork, ILoanApplica
             
         unitOfWork.CommitChanges();
             
-        eventPublisher.Publish(new LoanApplicationAccepted(loanApplication));
+        await eventPublisher.Publish(new LoanApplicationAccepted(loanApplication));
     }
 }

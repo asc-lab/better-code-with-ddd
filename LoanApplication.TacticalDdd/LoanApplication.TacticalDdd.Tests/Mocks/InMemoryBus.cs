@@ -6,9 +6,10 @@ namespace LoanApplication.TacticalDdd.Tests.Mocks;
 public class InMemoryBus : IEventPublisher
 {
     private readonly List<DomainEvent> events = new ();
-    public void Publish(DomainEvent @event)
+    public Task Publish(DomainEvent @event)
     {
         events.Add(@event);
+        return Task.CompletedTask;
     }
 
     public ReadOnlyCollection<DomainEvent> Events => events.AsReadOnly();

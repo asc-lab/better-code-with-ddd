@@ -1,5 +1,5 @@
 using LoanApplication.TacticalDdd.DomainModel.Ddd;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace LoanApplication.TacticalDdd.DomainModel;
 

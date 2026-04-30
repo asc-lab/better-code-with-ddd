@@ -1,5 +1,5 @@
 using LoanApplication.TacticalDdd.DomainModel.Ddd;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace LoanApplication.TacticalDdd.DomainModel.DomainEvents;
 
@@ -13,8 +13,8 @@ public class LoanApplicationRejected : DomainEvent
     }
         
     [JsonConstructor]
-    protected LoanApplicationRejected(Guid id)
+    protected LoanApplicationRejected(Guid loanApplicationId)
     {
-        LoanApplicationId = id;
+        LoanApplicationId = loanApplicationId;
     }
 }
