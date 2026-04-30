@@ -7,7 +7,7 @@ public record LoanApplicationSubmissionDto
     string CustomerNationalIdentifier,
     string CustomerFirstName,
     string CustomerLastName,
-    DateTime CustomerBirthdate,
+    DateOnly CustomerBirthdate,
     decimal CustomerMonthlyIncome,
     AddressDto CustomerAddress,
     decimal PropertyValue,

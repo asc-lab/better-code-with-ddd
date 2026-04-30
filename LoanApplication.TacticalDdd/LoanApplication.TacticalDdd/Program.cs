@@ -9,8 +9,6 @@ using LoanApplication.TacticalDdd.ReadModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.OpenApi;
 
-// using Microsoft.OpenApi.Models; // removed to avoid dependency on Microsoft.OpenApi types
-
 var builder = WebApplication.CreateBuilder();
 
 builder.Services
@@ -37,20 +35,6 @@ builder.Services.AddSwaggerGen(opts =>
         Name = "Authorization"
     });
     
-    /*opts.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "basic"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });*/
     opts.AddSecurityRequirement(doc =>
     {
         return new OpenApiSecurityRequirement

@@ -35,7 +35,7 @@ public class LoanApplicationSubmissionServiceTests
             CustomerNationalIdentifier : "11111111119",
             CustomerFirstName : "Frank",
             CustomerLastName : "Oz",
-            CustomerBirthdate : SysTime.Now().AddYears(-25),
+            CustomerBirthdate : SysTime.Today().AddYears(-25),
             CustomerMonthlyIncome : 10_000M,
             CustomerAddress : new AddressDto
             (
@@ -87,7 +87,7 @@ public class LoanApplicationSubmissionServiceTests
             CustomerNationalIdentifier : "11111111119111",
             CustomerFirstName : "Frank",
             CustomerLastName : "Oz",
-            CustomerBirthdate : SysTime.Now().AddYears(-25),
+            CustomerBirthdate : SysTime.Today().AddYears(-25),
             CustomerMonthlyIncome : 10_000M,
             CustomerAddress : new AddressDto
             (
@@ -120,9 +120,8 @@ public class LoanApplicationSubmissionServiceTests
 
     private ClaimsPrincipal OperatorIdentity(string login)
     {
-        return new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-        {
-            new Claim(ClaimTypes.Name, login) 
-        }));
+        return new ClaimsPrincipal(new ClaimsIdentity([
+            new Claim(ClaimTypes.Name, login)
+        ]));
     }
 }

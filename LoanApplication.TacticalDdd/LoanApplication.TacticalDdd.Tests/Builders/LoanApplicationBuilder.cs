@@ -12,7 +12,7 @@ public class LoanApplicationBuilder
     private LoanApplicationNumber applicationNumber = new LoanApplicationNumber(Guid.NewGuid().ToString());
     private bool evaluated = false;
     private LoanApplicationStatus targetStatus = LoanApplicationStatus.New;
-    private ScoringRulesFactory scoringRulesFactory = new ScoringRulesFactory(new DebtorRegistryMock());
+    private readonly ScoringRulesFactory scoringRulesFactory = new ScoringRulesFactory(new DebtorRegistryMock());
     public static LoanApplicationBuilder GivenLoanApplication() => new LoanApplicationBuilder();
         
     public LoanApplicationBuilder Accepted()

@@ -1,5 +1,4 @@
 using LoanApplication.TacticalDdd.DomainModel.Ddd;
-using Newtonsoft.Json;
 
 namespace LoanApplication.TacticalDdd.DomainModel;
 
@@ -8,7 +7,6 @@ public class ScoringResult : ValueObject<ScoringResult>
     public ApplicationScore? Score { get; }
     public string Explanation { get; }
 
-    [JsonConstructor]
     private ScoringResult(ApplicationScore? score, string explanation)
     {
         Score = score;
@@ -34,5 +32,5 @@ public class ScoringResult : ValueObject<ScoringResult>
         => new (ApplicationScore.Red, string.Join(Environment.NewLine,messages));
     
 
-    public bool IsRed() =>Score == ApplicationScore.Red;
+    public bool IsRed() => Score == ApplicationScore.Red;
 }

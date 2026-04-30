@@ -21,8 +21,7 @@ public class Debt
     
 public class DebtorRegistryClient
 {
-    public async Task<DebtorInfo> GetDebtorInfo(string pesel)
-    {
-        return await RestClient.For<IDebtorRegistryService>("http://localhost:5005/DebtorInfo").Get(pesel);
-    }
+    public async Task<DebtorInfo> GetDebtorInfo(string pesel) =>
+        await RestClient.For<IDebtorRegistryService>("http://localhost:5005/DebtorInfo").Get(pesel);
+    
 }

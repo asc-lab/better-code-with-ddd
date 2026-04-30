@@ -10,18 +10,11 @@ public static class LoanApplicationAssertExtension
         => new LoanApplicationAssert(loanApplication);
 }
 
-public class LoanApplicationAssert
+public class LoanApplicationAssert(DomainModel.LoanApplication loanApplication)
 {
-    private readonly DomainModel.LoanApplication Subject;
-
-    public LoanApplicationAssert(DomainModel.LoanApplication loanApplication)
-    {
-        Subject = loanApplication;
-    }
-        
     public AndConstraint<LoanApplicationAssert> BeInStatus(LoanApplicationStatus expectedStatus)
     {
-        Subject.Status.Should().Be(expectedStatus);
+        loanApplication.Status.Should().Be(expectedStatus);
         return new AndConstraint<LoanApplicationAssert>(this);
     }
         
@@ -42,13 +35,13 @@ public class LoanApplicationAssert
         
     public AndConstraint<LoanApplicationAssert> ScoreIsNull()
     {
-        Subject.Score.Should().BeNull();
+        loanApplication.Score.Should().BeNull();
         return new AndConstraint<LoanApplicationAssert>(this);
     }
         
     public AndConstraint<LoanApplicationAssert> ScoreIs(ApplicationScore expectedScore)
     {
-        Subject.Score?.Score.Should().Be(expectedScore);
+        loanApplication.Score?.Score.Should().Be(expectedScore);
         return new AndConstraint<LoanApplicationAssert>(this);
     }
         
@@ -62,6 +55,4 @@ public class LoanApplicationAssert
         return ScoreIs(ApplicationScore.Green);
     }
 
-    // kept for compatibility with previous naming in messages
-    private const string Identifier = "LoanApplicationAssert";
 }

@@ -12,17 +12,11 @@ public static class DomainEventsAssertExtension
     }
 }
     
-public class DomainEventsAssert
+public class DomainEventsAssert(IEnumerable<DomainEvent> events)
 {
-    private readonly IEnumerable<DomainEvent> Subject;
-    public DomainEventsAssert(IEnumerable<DomainEvent> events)
-    {
-        Subject = events;
-    }
-
     public AndConstraint<DomainEventsAssert> HaveExpectedNumberOfEvents(int expectedNumberOfEvents)
     {
-        Subject.Count().Should().Be(expectedNumberOfEvents);
+        events.Count().Should().Be(expectedNumberOfEvents);
         return new AndConstraint<DomainEventsAssert>(this);
     }
 
@@ -30,7 +24,7 @@ public class DomainEventsAssert
     {
         using (new AssertionScope())
         {
-            Subject.Any(e => e.GetType() == typeof(T) && matcher((T)e))
+            events.Any(e => e.GetType() == typeof(T) && matcher((T)e))
                 .Should().BeTrue("List of events does not contain any that meets criteria");
         }
         return new AndConstraint<DomainEventsAssert>(this);

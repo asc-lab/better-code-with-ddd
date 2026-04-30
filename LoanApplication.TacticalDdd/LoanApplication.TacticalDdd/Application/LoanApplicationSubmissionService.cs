@@ -18,7 +18,7 @@ public class LoanApplicationSubmissionService(IUnitOfWork unitOfWork,ILoanApplic
             (
                 new NationalIdentifier(loanApplicationDto.CustomerNationalIdentifier),
                 new Name(loanApplicationDto.CustomerFirstName, loanApplicationDto.CustomerLastName),
-                DateOnly.FromDateTime(loanApplicationDto.CustomerBirthdate),
+                loanApplicationDto.CustomerBirthdate,
                 new MonetaryAmount(loanApplicationDto.CustomerMonthlyIncome),
                 new Address
                 (
