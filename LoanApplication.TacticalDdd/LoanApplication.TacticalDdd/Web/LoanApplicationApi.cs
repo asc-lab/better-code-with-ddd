@@ -3,10 +3,11 @@ using LoanApplication.TacticalDdd.Application;
 using LoanApplication.TacticalDdd.Application.Api;
 using LoanApplication.TacticalDdd.ReadModel;
 using O9d.AspNet.FluentValidation;
+using static Microsoft.AspNetCore.Http.StatusCodes;
+using Carter;
 
 namespace LoanApplication.TacticalDdd.Web;
 
-using Carter;
 
 public class LoanApplicationApi : ICarterModule
 {
@@ -31,7 +32,7 @@ public class LoanApplicationApi : ICarterModule
                 loanApplicationEvaluationService.EvaluateLoanApplication(applicationNumber);
                 return Results.Ok();
             })
-            .Produces(200);
+            .Produces(Status200OK);
 
         group
             .MapPut("accept/{applicationNumber}", (string applicationNumber, ClaimsPrincipal user, LoanApplicationDecisionService loanApplicationDecisionService) =>
@@ -39,7 +40,7 @@ public class LoanApplicationApi : ICarterModule
                 loanApplicationDecisionService.AcceptApplication(applicationNumber,user);
                 return Results.Ok();
             })
-            .Produces(200);
+            .Produces(Status200OK);
 
         
         group
@@ -48,7 +49,7 @@ public class LoanApplicationApi : ICarterModule
                 loanApplicationDecisionService.RejectApplication(applicationNumber,user, null);
                 return Results.Ok();
             })
-            .Produces(200);
+            .Produces(Status200OK);
 
 
         group
