@@ -7,7 +7,7 @@ public static class MessageQueueClientInstaller
 {
     public static void AddRabbitMqClient(this IServiceCollection services, string brokerAddress)
     {
-        services.AddSingleton<IBus>(_ => RabbitHutch.CreateBus(brokerAddress));
+        services.AddEasyNetQ(brokerAddress).UseSystemTextJson();
         services.AddSingleton<IEventPublisher, RabbitMqEventPublisher>();
     }
 }
