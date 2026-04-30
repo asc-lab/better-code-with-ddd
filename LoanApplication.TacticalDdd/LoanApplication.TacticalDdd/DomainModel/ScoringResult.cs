@@ -4,10 +4,10 @@ namespace LoanApplication.TacticalDdd.DomainModel;
 
 public class ScoringResult : ValueObject<ScoringResult>
 {
-    public ApplicationScore? Score { get; }
+    public ApplicationScore Score { get; }
     public string Explanation { get; }
 
-    private ScoringResult(ApplicationScore? score, string explanation)
+    private ScoringResult(ApplicationScore score, string explanation)
     {
         Score = score;
         Explanation = explanation;
