@@ -20,8 +20,7 @@ public class LoanApplicationDecisionServiceTests
             GivenOperator().WithLogin("admin").Build()    
         });
             
-        var existingApplications = new InMemoryLoanApplicationRepository(new []
-        {
+        var existingApplications = new InMemoryLoanApplicationRepository([
             GivenLoanApplication()
                 .WithNumber("123")
                 .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
@@ -29,7 +28,7 @@ public class LoanApplicationDecisionServiceTests
                 .WithProperty(prop => prop.WithValue(250_000M))
                 .Evaluated()
                 .Build()
-        });
+        ]);
             
         var eventBus = new InMemoryBus();
             
@@ -62,8 +61,7 @@ public class LoanApplicationDecisionServiceTests
             GivenOperator().WithLogin("admin").Build()    
         });
             
-        var existingApplications = new InMemoryLoanApplicationRepository(new []
-        {
+        var existingApplications = new InMemoryLoanApplicationRepository([
             GivenLoanApplication()
                 .WithNumber("123")
                 .WithCustomer(customer => customer.WithAge(25).WithIncome(15_000M))
@@ -71,7 +69,7 @@ public class LoanApplicationDecisionServiceTests
                 .WithProperty(prop => prop.WithValue(250_000M))
                 .Evaluated()
                 .Build()
-        });
+        ]);
 
         var eventBus = new InMemoryBus();
             
@@ -98,9 +96,8 @@ public class LoanApplicationDecisionServiceTests
         
     private ClaimsPrincipal OperatorIdentity(string login)
     {
-        return new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-        {
-            new Claim(ClaimTypes.Name, login) 
-        }));
+        return new ClaimsPrincipal(new ClaimsIdentity([
+            new Claim(ClaimTypes.Name, login)
+        ]));
     }
 }

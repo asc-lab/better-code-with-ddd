@@ -8,7 +8,7 @@ public class ScoringRules(IList<IScoringRule> rules)
             .Where(r => !r.IsSatisfiedBy(loanApplication))
             .ToList();
 
-        return brokenRules.Any() ? 
+        return brokenRules.Count != 0 ? 
             ScoringResult.Red(brokenRules.Select(r=>r.Message).ToArray()) : ScoringResult.Green();
     }
 }
@@ -52,15 +52,8 @@ public class InstallmentAmountMustBeLowerThen15PercentOfCustomerIncome : IScorin
     public string Message => "Installment is higher than 15% of customer's income.";
 }
 
-public class CustomerIsNotARegisteredDebtor : IScoringRule
+public class CustomerIsNotARegisteredDebtor(IDebtorRegistry debtorRegistry) : IScoringRule
 {
-    private readonly IDebtorRegistry debtorRegistry;
-
-    public CustomerIsNotARegisteredDebtor(IDebtorRegistry debtorRegistry)
-    {
-        this.debtorRegistry = debtorRegistry;
-    }
-
     public bool IsSatisfiedBy(LoanApplication loanApplication)
     {
         return !debtorRegistry.IsRegisteredDebtor(loanApplication.Customer);

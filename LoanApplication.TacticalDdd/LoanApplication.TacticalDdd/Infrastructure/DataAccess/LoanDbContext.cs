@@ -32,21 +32,24 @@ class OperatorMapping : IEntityTypeConfiguration<Operator>
             .HasConversion(x => x.Value, x => new OperatorId(x));
 
         builder.Property(x => x.Login)
-            .HasConversion(x => x.Value, x => new Login(x));
+            .HasConversion(x => x.Value, x => new Login(x))
+            .IsRequired();
 
         builder.Property(x => x.Password)
-            .HasConversion(x => x.Value, x => new Password(x));
+            .HasConversion(x => x.Value, x => new Password(x))
+            .IsRequired();
 
-        builder.OwnsOne(x => x.Name, opts =>
+        builder.ComplexProperty(x => x.Name, opts =>
         {
-            opts.Property(x => x.First).HasColumnName("FirstName");
-            opts.Property(x => x.Last).HasColumnName("LastName");
-        }).Navigation(x => x.Name).IsRequired();
+            opts.Property(x => x.First).HasColumnName("FirstName").IsRequired();
+            opts.Property(x => x.Last).HasColumnName("LastName").IsRequired();
+        });
 
         builder.Property(x => x.CompetenceLevel)
             .HasConversion(x => x != null ? x.Amount : (decimal?)null,
                 x => x.HasValue ? new MonetaryAmount(x.Value) : null)
-            .HasColumnName("CompetenceLevel_Amount");
+            .HasColumnName("CompetenceLevel_Amount")
+            .IsRequired();
     }
 }
 
@@ -69,25 +72,24 @@ class LoanApplicationMapping : IEntityTypeConfiguration<DomainModel.LoanApplicat
             .Property(x => x.Status)
             .HasConversion<string>();
 
-        builder.OwnsOne(x => x.Score, opts =>
+        builder.ComplexProperty(x => x.Score, opts =>
         {
             opts.Property(x => x.Explanation);
-            opts.Property(x => x.Score).HasConversion<string>();
+            opts.Property(x => x.Score).HasConversion<string>().IsRequired();
         });
 
-        builder.OwnsOne(x => x.Customer, opts =>
+        builder.ComplexProperty(x => x.Customer, opts =>
         {
             opts
                 .Property(x => x.NationalIdentifier)
                 .HasConversion(x => x.Value, x => new NationalIdentifier(x))
-                .HasColumnName("Customer_NationalIdentifier_Value")
-                .IsRequired();
+                .HasColumnName("Customer_NationalIdentifier_Value");
 
-            opts.OwnsOne(x => x.Name, name =>
+            opts.ComplexProperty(x => x.Name, name =>
             {
                 name.Property(x => x.First).IsRequired();
                 name.Property(x => x.Last).IsRequired();
-            }).Navigation(x=>x.Name).IsRequired();
+            });
 
             opts.Property(x => x.Birthdate).IsRequired();
 
@@ -96,32 +98,32 @@ class LoanApplicationMapping : IEntityTypeConfiguration<DomainModel.LoanApplicat
                 .HasConversion(x => x.Amount, x => new MonetaryAmount(x))
                 .HasColumnName("Customer_MonthlyIncome_Amount");
 
-            opts.OwnsOne(x => x.Address, addr =>
+            opts.ComplexProperty(x => x.Address, addr =>
             {
                 addr.Property(x => x.Country).IsRequired();
                 addr.Property(x => x.ZipCode).IsRequired();
                 addr.Property(x => x.City).IsRequired();
                 addr.Property(x => x.Street).IsRequired();
-            }).Navigation(x => x.Address).IsRequired();
+            });
+        });
 
-        }).Navigation(x=>x.Customer).IsRequired();
-
-        builder.OwnsOne(x => x.Property, opts =>
+        builder.ComplexProperty(x => x.Property, opts =>
         {
             opts.Property(x => x.Value)
                 .HasConversion(x => x.Amount, x => new MonetaryAmount(x))
-                .HasColumnName("Property_Value_Amount");
+                .HasColumnName("Property_Value_Amount")
+                .IsRequired();
 
-            opts.OwnsOne(x => x.Address, addr =>
+            opts.ComplexProperty(x => x.Address, addr =>
             {
                 addr.Property(x => x.Country).IsRequired();
                 addr.Property(x => x.ZipCode).IsRequired();
                 addr.Property(x => x.City).IsRequired();
                 addr.Property(x => x.Street).IsRequired();
-            }).Navigation(x => x.Address).IsRequired();
-        }).Navigation(x => x.Property).IsRequired();
+            });
+        });
 
-        builder.OwnsOne(x => x.Loan, opts =>
+        builder.ComplexProperty(x => x.Loan, opts =>
         {
             opts.Property(x => x.InterestRate)
                 .HasConversion(x => x.Value, x => new Percent(x))
@@ -134,19 +136,19 @@ class LoanApplicationMapping : IEntityTypeConfiguration<DomainModel.LoanApplicat
                 .IsRequired();
 
             opts.Property(x => x.LoanNumberOfYears).IsRequired();
-        }).Navigation(x => x.Loan).IsRequired();
+        });
 
-        builder.OwnsOne(x => x.Decision, opts =>
+        builder.ComplexProperty(x => x.Decision, opts =>
         {
-            opts.Property(x => x.DecisionDate);
+            opts.Property(x => x.DecisionDate).IsRequired();
             opts.Property(x => x.DecisionBy)
                 .HasConversion(x => x != null ? x.Value : (Guid?)null, x => x.HasValue ? new OperatorId(x.Value) : null)
                 .HasColumnName("Decision_DecisionBy_Value");
         });
 
-        builder.OwnsOne(x => x.Registration, opts =>
+        builder.ComplexProperty(x => x.Registration, opts =>
         {
-            opts.Property(x => x.RegistrationDate);
+            opts.Property(x => x.RegistrationDate).IsRequired();
             opts.Property(x => x.RegisteredBy)
                 .HasConversion(x => x != null ? x.Value : (Guid?)null, x => x.HasValue ? new OperatorId(x.Value) : null)
                 .HasColumnName("Registration_RegisteredBy_Value");

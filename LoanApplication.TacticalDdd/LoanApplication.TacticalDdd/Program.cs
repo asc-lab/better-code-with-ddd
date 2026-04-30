@@ -7,7 +7,7 @@ using LoanApplication.TacticalDdd.Infrastructure.MessageQueue;
 using LoanApplication.TacticalDdd.Security;
 using LoanApplication.TacticalDdd.ReadModel;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder();
 
@@ -25,29 +25,25 @@ builder.Services.AddExternalServicesClients();
 builder.Services.AddApplicationServices();
 builder.Services.AddReadModelServices(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
+builder.Services.AddSwaggerGen(opts =>
 {
-    options.AddSecurityDefinition("basic", new OpenApiSecurityScheme
+    opts.AddSecurityDefinition("basic", new OpenApiSecurityScheme
     {
-        Name = "Authorization",  
-        Type = SecuritySchemeType.Http,  
-        Scheme = "basic",  
-        In = ParameterLocation.Header,  
-        Description = "Basic Auth"
+        Type = SecuritySchemeType.Http,
+        Scheme = "basic",
+        In = ParameterLocation.Header,
+        Name = "Authorization"
     });
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    
+    opts.AddSecurityRequirement(doc =>
     {
+        return new OpenApiSecurityRequirement
         {
-            new OpenApiSecurityScheme
             {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id="basic"
-                }
-            },
-            Array.Empty<string>()
-        }
+                new OpenApiSecuritySchemeReference("basic", doc),
+                []
+            }
+        };
     });
 });
 builder.Services.AddCarter();

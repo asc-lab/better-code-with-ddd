@@ -1,5 +1,4 @@
 using LoanApplication.TacticalDdd.DomainModel.Ddd;
-using Newtonsoft.Json;
 
 namespace LoanApplication.TacticalDdd.DomainModel;
 
@@ -14,8 +13,7 @@ public class Registration : ValueObject<Registration>
     {
     }
 
-    [JsonConstructor]
-    public Registration(DateOnly registrationDate, OperatorId registeredBy)
+    private Registration(DateOnly registrationDate, OperatorId registeredBy)
     {
         RegistrationDate = registrationDate;
         RegisteredBy = registeredBy;

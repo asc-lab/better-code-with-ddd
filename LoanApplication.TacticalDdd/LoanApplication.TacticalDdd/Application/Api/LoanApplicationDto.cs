@@ -8,7 +8,7 @@ public record LoanApplicationDto
      string CustomerNationalIdentifier,
      string CustomerFirstName,
      string CustomerLastName,
-     DateTime CustomerBirthdate,
+     DateOnly CustomerBirthdate,
      decimal CustomerMonthlyIncome,
      AddressDto CustomerAddress,
      decimal PropertyValue,
@@ -16,10 +16,10 @@ public record LoanApplicationDto
      decimal LoanAmount,
      int LoanNumberOfYears,
      decimal InterestRate,
-     DateTime? DecisionDate,
+     DateOnly? DecisionDate,
      string DecisionBy,
      string RegisteredBy,
-     DateTime RegistrationDate
+     DateOnly RegistrationDate
 )
 {
      //this one is needed to allow dapper to create instance of it using reflection

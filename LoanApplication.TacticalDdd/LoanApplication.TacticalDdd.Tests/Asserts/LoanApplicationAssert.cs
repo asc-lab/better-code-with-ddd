@@ -10,17 +10,11 @@ public static class LoanApplicationAssertExtension
         => new LoanApplicationAssert(loanApplication);
 }
 
-public class LoanApplicationAssert : ReferenceTypeAssertions<DomainModel.LoanApplication,LoanApplicationAssert>
+public class LoanApplicationAssert(DomainModel.LoanApplication loanApplication)
 {
-    public LoanApplicationAssert(DomainModel.LoanApplication loanApplication)
-        : base(loanApplication)
-    {
-            
-    }
-        
     public AndConstraint<LoanApplicationAssert> BeInStatus(LoanApplicationStatus expectedStatus)
     {
-        Subject.Status.Should().Be(expectedStatus);
+        loanApplication.Status.Should().Be(expectedStatus);
         return new AndConstraint<LoanApplicationAssert>(this);
     }
         
@@ -41,13 +35,13 @@ public class LoanApplicationAssert : ReferenceTypeAssertions<DomainModel.LoanApp
         
     public AndConstraint<LoanApplicationAssert> ScoreIsNull()
     {
-        Subject.Score.Should().BeNull();
+        loanApplication.Score.Should().BeNull();
         return new AndConstraint<LoanApplicationAssert>(this);
     }
         
     public AndConstraint<LoanApplicationAssert> ScoreIs(ApplicationScore expectedScore)
     {
-        Subject.Score?.Score.Should().Be(expectedScore);
+        loanApplication.Score?.Score.Should().Be(expectedScore);
         return new AndConstraint<LoanApplicationAssert>(this);
     }
         
@@ -61,5 +55,4 @@ public class LoanApplicationAssert : ReferenceTypeAssertions<DomainModel.LoanApp
         return ScoreIs(ApplicationScore.Green);
     }
 
-    protected override string Identifier => "LoanApplicationAssert";
 }
