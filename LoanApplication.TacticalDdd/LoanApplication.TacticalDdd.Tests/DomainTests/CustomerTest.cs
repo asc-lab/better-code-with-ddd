@@ -8,7 +8,7 @@ namespace LoanApplication.TacticalDdd.Tests.DomainTests;
 public class CustomerTest
 {
     [Fact]
-    public void Customer_Born1974_IsAt2019_45YearsOld()
+    public void Customer_Born1974_IsAt2019_44YearsOld()
     {
         var customer =  GivenCustomer()
             .BornOn(new DateOnly(1974, 6, 26))
@@ -16,11 +16,11 @@ public class CustomerTest
 
         var ageAt2019 = customer.AgeInYearsAt(new DateOnly(2019, 1, 1));
             
-        ageAt2019.Should().Be(45.Years());
+        ageAt2019.Should().Be(44.Years());
     }
         
     [Fact]
-    public void Customer_Born1974_IsAt2020_46YearsOld()
+    public void Customer_Born1974_IsAt2020_45YearsOld()
     {
         var customer = GivenCustomer()
             .BornOn(new DateOnly(1974, 6, 26))
@@ -29,11 +29,11 @@ public class CustomerTest
 
         var ageAt2020 = customer.AgeInYearsAt(new DateOnly(2020, 1, 1));
             
-        ageAt2020.Should().Be(46.Years());
+        ageAt2020.Should().Be(45.Years());
     }
         
     [Fact]
-    public void Customer_Born1974_IsAt2021_47YearsOld()
+    public void Customer_Born1974_IsAt2021_46YearsOld()
     {
         var customer =  GivenCustomer()
             .BornOn(new DateOnly(1974, 6, 26))
@@ -42,7 +42,7 @@ public class CustomerTest
 
         var ageAt2021 = customer.AgeInYearsAt(new DateOnly(2021, 1, 1));
             
-        ageAt2021.Should().Be(47.Years());
+        ageAt2021.Should().Be(46.Years());
     }
         
     [Fact]

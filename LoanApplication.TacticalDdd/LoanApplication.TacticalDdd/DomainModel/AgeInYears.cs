@@ -13,7 +13,13 @@ public class AgeInYears : ValueObject<AgeInYears>, IComparable<AgeInYears>
 
     public static AgeInYears Between(DateOnly start, DateOnly end)
     {
-        return new AgeInYears(end.Year - start.Year);
+        var years = end.Year - start.Year;
+        if (start.AddYears(years) > end)
+        {
+            years--;
+        }
+
+        return new AgeInYears(years);
     }
 
     protected override IEnumerable<object> GetAttributesToIncludeInEqualityCheck()
