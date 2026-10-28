@@ -15,10 +15,18 @@ public class AgeInYearsTest
     }
         
     [Fact]
-    public void AgeInYears_PersonBorn1974_BeforeBirthdateIn2019_45()
+    public void AgeInYears_PersonBorn1974_BeforeBirthdateIn2019_44()
     {
         var age = AgeInYears.Between(new DateOnly(1974, 6, 26), new DateOnly(2019, 5, 28));
             
+        age.Should().Be(44.Years());
+    }
+
+    [Fact]
+    public void AgeInYears_PersonBorn1974_OnBirthdateIn2019_45()
+    {
+        var age = AgeInYears.Between(new DateOnly(1974, 6, 26), new DateOnly(2019, 6, 26));
+
         age.Should().Be(45.Years());
     }
 }
